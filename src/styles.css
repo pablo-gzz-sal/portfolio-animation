@@ -1,0 +1,336 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Pablo Salcido — premium dark portfolio design system.
+ * All tokens in oklch. Use semantic utilities (bg-background, text-foreground,
+ * bg-primary, etc.) — never raw hex in components.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-glow: var(--primary-glow);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
+  --radius: 1rem;
+
+  /* Deep near-black canvas with warm cream foreground */
+  --background: oklch(0.16 0.005 240);
+  --foreground: oklch(0.95 0.012 85);
+
+  --card: oklch(0.21 0.008 240);
+  --card-foreground: oklch(0.95 0.012 85);
+
+  --popover: oklch(0.21 0.008 240);
+  --popover-foreground: oklch(0.95 0.012 85);
+
+  /* Deep teal primary + glow */
+  --primary: oklch(0.62 0.1 180);
+  --primary-foreground: oklch(0.16 0.005 240);
+  --primary-glow: oklch(0.78 0.09 185);
+
+  --secondary: oklch(0.27 0.01 240);
+  --secondary-foreground: oklch(0.95 0.012 85);
+
+  --muted: oklch(0.24 0.008 240);
+  --muted-foreground: oklch(0.7 0.012 85);
+
+  --accent: oklch(0.62 0.1 180);
+  --accent-foreground: oklch(0.16 0.005 240);
+
+  --destructive: oklch(0.65 0.2 25);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(0.95 0.012 85 / 10%);
+  --input: oklch(0.95 0.012 85 / 12%);
+  --ring: oklch(0.62 0.1 180);
+
+  --chart-1: oklch(0.62 0.1 180);
+  --chart-2: oklch(0.78 0.09 185);
+  --chart-3: oklch(0.7 0.012 85);
+  --chart-4: oklch(0.45 0.08 200);
+  --chart-5: oklch(0.55 0.05 160);
+
+  --sidebar: oklch(0.21 0.008 240);
+  --sidebar-foreground: oklch(0.95 0.012 85);
+  --sidebar-primary: oklch(0.62 0.1 180);
+  --sidebar-primary-foreground: oklch(0.16 0.005 240);
+  --sidebar-accent: oklch(0.27 0.01 240);
+  --sidebar-accent-foreground: oklch(0.95 0.012 85);
+  --sidebar-border: oklch(0.95 0.012 85 / 10%);
+  --sidebar-ring: oklch(0.62 0.1 180);
+
+  /* Gradients & shadows */
+  --gradient-hero: radial-gradient(
+      ellipse at 70% 20%,
+      color-mix(in oklab, var(--primary) 22%, transparent) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 20% 80%,
+      color-mix(in oklab, var(--primary-glow) 14%, transparent) 0%,
+      transparent 50%
+    );
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--primary-glow)
+  );
+  --shadow-elegant: 0 30px 80px -40px oklch(0 0 0 / 0.7),
+    0 0 0 1px var(--border);
+  --shadow-glow: 0 0 60px -10px
+    color-mix(in oklab, var(--primary) 50%, transparent);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 35%, transparent);
+    color: var(--foreground);
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+@utility font-mono-eyebrow {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+@utility reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@utility reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@utility tilt-card {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease, box-shadow 0.5s ease;
+}
+
+@utility tilt-card-hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklab, var(--primary) 45%, var(--border));
+  box-shadow: var(--shadow-elegant);
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility scroll-fade {
+  /* Element fades + lifts based on its viewport position via JS-set --p */
+  opacity: calc(1 - max(0, var(--p, 0)) * 0.6);
+  transform: translate3d(0, calc(var(--p, 0) * -40px), 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+
+/* ---------- Atmosphere: film grain + custom cursor ---------- */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Custom cursor removed — using the native OS cursor for reliability. */
+
+
+/* Sleek scrollbar for modal dialogs */
+.modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--foreground) 18%, transparent) transparent;
+}
+.modal-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--foreground) 14%, transparent);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--primary-glow) 50%, transparent);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* ---------- Premium modal animations ---------- */
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.97) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) translateY(0);
+  }
+}
+
+@keyframes modal-exit {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.97) translateY(6px);
+  }
+}
+
+@keyframes modal-backdrop-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-backdrop-exit {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.modal-content {
+  /* Neutralize Tailwind's `translate` property so our keyframe `transform`
+     (which carries the -50%/-50% centering) is the sole positioning source. */
+  translate: none !important;
+}
+
+.modal-content[data-state="open"] {
+  animation: modal-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-content[data-state="closed"] {
+  animation: modal-exit 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-backdrop[data-state="open"] {
+  animation: modal-backdrop-enter 0.35s ease forwards;
+}
+
+.modal-backdrop[data-state="closed"] {
+  animation: modal-backdrop-exit 0.25s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-content[data-state="open"],
+  .modal-content[data-state="closed"] {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  .modal-backdrop[data-state="open"],
+  .modal-backdrop[data-state="closed"] {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Testimonial carousel — hide native scrollbar (controls + drag remain) */
+.testimonial-scroller {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.testimonial-scroller::-webkit-scrollbar {
+  display: none;
+}

@@ -21,6 +21,11 @@ dist-ssr
 .nitro
 *.local
 
+# Vercel build output — must be built by Vercel CI, never committed.
+# A committed .vercel/output makes Vercel skip the build entirely and
+# deploy stale, locally-built (Windows) artifacts.
+.vercel
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

@@ -24,11 +24,24 @@ export function SmoothScroll() {
     const root = document.documentElement;
     const onScroll = ({ progress }: { progress: number }) => {
       root.style.setProperty("--scroll-progress", progress.toFixed(4));
-      window.dispatchEvent(
-        new CustomEvent("lenis-scroll", { detail: { progress } })
-      );
+      window.dispatchEvent(new CustomEvent("lenis-scroll", { detail: { progress } }));
     };
     lenis.on("scroll", onScroll);
+
+    // Lenis owns anchor navigation (native scroll-behavior is disabled
+    // so the two never fight over the scroll position).
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey) return;
+      const anchor = (e.target as HTMLElement).closest?.('a[href^="#"]');
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href || href === "#") return;
+      const target = document.querySelector<HTMLElement>(href);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -96, duration: 1.2 });
+    };
+    document.addEventListener("click", onClick);
 
     let raf = 0;
     const tick = (time: number) => {
@@ -39,6 +52,7 @@ export function SmoothScroll() {
 
     return () => {
       cancelAnimationFrame(raf);
+      document.removeEventListener("click", onClick);
       lenis.destroy();
     };
   }, []);

@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n, type Lang } from "@/i18n";
+import { useMagnetic } from "@/hooks/use-magnetic";
 import meImg from "@/assets/images/me.jpeg";
 
 export function Header() {
   const { lang, setLang, t, isTransitioning } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const ctaRef = useMagnetic<HTMLAnchorElement>();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -34,16 +36,16 @@ export function Header() {
     <>
       <header
         className={cn(
-          "fixed left-0 right-0 z-50 transition-all duration-300",
-          scrolled ? "top-3 sm:top-4" : "top-4 sm:top-6"
+          "fixed left-0 right-0 z-50 transition-[top] duration-300 ease-out",
+          scrolled ? "top-3 sm:top-4" : "top-4 sm:top-6",
         )}
       >
         <nav
           className={cn(
-            "mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-border/60 px-3 pl-4 py-2 transition-all duration-300",
+            "mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-border/60 px-3 pl-4 py-2 transition-[background-color,box-shadow,backdrop-filter] duration-300",
             scrolled
               ? "bg-background/70 backdrop-blur-xl shadow-[0_8px_30px_-10px_rgba(0,0,0,0.5)]"
-              : "bg-card/40 backdrop-blur-md"
+              : "bg-card/40 backdrop-blur-md",
           )}
         >
           <a href="#top" className="flex items-center gap-2.5 shrink-0">
@@ -60,10 +62,7 @@ export function Header() {
           <ul className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
             {NAV.map((item) => (
               <li key={item.href}>
-                <a
-                  href={item.href}
-                  className="hover:text-foreground transition-colors"
-                >
+                <a href={item.href} className="nav-link hover:text-foreground transition-colors">
                   {item.label}
                 </a>
               </li>
@@ -74,8 +73,9 @@ export function Header() {
             <LangToggle lang={lang} setLang={setLang} disabled={isTransitioning} />
 
             <a
+              ref={ctaRef}
               href="#contact"
-              className="hidden sm:inline-flex items-center rounded-full bg-foreground text-background px-4 py-1.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+              className="press hidden sm:inline-flex items-center rounded-full bg-foreground text-background px-4 py-1.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               {t.cta.workTogether}
             </a>
@@ -83,7 +83,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="md:hidden grid h-9 w-9 place-items-center rounded-full border border-border text-foreground hover:bg-card/60 transition-colors"
+              className="press md:hidden grid h-9 w-9 place-items-center rounded-full border border-border text-foreground hover:bg-card/60 transition-colors"
               aria-label={t.cta.openMenu}
             >
               <Menu className="h-4 w-4" />
@@ -130,9 +130,7 @@ function MobileMenu({
   useEffect(() => {
     if (open) {
       setMounted(true);
-      const raf = requestAnimationFrame(() =>
-        requestAnimationFrame(() => setVisible(true))
-      );
+      const raf = requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
       return () => cancelAnimationFrame(raf);
     } else {
       setVisible(false);
@@ -155,7 +153,7 @@ function MobileMenu({
     <div
       className={cn(
         "fixed inset-0 z-[60] flex flex-col transition-opacity duration-300 ease-out",
-        visible ? "opacity-100" : "opacity-0"
+        visible ? "opacity-100" : "opacity-0",
       )}
       style={{ background: "var(--background)" }}
       aria-modal="true"
@@ -183,23 +181,17 @@ function MobileMenu({
       <div
         className={cn(
           "relative flex items-center justify-between px-6 pt-5 transition-all duration-300",
-          visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+          visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2",
         )}
         style={{ transitionDelay: visible ? "40ms" : "0ms" }}
       >
-        <a
-          href="#top"
-          onClick={onClose}
-          className="flex items-center gap-2.5"
-        >
+        <a href="#top" onClick={onClose} className="flex items-center gap-2.5">
           <img
             src={meImg}
             alt="Pablo Salcido"
             className="h-8 w-8 rounded-full object-cover object-top border border-border"
           />
-          <span className="text-sm font-medium tracking-tight text-foreground">
-            Pablo Salcido
-          </span>
+          <span className="text-sm font-medium tracking-tight text-foreground">Pablo Salcido</span>
         </a>
         <button
           type="button"
@@ -220,7 +212,7 @@ function MobileMenu({
             onClick={onClose}
             className={cn(
               "group flex items-center justify-between border-b border-border/30 py-5 transition-all duration-500 ease-out",
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5",
             )}
             style={{ transitionDelay: visible ? `${i * 70 + 100}ms` : "0ms" }}
           >
@@ -241,7 +233,7 @@ function MobileMenu({
       <div
         className={cn(
           "relative flex items-center justify-between px-6 pb-10 transition-all duration-500 ease-out",
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
         )}
         style={{ transitionDelay: visible ? "380ms" : "0ms" }}
       >
@@ -277,8 +269,7 @@ function LangToggle({
     e.preventDefault();
     const next = lang === "en" ? "es" : "en";
     setLang(next);
-    const buttons =
-      groupRef.current?.querySelectorAll<HTMLButtonElement>("button");
+    const buttons = groupRef.current?.querySelectorAll<HTMLButtonElement>("button");
     buttons?.[next === "en" ? 0 : 1]?.focus();
   };
 
@@ -293,7 +284,7 @@ function LangToggle({
       <span
         className={cn(
           "pointer-events-none absolute top-[3px] bottom-[3px] w-[calc(50%-3px)] rounded-full bg-foreground transition-all duration-200 ease-out",
-          lang === "en" ? "left-[3px]" : "left-[calc(50%)]"
+          lang === "en" ? "left-[3px]" : "left-[calc(50%)]",
         )}
         aria-hidden="true"
       />
@@ -311,7 +302,7 @@ function LangToggle({
             className={cn(
               "relative z-10 px-2.5 py-1 rounded-full uppercase tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-background",
               active ? "text-background" : "text-muted-foreground hover:text-foreground",
-              disabled && "opacity-50 cursor-not-allowed"
+              disabled && "opacity-50 cursor-not-allowed",
             )}
           >
             {l}

@@ -55,27 +55,18 @@ export function SocialProof() {
   };
 
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="relative py-28 sm:py-36">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal>
-          <p className="font-mono-eyebrow text-muted-foreground">
-            {t.socialProof.eyebrow}
-          </p>
-          <h2 className="font-display mt-4 text-4xl sm:text-5xl text-foreground max-w-3xl leading-[1.05]">
-            {t.socialProof.title1}{" "}
-            <span className="italic text-primary-glow">
-              {t.socialProof.titleEm}
-            </span>
+          <h2 className="font-display text-4xl sm:text-5xl text-foreground max-w-3xl leading-[1.05]">
+            {t.socialProof.title1} {t.socialProof.titleEm}
           </h2>
         </Reveal>
 
         <Reveal delay={100}>
           <div className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-4 text-muted-foreground">
             {t.socialProof.logos.map((n) => (
-              <span
-                key={n}
-                className="font-display text-2xl sm:text-3xl text-foreground/60"
-              >
+              <span key={n} className="font-display text-xl sm:text-2xl text-foreground/50">
                 {n}
               </span>
             ))}
@@ -153,10 +144,7 @@ export function SocialProof() {
                 )}
 
                 <div className="p-7 sm:p-8 flex-1 flex flex-col">
-                  <Quote
-                    aria-hidden
-                    className="h-6 w-6 text-primary-glow/60"
-                  />
+                  <Quote aria-hidden className="h-6 w-6 text-primary-glow/60" />
                   <blockquote className="mt-3 text-foreground/90 leading-relaxed text-lg">
                     {q.quote}
                   </blockquote>

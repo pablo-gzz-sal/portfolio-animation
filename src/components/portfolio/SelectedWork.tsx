@@ -1,12 +1,8 @@
-import { useState } from "react";
+import { useState, type PointerEvent } from "react";
 import { ArrowUpRight, ExternalLink, Play, X } from "lucide-react";
 import { Reveal } from "./Reveal";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useT } from "@/i18n";
 import imgJoseph from "@/assets/images/joseph.png";
 import imgBclg from "@/assets/images/bclg.png";
@@ -24,6 +20,15 @@ const PROJECT_META: { image: string | null; mock?: MockKind; stack: string[] }[]
   { image: imgTravane, stack: ["Angular", "TypeScript", "Tailwind"] },
   { image: imgKochina, stack: ["Angular", "TypeScript", "Tailwind"] },
   { image: null, mock: "saas", stack: ["React", "Node.js", "PostgreSQL", "Stripe"] },
+];
+
+// Asymmetric spans for the non-featured projects (md:grid-cols-12)
+const GRID_SPANS = [
+  "md:col-span-7",
+  "md:col-span-5",
+  "md:col-span-5",
+  "md:col-span-7",
+  "md:col-span-12",
 ];
 
 function SaasMock() {
@@ -44,9 +49,100 @@ function SaasMock() {
   );
 }
 
+/** Tracks the pointer for the specular sheen layer. */
+function trackSheen(e: PointerEvent<HTMLElement>) {
+  const r = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+  e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+}
+
+type Project = ReturnType<typeof useT>["selectedWork"]["projects"][number] & {
+  image: string | null;
+  stack: string[];
+};
+
+function CardMedia({
+  project,
+  hoverLabel,
+  className,
+}: {
+  project: Project;
+  hoverLabel: string;
+  className?: string;
+}) {
+  return (
+    <div className={cn("clip-reveal relative rounded-xl bg-muted/40 overflow-hidden", className)}>
+      {project.image ? (
+        <img
+          src={project.image}
+          alt={project.title}
+          className="absolute inset-0 h-full w-full object-cover rounded-xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+        />
+      ) : (
+        <SaasMock />
+      )}
+      <div className="absolute inset-0 rounded-xl bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity grid place-items-center pointer-events-none">
+        <span className="text-sm text-foreground/90 font-medium bg-card/90 backdrop-blur px-3 py-1.5 rounded-full border border-border">
+          {hoverLabel}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function CardBody({
+  project,
+  roleLabel,
+  outcomeLabel,
+  titleClass = "text-2xl",
+}: {
+  project: Project;
+  roleLabel: string;
+  outcomeLabel: string;
+  titleClass?: string;
+}) {
+  return (
+    <>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-mono-eyebrow text-muted-foreground">{project.tag}</p>
+          <h3 className={cn("font-display mt-2 text-foreground leading-tight", titleClass)}>
+            {project.title}
+          </h3>
+        </div>
+        <ArrowUpRight className="h-5 w-5 shrink-0 text-muted-foreground group-hover:text-primary-glow group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
+      </div>
+
+      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{project.summary}</p>
+
+      <div className="mt-5 flex flex-wrap gap-4 text-xs">
+        <div>
+          <p className="font-mono-eyebrow text-muted-foreground">{roleLabel}</p>
+          <p className="mt-1 text-foreground/90">{project.role}</p>
+        </div>
+        <div>
+          <p className="font-mono-eyebrow text-muted-foreground">{outcomeLabel}</p>
+          <p className="mt-1 text-foreground/90">{project.outcome}</p>
+        </div>
+      </div>
+
+      <div className="mt-5 flex flex-wrap gap-1.5">
+        {project.stack.map((s) => (
+          <span
+            key={s}
+            className="rounded-full border border-border bg-background/40 px-2.5 py-1 text-[11px] font-mono text-muted-foreground"
+          >
+            {s}
+          </span>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export function SelectedWork() {
   const t = useT();
-  const projects = t.selectedWork.projects.map((p, i) => ({
+  const projects: Project[] = t.selectedWork.projects.map((p, i) => ({
     ...p,
     image: PROJECT_META[i]?.image ?? null,
     stack: PROJECT_META[i]?.stack ?? [],
@@ -55,93 +151,80 @@ export function SelectedWork() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const active = openIdx !== null ? projects[openIdx] : null;
 
+  const cardClass =
+    "group relative w-full text-left rounded-3xl border border-border/80 bg-card/85 backdrop-blur-xl tilt-card hover:tilt-card-hover overflow-hidden shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary";
+
+  const [featured, ...rest] = projects;
+
   return (
-    <section id="work" className="relative py-24 sm:py-32 scroll-mt-24">
+    <section id="work" className="relative py-28 sm:py-36 scroll-mt-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal>
-          <p className="font-mono-eyebrow text-muted-foreground">
-            {t.selectedWork.eyebrow}
-          </p>
-          <h2 className="font-display mt-4 text-4xl sm:text-5xl text-foreground max-w-3xl leading-[1.05]">
-            {t.selectedWork.title1}{" "}
-            <span className="italic text-primary-glow">
-              {t.selectedWork.titleEm}
-            </span>
+          <h2 className="font-display text-4xl sm:text-5xl text-foreground max-w-3xl leading-[1.05]">
+            {t.selectedWork.title1} {t.selectedWork.titleEm}
           </h2>
-          <p className="mt-5 max-w-2xl text-muted-foreground">
-            {t.selectedWork.description}
-          </p>
+          <p className="mt-5 max-w-2xl text-muted-foreground">{t.selectedWork.description}</p>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {projects.map((p, i) => (
-            <Reveal key={p.title} delay={i * 60}>
-              <button
-                type="button"
-                onClick={() => setOpenIdx(i)}
-                className="group relative w-full text-left rounded-3xl border border-border/80 bg-card/85 backdrop-blur-xl p-6 sm:p-7 tilt-card hover:tilt-card-hover overflow-hidden shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                <div className="relative aspect-[16/10] mb-6 rounded-xl bg-muted/40 overflow-hidden">
-                  {p.image ? (
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="absolute inset-0 h-full w-full object-cover rounded-xl"
-                    />
-                  ) : (
-                    <SaasMock />
+        {/* Featured project — full width, image-led */}
+        <Reveal className="mt-16">
+          <button
+            type="button"
+            onClick={() => setOpenIdx(0)}
+            onPointerMove={trackSheen}
+            className={cn(cardClass, "grid gap-6 lg:grid-cols-[1.4fr_1fr] p-6 sm:p-8")}
+          >
+            <div className="card-sheen" aria-hidden />
+            <CardMedia
+              project={featured}
+              hoverLabel={t.selectedWork.viewCaseStudy}
+              className="aspect-[16/10] lg:aspect-auto lg:min-h-[420px]"
+            />
+            <div className="flex flex-col justify-center lg:py-4">
+              <CardBody
+                project={featured}
+                roleLabel={t.selectedWork.role}
+                outcomeLabel={t.selectedWork.outcome}
+                titleClass="text-3xl sm:text-4xl"
+              />
+            </div>
+          </button>
+        </Reveal>
+
+        {/* Remaining projects — asymmetric grid */}
+        <div className="mt-6 grid gap-6 md:grid-cols-12">
+          {rest.map((p, i) => {
+            const idx = i + 1;
+            const wide = GRID_SPANS[i] === "md:col-span-12";
+            return (
+              <Reveal key={p.title} delay={(i % 2) * 70} className={cn("h-full", GRID_SPANS[i])}>
+                <button
+                  type="button"
+                  onClick={() => setOpenIdx(idx)}
+                  onPointerMove={trackSheen}
+                  className={cn(
+                    cardClass,
+                    "h-full p-6 sm:p-7",
+                    wide && "grid gap-6 md:grid-cols-[1.2fr_1fr] items-center",
                   )}
-                  <div className="absolute inset-0 rounded-xl bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity grid place-items-center pointer-events-none">
-                    <span className="text-sm text-foreground/90 font-medium bg-card/90 backdrop-blur px-3 py-1.5 rounded-full border border-border">
-                      {t.selectedWork.viewCaseStudy}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-start justify-between gap-4">
+                >
+                  <div className="card-sheen" aria-hidden />
+                  <CardMedia
+                    project={p}
+                    hoverLabel={t.selectedWork.viewCaseStudy}
+                    className={cn("aspect-[16/10]", !wide && "mb-6")}
+                  />
                   <div>
-                    <p className="font-mono-eyebrow text-muted-foreground">
-                      {p.tag}
-                    </p>
-                    <h3 className="font-display mt-2 text-2xl text-foreground leading-tight">
-                      {p.title}
-                    </h3>
+                    <CardBody
+                      project={p}
+                      roleLabel={t.selectedWork.role}
+                      outcomeLabel={t.selectedWork.outcome}
+                    />
                   </div>
-                  <ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-primary-glow group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
-                </div>
-
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                  {p.summary}
-                </p>
-
-                <div className="mt-5 flex flex-wrap gap-4 text-xs">
-                  <div>
-                    <p className="font-mono-eyebrow text-muted-foreground">
-                      {t.selectedWork.role}
-                    </p>
-                    <p className="mt-1 text-foreground/90">{p.role}</p>
-                  </div>
-                  <div>
-                    <p className="font-mono-eyebrow text-muted-foreground">
-                      {t.selectedWork.outcome}
-                    </p>
-                    <p className="mt-1 text-foreground/90">{p.outcome}</p>
-                  </div>
-                </div>
-
-                <div className="mt-5 flex flex-wrap gap-1.5">
-                  {p.stack.map((s) => (
-                    <span
-                      key={s}
-                      className="rounded-full border border-border bg-background/40 px-2.5 py-1 text-[11px] text-muted-foreground"
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              </button>
-            </Reveal>
-          ))}
+                </button>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
 
@@ -152,14 +235,11 @@ export function SelectedWork() {
           onTouchMove={(e) => e.stopPropagation()}
           className="max-w-3xl max-h-[90vh] overflow-y-auto overscroll-contain modal-scroll bg-card/95 backdrop-blur-xl border-border p-0 [&>button]:hidden"
         >
-
           {active && (
             <div className="p-6 sm:p-10">
               <div className="flex items-start justify-between gap-6">
                 <div>
-                  <p className="font-mono-eyebrow text-muted-foreground">
-                    {active.tag}
-                  </p>
+                  <p className="font-mono-eyebrow text-muted-foreground">{active.tag}</p>
                   <DialogTitle className="font-display mt-3 text-3xl sm:text-4xl text-foreground leading-[1.05]">
                     {active.title}
                   </DialogTitle>
@@ -171,7 +251,7 @@ export function SelectedWork() {
                       href={active.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-foreground text-background pl-4 pr-3 py-2 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="press mt-4 inline-flex items-center gap-2 rounded-full bg-foreground text-background pl-4 pr-3 py-2 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
                     >
                       {t.selectedWork.viewLive}
                       <span className="grid h-6 w-6 place-items-center rounded-full bg-primary text-primary-foreground group-hover:bg-background group-hover:text-foreground transition-colors">
@@ -183,7 +263,7 @@ export function SelectedWork() {
                 <button
                   type="button"
                   onClick={() => setOpenIdx(null)}
-                  className="shrink-0 grid h-10 w-10 place-items-center rounded-full border border-border bg-background/60 hover:bg-background transition-colors"
+                  className="press shrink-0 grid h-10 w-10 place-items-center rounded-full border border-border bg-background/60 hover:bg-background transition-colors"
                   aria-label={t.selectedWork.closeCase}
                 >
                   <X className="h-4 w-4" />
@@ -228,9 +308,7 @@ export function SelectedWork() {
                       <p className="font-display text-2xl sm:text-3xl text-primary-glow">
                         {m.value}
                       </p>
-                      <p className="mt-1 font-mono-eyebrow text-muted-foreground">
-                        {m.label}
-                      </p>
+                      <p className="mt-1 font-mono-eyebrow text-muted-foreground">{m.label}</p>
                     </div>
                   ))}
                 </div>
@@ -260,9 +338,7 @@ export function SelectedWork() {
                   <p className="font-mono-eyebrow text-muted-foreground">
                     {t.selectedWork.sections.problem}
                   </p>
-                  <p className="mt-2 text-foreground/90 leading-relaxed">
-                    {active.problem}
-                  </p>
+                  <p className="mt-2 text-foreground/90 leading-relaxed">{active.problem}</p>
                 </div>
 
                 <div>
@@ -309,9 +385,7 @@ export function SelectedWork() {
                         key={group.label}
                         className="rounded-2xl border border-border bg-card/60 p-4"
                       >
-                        <p className="font-mono-eyebrow text-muted-foreground">
-                          {group.label}
-                        </p>
+                        <p className="font-mono-eyebrow text-muted-foreground">{group.label}</p>
                         <div className="mt-2.5 flex flex-wrap gap-1.5">
                           {group.items.map((it) => (
                             <span

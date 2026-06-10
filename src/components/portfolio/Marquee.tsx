@@ -9,27 +9,20 @@ interface MarqueeProps {
   className?: string;
 }
 
-export function Marquee({
-  items,
-  duration = 40,
-  reverse,
-  className,
-}: MarqueeProps) {
+export function Marquee({ items, duration = 40, reverse, className }: MarqueeProps) {
   const stream = [...items, ...items];
   return (
     <div
       className={cn(
         "marquee group relative overflow-hidden",
         "[mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]",
-        className
+        className,
       )}
     >
       <div
         className="marquee-track flex w-max gap-12 will-change-transform"
         style={{
-          animation: `marquee ${duration}s linear infinite ${
-            reverse ? "reverse" : ""
-          }`,
+          animation: `marquee ${duration}s linear infinite ${reverse ? "reverse" : ""}`,
         }}
       >
         {stream.map((item, i) => (

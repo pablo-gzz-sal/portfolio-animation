@@ -1,45 +1,40 @@
-import { Rocket, Building2, Users } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { useT } from "@/i18n";
-
-const ICONS = [Rocket, Building2, Users];
 
 export function WhoIWorkWith() {
   const t = useT();
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="relative py-28 sm:py-40">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <Reveal>
-          <p className="font-mono-eyebrow text-muted-foreground">
-            {t.whoIWorkWith.eyebrow}
-          </p>
-          <h2 className="font-display mt-4 text-4xl sm:text-5xl text-foreground max-w-2xl leading-[1.05]">
-            {t.whoIWorkWith.title1}{" "}
-            <span className="italic text-primary-glow">
-              {t.whoIWorkWith.titleEm}
-            </span>
-          </h2>
-        </Reveal>
+        <div className="grid lg:grid-cols-[1fr_1.3fr] gap-12 lg:gap-20 items-start">
+          <div className="lg:sticky lg:top-32">
+            <Reveal>
+              <h2 className="font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.05] text-foreground max-w-md">
+                {t.whoIWorkWith.title1} {t.whoIWorkWith.titleEm}
+              </h2>
+            </Reveal>
+          </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
-          {t.whoIWorkWith.items.map((item, i) => {
-            const Icon = ICONS[i] ?? Rocket;
-            return (
+          <div>
+            {t.whoIWorkWith.items.map((item, i) => (
               <Reveal key={item.title} delay={i * 80}>
-                <article className="group h-full rounded-2xl border border-border bg-card/40 p-7 tilt-card hover:tilt-card-hover">
-                  <span className="inline-grid h-10 w-10 place-items-center rounded-full bg-primary/15 text-primary-glow ring-1 ring-primary/30">
-                    <Icon className="h-5 w-5" />
+                <article className="group border-t border-border py-8 sm:py-10 grid sm:grid-cols-[72px_1fr] gap-4 sm:gap-8">
+                  <span className="font-mono text-sm text-primary-glow/70 pt-1.5 transition-colors duration-300 group-hover:text-primary-glow">
+                    0{i + 1}
                   </span>
-                  <h3 className="mt-6 text-lg font-medium text-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                    {item.body}
-                  </p>
+                  <div>
+                    <h3 className="font-display text-xl sm:text-2xl text-foreground leading-snug">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 text-muted-foreground leading-relaxed max-w-lg">
+                      {item.body}
+                    </p>
+                  </div>
                 </article>
               </Reveal>
-            );
-          })}
+            ))}
+            <div className="border-t border-border" />
+          </div>
         </div>
       </div>
     </section>

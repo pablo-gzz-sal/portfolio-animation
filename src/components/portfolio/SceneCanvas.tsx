@@ -2,17 +2,100 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 /**
- * Global fixed-position 3D backdrop.
+ * Global fixed-position backdrop: a bespoke GLSL "aurora" field.
  *
  * Design goals:
- *  - Premium, restrained — never competes with content.
- *  - Two slowly drifting wireframe shapes anchored to opposite corners,
- *    so the center of the viewport (where cards live) stays clean.
- *  - Reacts subtly to scroll (rotation + small parallax + opacity dip
- *    inside dense content sections).
- *  - A radial vignette overlay darkens the center to guarantee card
- *    contrast over the moving wireframes.
+ *  - Premium, restrained — slow domain-warped flow noise in the brand teal,
+ *    brighter toward the viewport edges so the center stays clean for content.
+ *  - Reacts subtly to scroll (flow direction + hue temperature + intensity)
+ *    and to the pointer (gentle drift). No camera gymnastics.
+ *  - Cheap: renders a single fullscreen quad at reduced resolution,
+ *    pauses when the tab is hidden, renders one static frame under
+ *    prefers-reduced-motion.
  */
+
+const VERTEX = /* glsl */ `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = vec4(position, 1.0);
+}
+`;
+
+const FRAGMENT = /* glsl */ `
+precision highp float;
+varying vec2 vUv;
+uniform float uTime;
+uniform float uScroll;
+uniform vec2 uMouse;
+uniform vec2 uResolution;
+
+float hash(vec2 p) {
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+}
+
+float noise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(
+    mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+    mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+    u.y
+  );
+}
+
+float fbm(vec2 p) {
+  float v = 0.0;
+  float a = 0.5;
+  for (int i = 0; i < 4; i++) {
+    v += a * noise(p);
+    p = p * 2.03 + vec2(13.7, 7.1);
+    a *= 0.5;
+  }
+  return v;
+}
+
+void main() {
+  vec2 p = (vUv - 0.5) * vec2(uResolution.x / uResolution.y, 1.0);
+
+  float t = uTime * 0.035;
+  vec2 drift = vec2(t * 0.55 + uScroll * 0.9, -t * 0.4 + uScroll * 0.6);
+
+  // double domain warp — the source of the smoke-like motion
+  vec2 q = vec2(
+    fbm(p * 1.3 + drift),
+    fbm(p * 1.3 + vec2(5.2, 1.3) - drift * 0.8)
+  );
+  vec2 r = vec2(
+    fbm(p * 1.3 + 1.9 * q + vec2(1.7, 9.2) + uMouse * 0.35),
+    fbm(p * 1.3 + 1.9 * q + vec2(8.3, 2.8) - uMouse * 0.25)
+  );
+  float f = fbm(p * 1.5 + 2.1 * r);
+
+  // brighter toward the edges, calm in the center where content lives
+  float edge = smoothstep(0.25, 1.05, length(p));
+
+  // palette: near-black canvas, deep teal bands, rare bright wisps.
+  // scroll cools the teal toward blue-green as you descend.
+  vec3 base = vec3(0.052, 0.056, 0.064);
+  vec3 teal = mix(vec3(0.07, 0.34, 0.32), vec3(0.05, 0.24, 0.30), uScroll);
+  vec3 glow = vec3(0.42, 0.76, 0.73);
+
+  float band = smoothstep(0.38, 0.85, f);
+  float wisp = smoothstep(0.62, 0.98, f + q.x * 0.22);
+
+  vec3 col = base;
+  col = mix(col, teal, band * (0.16 + 0.5 * edge));
+  col += glow * wisp * (0.05 + 0.16 * edge);
+
+  // gentle breathing tied to scroll position
+  col *= 0.96 + 0.06 * sin(uScroll * 3.14159);
+
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
 export function SceneCanvas() {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -24,88 +107,58 @@ export function SceneCanvas() {
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      container.clientWidth / Math.max(container.clientHeight, 1),
-      0.1,
-      100
-    );
-    camera.position.z = 7;
+    // Soft gradients survive heavy downsampling — render small, upscale via CSS.
+    const RENDER_SCALE = 0.6;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setClearColor(0x000000, 0);
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      alpha: false,
+      powerPreference: "low-power",
+    });
+    renderer.setPixelRatio(1);
+    renderer.domElement.style.width = "100%";
+    renderer.domElement.style.height = "100%";
     container.appendChild(renderer.domElement);
 
-    // --- shape A: faceted icosahedron, top-right ---
-    const geoA = new THREE.IcosahedronGeometry(1.35, 1);
-    const wireA = new THREE.LineSegments(
-      new THREE.WireframeGeometry(geoA),
-      new THREE.LineBasicMaterial({
-        color: 0x5cbdb9,
-        transparent: true,
-        opacity: 0.22,
-      })
-    );
-    const glowA = new THREE.Mesh(
-      new THREE.SphereGeometry(1, 24, 24),
-      new THREE.MeshBasicMaterial({
-        color: 0x0d7a5f,
-        transparent: true,
-        opacity: 0.1,
-      })
-    );
-    glowA.scale.setScalar(1.3);
-    const groupA = new THREE.Group();
-    groupA.add(wireA);
-    groupA.add(glowA);
-    groupA.position.set(3.4, 1.7, 0);
-    scene.add(groupA);
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-    // --- shape B: torus knot, bottom-left ---
-    const geoB = new THREE.TorusKnotGeometry(0.95, 0.28, 120, 14);
-    const wireB = new THREE.LineSegments(
-      new THREE.WireframeGeometry(geoB),
-      new THREE.LineBasicMaterial({
-        color: 0x9be7e2,
-        transparent: true,
-        opacity: 0.16,
-      })
-    );
-    const groupB = new THREE.Group();
-    groupB.add(wireB);
-    groupB.position.set(-3.6, -1.9, -0.5);
-    scene.add(groupB);
+    const uniforms = {
+      uTime: { value: 0 },
+      uScroll: { value: 0 },
+      uMouse: { value: new THREE.Vector2(0, 0) },
+      uResolution: { value: new THREE.Vector2(1, 1) },
+    };
 
-    // --- particles, very faint ---
-    const PARTICLE_COUNT = 260;
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      positions[i * 3 + 0] = (Math.random() - 0.5) * 22;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 8 - 2;
-    }
-    const pGeo = new THREE.BufferGeometry();
-    pGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    const pMat = new THREE.PointsMaterial({
-      color: 0x5cbdb9,
-      size: 0.018,
-      transparent: true,
-      opacity: 0.28,
-      sizeAttenuation: true,
+    const material = new THREE.ShaderMaterial({
+      vertexShader: VERTEX,
+      fragmentShader: FRAGMENT,
+      uniforms,
+      depthTest: false,
+      depthWrite: false,
     });
-    const points = new THREE.Points(pGeo, pMat);
-    scene.add(points);
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    scene.add(new THREE.Mesh(geometry, material));
 
-    // --- interaction state ---
+    const applySize = () => {
+      const w = Math.max(container.clientWidth, 1);
+      const h = Math.max(container.clientHeight, 1);
+      renderer.setSize(Math.round(w * RENDER_SCALE), Math.round(h * RENDER_SCALE), false);
+      uniforms.uResolution.value.set(w, h);
+    };
+    applySize();
+    const ro = new ResizeObserver(() => {
+      applySize();
+      if (reduceMotion) renderer.render(scene, camera);
+    });
+    ro.observe(container);
+
+    // --- interaction state (lerped in the tick for inertia) ---
     const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
     const onMove = (e: MouseEvent) => {
-      mouse.tx = (e.clientX / window.innerWidth - 0.5) * 0.4;
-      mouse.ty = (e.clientY / window.innerHeight - 0.5) * 0.4;
+      mouse.tx = e.clientX / window.innerWidth - 0.5;
+      mouse.ty = e.clientY / window.innerHeight - 0.5;
     };
-    window.addEventListener("mousemove", onMove);
 
     let scrollProgress = 0;
     let scrollTarget = 0;
@@ -117,87 +170,67 @@ export function SceneCanvas() {
       const ce = e as CustomEvent<{ progress: number }>;
       scrollTarget = ce.detail?.progress ?? scrollTarget;
     };
+
+    if (reduceMotion) {
+      // One static frame; no loop, no listeners.
+      uniforms.uTime.value = 40;
+      renderer.render(scene, camera);
+      return () => {
+        ro.disconnect();
+        geometry.dispose();
+        material.dispose();
+        renderer.dispose();
+        if (renderer.domElement.parentNode === container) {
+          container.removeChild(renderer.domElement);
+        }
+      };
+    }
+
+    window.addEventListener("mousemove", onMove);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("lenis-scroll", onLenis as EventListener);
     onScroll();
-
-    const onResize = () => {
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      camera.aspect = w / Math.max(h, 1);
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    };
-    const ro = new ResizeObserver(onResize);
-    ro.observe(container);
 
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
-      const t = (now - start) / 1000;
 
-      mouse.x += (mouse.tx - mouse.x) * 0.04;
-      mouse.y += (mouse.ty - mouse.y) * 0.04;
-      scrollProgress += (scrollTarget - scrollProgress) * 0.07;
+      mouse.x += (mouse.tx - mouse.x) * 0.03;
+      mouse.y += (mouse.ty - mouse.y) * 0.03;
+      scrollProgress += (scrollTarget - scrollProgress) * 0.06;
 
-      if (!reduceMotion) {
-        const sp = scrollProgress;
-
-        // Shape A — scroll drives a full sweep: rotates, dives across
-        // the viewport, and pushes back into depth as you scroll.
-        groupA.rotation.x = t * 0.08 + sp * Math.PI * 2 + mouse.y * 0.25;
-        groupA.rotation.y = t * 0.11 + sp * Math.PI * 2.5 + mouse.x * 0.25;
-        groupA.rotation.z = sp * Math.PI * 1.2;
-        groupA.position.x = 3.4 + Math.sin(t * 0.2) * 0.2 + mouse.x * 0.2 - sp * 2.2;
-        groupA.position.y = 1.7 - sp * 3.4;
-        groupA.position.z = -sp * 2.5;
-        groupA.scale.setScalar(1 + sp * 0.35);
-
-        // Shape B — counter-sweep: comes forward and across as A retreats.
-        groupB.rotation.x = -t * 0.06 - sp * Math.PI * 1.8 + mouse.y * 0.2;
-        groupB.rotation.y = -t * 0.09 - sp * Math.PI * 2.2 - mouse.x * 0.2;
-        groupB.rotation.z = -sp * Math.PI * 1.4;
-        groupB.position.x = -3.6 + Math.cos(t * 0.18) * 0.2 + sp * 2.4;
-        groupB.position.y = -1.9 + sp * 3.6;
-        groupB.position.z = sp * 1.6;
-        groupB.scale.setScalar(1 + sp * 0.25);
-
-        // Particle field flows past the camera
-        points.rotation.y = t * 0.015 + sp * 0.6;
-        points.rotation.x = sp * 0.3;
-        points.position.y = -sp * 2.2;
-        points.position.z = sp * 3;
-
-        // Camera dolly + scroll-driven tilt for cinematic depth
-        camera.position.z = 7 - sp * 1.6;
-        camera.position.x = mouse.x * 0.2 + Math.sin(sp * Math.PI) * 0.4;
-        camera.position.y = -mouse.y * 0.2 - sp * 0.5;
-        camera.rotation.z = sp * 0.08;
-        camera.lookAt(0, 0, 0);
-      }
+      uniforms.uTime.value = (now - start) / 1000;
+      uniforms.uScroll.value = scrollProgress;
+      uniforms.uMouse.value.set(mouse.x, mouse.y);
 
       renderer.render(scene, camera);
     };
-    raf = requestAnimationFrame(tick);
+
+    const startLoop = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    const stopLoop = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+    const onVisibility = () => {
+      if (document.hidden) stopLoop();
+      else startLoop();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    startLoop();
 
     return () => {
-      cancelAnimationFrame(raf);
+      stopLoop();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("lenis-scroll", onLenis as EventListener);
       ro.disconnect();
+      geometry.dispose();
+      material.dispose();
       renderer.dispose();
-      geoA.dispose();
-      geoB.dispose();
-      (wireA.geometry as THREE.BufferGeometry).dispose();
-      (wireB.geometry as THREE.BufferGeometry).dispose();
-      (wireA.material as THREE.Material).dispose();
-      (wireB.material as THREE.Material).dispose();
-      (glowA.geometry as THREE.BufferGeometry).dispose();
-      (glowA.material as THREE.Material).dispose();
-      pGeo.dispose();
-      pMat.dispose();
       if (renderer.domElement.parentNode === container) {
         container.removeChild(renderer.domElement);
       }
@@ -206,19 +239,15 @@ export function SceneCanvas() {
 
   return (
     <>
-      <div
-        ref={ref}
-        aria-hidden
-        className="pointer-events-none fixed inset-0 -z-20"
-      />
-      {/* Readability vignette: darkens center so cards stay legible
-          while the wireframes glow at the edges. */}
+      <div ref={ref} aria-hidden className="pointer-events-none fixed inset-0 -z-20" />
+      {/* Light readability vignette — the shader is content-aware dark
+          already; this just steadies the very center. */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(ellipse at center, color-mix(in oklab, var(--background) 78%, transparent) 0%, color-mix(in oklab, var(--background) 40%, transparent) 45%, transparent 80%)",
+            "radial-gradient(ellipse at center, color-mix(in oklab, var(--background) 55%, transparent) 0%, color-mix(in oklab, var(--background) 22%, transparent) 45%, transparent 75%)",
         }}
       />
     </>

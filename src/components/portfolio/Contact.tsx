@@ -30,16 +30,13 @@ export function Contact() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as
-          | { error?: string }
-          | null;
+        const body = (await res.json().catch(() => null)) as { error?: string } | null;
         throw new Error(body?.error || `Request failed (${res.status})`);
       }
       toast.success(t.contact.success);
       form.reset();
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : t.contact.errors.generic;
+      const message = err instanceof Error ? err.message : t.contact.errors.generic;
       toast.error(message);
     } finally {
       setLoading(false);
@@ -49,7 +46,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative py-24 sm:py-32 scroll-mt-24"
+      className="relative py-28 sm:py-40 scroll-mt-24"
       style={{
         background:
           "radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--primary) 14%, transparent) 0%, transparent 60%)",
@@ -58,14 +55,9 @@ export function Contact() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-20">
           <Reveal>
-            <p className="font-mono-eyebrow text-muted-foreground">
-              {t.contact.eyebrow}
-            </p>
+            <p className="font-mono-eyebrow text-muted-foreground">{t.contact.eyebrow}</p>
             <h2 className="font-display mt-4 text-4xl sm:text-5xl text-foreground leading-[1.05]">
-              {t.contact.title1}{" "}
-              <span className="italic text-primary-glow">
-                {t.contact.titleEm}
-              </span>
+              {t.contact.title1} <span className="text-primary-glow">{t.contact.titleEm}</span>
             </h2>
             <p className="mt-5 text-muted-foreground leading-relaxed max-w-md">
               {t.contact.description}
@@ -156,7 +148,7 @@ export function Contact() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-medium hover:bg-primary-glow transition-colors disabled:opacity-60"
+                className="press mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-medium hover:bg-primary-glow transition-colors disabled:opacity-60"
               >
                 {loading ? (
                   <>
@@ -170,9 +162,7 @@ export function Contact() {
                   </>
                 )}
               </button>
-              <p className="mt-3 text-xs text-muted-foreground">
-                {t.contact.reply}
-              </p>
+              <p className="mt-3 text-xs text-muted-foreground">{t.contact.reply}</p>
             </form>
           </Reveal>
         </div>

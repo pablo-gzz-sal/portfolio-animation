@@ -193,6 +193,7 @@ const en: Dict = {
       {
         tag: "Architecture + UX",
         title: "Joseph Battisti, NY Salon",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651842/barber_kgabs3.mp4",
         summary:
           "Booking platform with Shopify integration and real-time scheduling for a Manhattan salon.",
         role: "Full-stack build",
@@ -227,6 +228,7 @@ const en: Dict = {
       {
         tag: "Lead generation",
         title: "Lending Group, Texas",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651847/bclg_d1h8ur.mp4",
         summary:
           "Lead-generation application for an employment and lending firm with clean intake and routing.",
         role: "Full-stack build",
@@ -261,6 +263,7 @@ const en: Dict = {
       {
         tag: "Content platform",
         title: "Esencial360, Yoga & Meditation",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651843/esencial_sdxj51.mp4",
         summary:
           "Subscription platform with BunnyStream video delivery, Stripe billing, and admin tooling.",
         role: "Platform build",
@@ -295,6 +298,7 @@ const en: Dict = {
       {
         tag: "Frontend experience",
         title: "Travane, Logistics",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651837/travane_b48uyg.mp4",
         summary:
           "Brand-forward logistics site focused on trust, services, and client acquisition.",
         role: "Frontend build",
@@ -327,6 +331,7 @@ const en: Dict = {
       {
         tag: "Frontend experience",
         title: "La Kochina, Brand site",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651839/kochina_qwo0cl.mp4",
         summary:
           "Editorial site focused on brand presence, menu clarity, and customer action.",
         role: "Frontend build",
@@ -355,40 +360,40 @@ const en: Dict = {
           { label: "Content", items: ["Editable menu schema"] },
         ],
       },
-      {
-        tag: "SaaS product",
-        title: "Internal SaaS tooling",
-        summary:
-          "Admin dashboards, billing flows, and integration glue for early-stage SaaS teams.",
-        role: "Full-stack build",
-        outcome: "Ship-ready foundation",
-        client: "Early-stage SaaS teams needing senior delivery without a full hire.",
-        timeline: "Ongoing · per engagement",
-        problem:
-          "Founders had product-market fit signals but no time to harden billing, admin tooling, and internal ops.",
-        approach: [
-          "Set up a typed full-stack baseline: React + Node.js + PostgreSQL.",
-          "Shipped self-serve billing with Stripe, including upgrades and proration.",
-          "Built admin dashboards for support and revenue ops.",
-          "Wrote integration glue for the tools the team already pays for.",
-        ],
-        results: [
-          "Billing, admin, and ops stop being founder bottlenecks.",
-          "New features land behind a clean release process.",
-          "Team can hire engineers into a healthy codebase later.",
-        ],
-        metrics: [
-          { value: "Typed", label: "End-to-end TS" },
-          { value: "Stripe", label: "Billing + invoices" },
-          { value: "RLS", label: "Postgres security" },
-        ],
-        stackDetail: [
-          { label: "Frontend", items: ["React", "TanStack", "Tailwind"] },
-          { label: "Backend", items: ["Node.js", "Zod", "Server functions"] },
-          { label: "Data", items: ["PostgreSQL", "Row-Level Security"] },
-          { label: "Integrations", items: ["Stripe", "Webhooks", "Email"] },
-        ],
-      },
+      // {
+      //   tag: "SaaS product",
+      //   title: "Internal SaaS tooling",
+      //   summary:
+      //     "Admin dashboards, billing flows, and integration glue for early-stage SaaS teams.",
+      //   role: "Full-stack build",
+      //   outcome: "Ship-ready foundation",
+      //   client: "Early-stage SaaS teams needing senior delivery without a full hire.",
+      //   timeline: "Ongoing · per engagement",
+      //   problem:
+      //     "Founders had product-market fit signals but no time to harden billing, admin tooling, and internal ops.",
+      //   approach: [
+      //     "Set up a typed full-stack baseline: React + Node.js + PostgreSQL.",
+      //     "Shipped self-serve billing with Stripe, including upgrades and proration.",
+      //     "Built admin dashboards for support and revenue ops.",
+      //     "Wrote integration glue for the tools the team already pays for.",
+      //   ],
+      //   results: [
+      //     "Billing, admin, and ops stop being founder bottlenecks.",
+      //     "New features land behind a clean release process.",
+      //     "Team can hire engineers into a healthy codebase later.",
+      //   ],
+      //   metrics: [
+      //     { value: "Typed", label: "End-to-end TS" },
+      //     { value: "Stripe", label: "Billing + invoices" },
+      //     { value: "RLS", label: "Postgres security" },
+      //   ],
+      //   stackDetail: [
+      //     { label: "Frontend", items: ["React", "TanStack", "Tailwind"] },
+      //     { label: "Backend", items: ["Node.js", "Zod", "Server functions"] },
+      //     { label: "Data", items: ["PostgreSQL", "Row-Level Security"] },
+      //     { label: "Integrations", items: ["Stripe", "Webhooks", "Email"] },
+      //   ],
+      // },
     ],
   },
   process: {
@@ -546,6 +551,7 @@ const es: Dict = {
       {
         tag: "Arquitectura + UX",
         title: "Joseph Battisti, Salón NY",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651842/barber_kgabs3.mp4",
         summary:
           "Plataforma de reservas con integración a Shopify y agenda en tiempo real para un salón de Manhattan.",
         role: "Desarrollo full-stack",
@@ -580,6 +586,7 @@ const es: Dict = {
       {
         tag: "Generación de leads",
         title: "Lending Group, Texas",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651847/bclg_d1h8ur.mp4",
         summary:
           "Aplicación de generación de leads para una firma de empleo y préstamos con captura y enrutamiento limpios.",
         role: "Desarrollo full-stack",
@@ -614,6 +621,7 @@ const es: Dict = {
       {
         tag: "Plataforma de contenido",
         title: "Esencial360, Yoga y Meditación",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651843/esencial_sdxj51.mp4",
         summary:
           "Plataforma por suscripción con video vía BunnyStream, cobros en Stripe y herramientas de administración.",
         role: "Construcción de plataforma",
@@ -648,6 +656,7 @@ const es: Dict = {
       {
         tag: "Experiencia de frontend",
         title: "Travane, Logística",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651837/travane_b48uyg.mp4",
         summary:
           "Sitio de logística orientado a marca, enfocado en confianza, servicios y captación de clientes.",
         role: "Desarrollo frontend",
@@ -680,6 +689,7 @@ const es: Dict = {
       {
         tag: "Experiencia de frontend",
         title: "La Kochina, Sitio de marca",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651839/kochina_qwo0cl.mp4",
         summary:
           "Sitio editorial enfocado en presencia de marca, claridad de menú y acción del cliente.",
         role: "Desarrollo frontend",

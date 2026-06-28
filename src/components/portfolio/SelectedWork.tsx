@@ -19,7 +19,7 @@ const PROJECT_META: { image: string | null; mock?: MockKind; stack: string[] }[]
   { image: imgEsencial, stack: ["Angular", "Express", "MongoDB", "Stripe"] },
   { image: imgTravane, stack: ["Angular", "TypeScript", "Tailwind"] },
   { image: imgKochina, stack: ["Angular", "TypeScript", "Tailwind"] },
-  { image: null, mock: "saas", stack: ["React", "Node.js", "PostgreSQL", "Stripe"] },
+  // { image: null, mock: "saas", stack: ["React", "Node.js", "PostgreSQL", "Stripe"] },
 ];
 
 // Asymmetric spans for the non-featured projects (md:grid-cols-12)

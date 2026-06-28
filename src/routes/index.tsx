@@ -48,7 +48,7 @@ function Home() {
       <SelectedWork />
       <Process />
       <Stack />
-      <SocialProof />
+      {/* <SocialProof /> */}
       <Contact />
       <Footer />
       <Toaster theme="dark" position="bottom-right" />

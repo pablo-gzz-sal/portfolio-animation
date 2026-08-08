@@ -59,6 +59,7 @@ type Dict = {
     outcome: string;
     closeCase: string;
     viewLive: string;
+    videoComingSoon: string;
     sections: {
       client: string;
       role: string;
@@ -174,12 +175,13 @@ const en: Dict = {
     title1: "Real products,",
     titleEm: "shipped with care.",
     description:
-      "A focused selection across booking, lead generation, subscription content, logistics, and SaaS — paired with brand-forward execution.",
+      "A focused selection across booking, cultural heritage, lead generation, subscription content, and logistics — paired with brand-forward execution.",
     viewCaseStudy: "View case study",
     role: "Role",
     outcome: "Outcome",
     closeCase: "Close case study",
     viewLive: "View live site",
+    videoComingSoon: "Video coming soon",
     sections: {
       client: "Client",
       role: "Role",
@@ -223,6 +225,41 @@ const en: Dict = {
           { label: "Backend", items: ["Node.js", "Express", "Swagger / OpenAPI"] },
           { label: "Data", items: ["PostgreSQL", "Prisma"] },
           { label: "Integrations", items: ["Shopify Storefront", "Stripe"] },
+        ],
+      },
+      {
+        tag: "Headless CMS + SEO",
+        title: "Diocletian's Dream, Split VR Museum",
+        liveUrl: "https://diocletiansdream.com",
+        summary:
+          "Bilingual prerendered site for a VR heritage museum, with a headless WordPress blog and booking conversions that actually report.",
+        role: "Full-stack build",
+        outcome: "Bookings tracked, content indexed",
+        client: "Virtual reality heritage museum at Diocletian's Palace in Split, Croatia.",
+        timeline: "Ongoing · live since July 2026",
+        problem:
+          "Paid bookings were landing without ever registering as conversions, so ad spend flew blind. Content lived in WordPress, but the marketing site needed to be fast, indexable, and available in Croatian.",
+        approach: [
+          "Built the site as a prerendered Angular static build — every route ships as HTML, served as plain files with no Node runtime.",
+          "Ran WordPress headless as the content source, normalising Elementor markup, image URLs, and SEO metadata at render time.",
+          "Shipped a full Croatian tree — routes, hreflang pairs, sitemap — bridging the CMS language data the REST API didn't expose.",
+          "Wired the booking provider's thank-you page to GA4 and Google Ads so completed bookings report with their real value.",
+        ],
+        results: [
+          "Bookings register as conversions with value attached, after a month of firing pageviews only.",
+          "76 routes prerendered and sitemapped, each language under exactly one canonical path.",
+          "Editors publish in WordPress; a rebuild ships that content as static HTML.",
+        ],
+        metrics: [
+          { value: "76", label: "Prerendered routes" },
+          { value: "2", label: "Languages, hreflang-paired" },
+          { value: "GA4", label: "Booking conversions" },
+        ],
+        stackDetail: [
+          { label: "Frontend", items: ["Angular", "TypeScript", "Static prerender"] },
+          { label: "Content", items: ["Headless WordPress", "REST API", "Multilingual CMS"] },
+          { label: "SEO", items: ["Generated sitemap", "hreflang", "Canonicals"] },
+          { label: "Integrations", items: ["TuriTop booking", "GA4", "Google Ads"] },
         ],
       },
       {
@@ -328,72 +365,6 @@ const en: Dict = {
           { label: "Ops", items: ["Static hosting", "CDN cache"] },
         ],
       },
-      {
-        tag: "Frontend experience",
-        title: "La Kochina, Brand site",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651839/kochina_qwo0cl.mp4",
-        summary:
-          "Editorial site focused on brand presence, menu clarity, and customer action.",
-        role: "Frontend build",
-        outcome: "Stronger local presence",
-        client: "Independent restaurant building a stronger local brand.",
-        timeline: "3 weeks · frontend engagement",
-        problem:
-          "Customers had to dig through social posts for menu, hours, and location. The brand deserved a real home.",
-        approach: [
-          "Designed a typographic hero that feels like a magazine cover.",
-          "Built a menu module that loads fast and stays easy to update.",
-          "Wired clear primary actions: menu, visit, call.",
-        ],
-        results: [
-          "Single link in every channel now points to one polished site.",
-          "Menu updates ship in minutes, not days.",
-          "Increased walk-ins citing the website as discovery channel.",
-        ],
-        metrics: [
-          { value: "3 wks", label: "End to end" },
-          { value: "1 link", label: "All channels" },
-          { value: "Mobile", label: "First experience" },
-        ],
-        stackDetail: [
-          { label: "Frontend", items: ["Angular", "TypeScript", "Tailwind"] },
-          { label: "Content", items: ["Editable menu schema"] },
-        ],
-      },
-      // {
-      //   tag: "SaaS product",
-      //   title: "Internal SaaS tooling",
-      //   summary:
-      //     "Admin dashboards, billing flows, and integration glue for early-stage SaaS teams.",
-      //   role: "Full-stack build",
-      //   outcome: "Ship-ready foundation",
-      //   client: "Early-stage SaaS teams needing senior delivery without a full hire.",
-      //   timeline: "Ongoing · per engagement",
-      //   problem:
-      //     "Founders had product-market fit signals but no time to harden billing, admin tooling, and internal ops.",
-      //   approach: [
-      //     "Set up a typed full-stack baseline: React + Node.js + PostgreSQL.",
-      //     "Shipped self-serve billing with Stripe, including upgrades and proration.",
-      //     "Built admin dashboards for support and revenue ops.",
-      //     "Wrote integration glue for the tools the team already pays for.",
-      //   ],
-      //   results: [
-      //     "Billing, admin, and ops stop being founder bottlenecks.",
-      //     "New features land behind a clean release process.",
-      //     "Team can hire engineers into a healthy codebase later.",
-      //   ],
-      //   metrics: [
-      //     { value: "Typed", label: "End-to-end TS" },
-      //     { value: "Stripe", label: "Billing + invoices" },
-      //     { value: "RLS", label: "Postgres security" },
-      //   ],
-      //   stackDetail: [
-      //     { label: "Frontend", items: ["React", "TanStack", "Tailwind"] },
-      //     { label: "Backend", items: ["Node.js", "Zod", "Server functions"] },
-      //     { label: "Data", items: ["PostgreSQL", "Row-Level Security"] },
-      //     { label: "Integrations", items: ["Stripe", "Webhooks", "Email"] },
-      //   ],
-      // },
     ],
   },
   process: {
@@ -532,12 +503,13 @@ const es: Dict = {
     title1: "Productos reales,",
     titleEm: "lanzados con cuidado.",
     description:
-      "Una selección enfocada en reservas, generación de leads, contenido por suscripción, logística y SaaS — con ejecución orientada a marca.",
+      "Una selección enfocada en reservas, patrimonio cultural, generación de leads, contenido por suscripción y logística — con ejecución orientada a marca.",
     viewCaseStudy: "Ver caso de estudio",
     role: "Rol",
     outcome: "Resultado",
     closeCase: "Cerrar caso de estudio",
     viewLive: "Ver sitio en vivo",
+    videoComingSoon: "Video en camino",
     sections: {
       client: "Cliente",
       role: "Rol",
@@ -581,6 +553,41 @@ const es: Dict = {
           { label: "Backend", items: ["Node.js", "Express", "Swagger / OpenAPI"] },
           { label: "Datos", items: ["PostgreSQL", "Prisma"] },
           { label: "Integraciones", items: ["Shopify Storefront", "Stripe"] },
+        ],
+      },
+      {
+        tag: "CMS headless + SEO",
+        title: "Diocletian's Dream, Museo VR en Split",
+        liveUrl: "https://diocletiansdream.com",
+        summary:
+          "Sitio bilingüe prerenderizado para un museo de realidad virtual, con blog en WordPress headless y conversiones de reserva que sí se registran.",
+        role: "Desarrollo full-stack",
+        outcome: "Reservas medidas, contenido indexado",
+        client: "Museo de realidad virtual en el Palacio de Diocleciano, Split, Croacia.",
+        timeline: "En curso · en vivo desde julio de 2026",
+        problem:
+          "Las reservas pagadas llegaban sin registrarse nunca como conversiones, así que la inversión publicitaria iba a ciegas. El contenido vivía en WordPress, pero el sitio necesitaba ser rápido, indexable y estar disponible en croata.",
+        approach: [
+          "Construí el sitio como un build estático de Angular prerenderizado: cada ruta se publica como HTML, servida como archivos planos sin runtime de Node.",
+          "Usé WordPress headless como fuente de contenido, normalizando el marcado de Elementor, las URLs de imágenes y los metadatos SEO al renderizar.",
+          "Publiqué el árbol completo en croata —rutas, pares hreflang, sitemap— resolviendo los datos de idioma que la API REST del CMS no exponía.",
+          "Conecté la página de agradecimiento del proveedor de reservas con GA4 y Google Ads para que cada reserva reporte su valor real.",
+        ],
+        results: [
+          "Las reservas se registran como conversiones con valor, tras un mes disparando solo pageviews.",
+          "76 rutas prerenderizadas y en el sitemap, cada idioma bajo una única URL canónica.",
+          "El equipo publica en WordPress; una recompilación entrega ese contenido como HTML estático.",
+        ],
+        metrics: [
+          { value: "76", label: "Rutas prerenderizadas" },
+          { value: "2", label: "Idiomas con hreflang" },
+          { value: "GA4", label: "Conversiones de reserva" },
+        ],
+        stackDetail: [
+          { label: "Frontend", items: ["Angular", "TypeScript", "Prerender estático"] },
+          { label: "Contenido", items: ["WordPress headless", "API REST", "CMS multilingüe"] },
+          { label: "SEO", items: ["Sitemap generado", "hreflang", "Canónicas"] },
+          { label: "Integraciones", items: ["Reservas TuriTop", "GA4", "Google Ads"] },
         ],
       },
       {
@@ -684,72 +691,6 @@ const es: Dict = {
           { label: "Frontend", items: ["Angular", "TypeScript", "Tailwind"] },
           { label: "Contenido", items: ["JSON estructurado", "Pipeline de imagen"] },
           { label: "Operaciones", items: ["Hosting estático", "Cache CDN"] },
-        ],
-      },
-      {
-        tag: "Experiencia de frontend",
-        title: "La Kochina, Sitio de marca",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651839/kochina_qwo0cl.mp4",
-        summary:
-          "Sitio editorial enfocado en presencia de marca, claridad de menú y acción del cliente.",
-        role: "Desarrollo frontend",
-        outcome: "Presencia local más fuerte",
-        client: "Restaurante independiente construyendo una marca local más fuerte.",
-        timeline: "3 semanas · proyecto de frontend",
-        problem:
-          "Los clientes tenían que buscar entre publicaciones sociales el menú, horarios y ubicación. La marca merecía un hogar real.",
-        approach: [
-          "Diseñé un hero tipográfico que se siente como portada de revista.",
-          "Construí un módulo de menú que carga rápido y es fácil de actualizar.",
-          "Conecté acciones primarias claras: menú, visitar, llamar.",
-        ],
-        results: [
-          "Un solo enlace en cada canal apunta a un sitio pulido.",
-          "Las actualizaciones de menú se publican en minutos, no días.",
-          "Más visitas presenciales citando el sitio como canal de descubrimiento.",
-        ],
-        metrics: [
-          { value: "3 sem", label: "De inicio a fin" },
-          { value: "1 enlace", label: "Todos los canales" },
-          { value: "Móvil", label: "Primera experiencia" },
-        ],
-        stackDetail: [
-          { label: "Frontend", items: ["Angular", "TypeScript", "Tailwind"] },
-          { label: "Contenido", items: ["Esquema de menú editable"] },
-        ],
-      },
-      {
-        tag: "Producto SaaS",
-        title: "Herramientas internas SaaS",
-        summary:
-          "Dashboards de administración, flujos de cobro e integraciones para equipos SaaS en etapa temprana.",
-        role: "Desarrollo full-stack",
-        outcome: "Base lista para escalar",
-        client: "Equipos SaaS en etapa temprana que necesitan entrega senior sin una contratación completa.",
-        timeline: "En curso · por proyecto",
-        problem:
-          "Los fundadores tenían señales de product-market fit pero no tiempo para endurecer cobro, administración y operaciones internas.",
-        approach: [
-          "Establecí una base full-stack tipada: React + Node.js + PostgreSQL.",
-          "Implementé cobro autogestionado con Stripe, incluyendo upgrades y prorrateo.",
-          "Construí dashboards de administración para soporte y operaciones de ingreso.",
-          "Escribí integraciones con las herramientas que el equipo ya paga.",
-        ],
-        results: [
-          "Cobro, administración y operaciones dejan de ser cuellos de botella del fundador.",
-          "Nuevas funcionalidades entran detrás de un proceso de release limpio.",
-          "El equipo puede contratar ingenieros sobre una base saludable.",
-        ],
-        metrics: [
-          { value: "Tipado", label: "TypeScript de punta a punta" },
-          { value: "Stripe", label: "Cobro + facturación" },
-          { value: "RLS", label: "Seguridad en Postgres" },
-        ],
-        stackDetail: [
-          { label: "Frontend", items: ["React", "TanStack", "Tailwind"] },
-          { label: "Backend", items: ["Node.js", "Zod", "Server functions"] },
-          { label: "Datos", items: ["PostgreSQL", "Row-Level Security"] },
-          { label: "Integraciones", items: ["Stripe", "Webhooks", "Email"] },
         ],
       },
     ],

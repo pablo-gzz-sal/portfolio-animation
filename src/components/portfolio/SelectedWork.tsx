@@ -8,46 +8,19 @@ import imgJoseph from "@/assets/images/joseph.png";
 import imgBclg from "@/assets/images/bclg.png";
 import imgEsencial from "@/assets/images/esencial.png";
 import imgTravane from "@/assets/images/travane.png";
-import imgKochina from "@/assets/images/kochina.png";
-
-type MockKind = "saas";
+import imgDiocletiansDream from "@/assets/images/diocletiansdream.png";
 
 // Language-neutral visual + stack chips per project (matches dict order)
-const PROJECT_META: { image: string | null; mock?: MockKind; stack: string[] }[] = [
+const PROJECT_META: { image: string; stack: string[] }[] = [
   { image: imgJoseph, stack: ["Angular", "PostgreSQL", "Node.js", "Swagger"] },
+  { image: imgDiocletiansDream, stack: ["Angular", "SSG", "WordPress", "SEO"] },
   { image: imgBclg, stack: ["Angular", "Express", "MongoDB", "CI/CD"] },
   { image: imgEsencial, stack: ["Angular", "Express", "MongoDB", "Stripe"] },
   { image: imgTravane, stack: ["Angular", "TypeScript", "Tailwind"] },
-  { image: imgKochina, stack: ["Angular", "TypeScript", "Tailwind"] },
-  // { image: null, mock: "saas", stack: ["React", "Node.js", "PostgreSQL", "Stripe"] },
 ];
 
 // Asymmetric spans for the non-featured projects (md:grid-cols-12)
-const GRID_SPANS = [
-  "md:col-span-7",
-  "md:col-span-5",
-  "md:col-span-5",
-  "md:col-span-7",
-  "md:col-span-12",
-];
-
-function SaasMock() {
-  return (
-    <div
-      className="absolute inset-0 rounded-xl border border-border overflow-hidden"
-      style={{ background: "var(--card)" }}
-    >
-      <div className="p-4 grid grid-cols-3 gap-2 h-full">
-        <div className="col-span-1 rounded-md bg-muted-foreground/10" />
-        <div className="col-span-2 grid grid-rows-3 gap-2">
-          <div className="rounded-md bg-primary/25" />
-          <div className="rounded-md bg-muted-foreground/10" />
-          <div className="rounded-md bg-muted-foreground/15" />
-        </div>
-      </div>
-    </div>
-  );
-}
+const GRID_SPANS = ["md:col-span-7", "md:col-span-5", "md:col-span-5", "md:col-span-7"];
 
 /** Tracks the pointer for the specular sheen layer. */
 function trackSheen(e: PointerEvent<HTMLElement>) {
@@ -57,7 +30,7 @@ function trackSheen(e: PointerEvent<HTMLElement>) {
 }
 
 type Project = ReturnType<typeof useT>["selectedWork"]["projects"][number] & {
-  image: string | null;
+  image: string;
   stack: string[];
 };
 
@@ -72,15 +45,11 @@ function CardMedia({
 }) {
   return (
     <div className={cn("clip-reveal relative rounded-xl bg-muted/40 overflow-hidden", className)}>
-      {project.image ? (
-        <img
-          src={project.image}
-          alt={project.title}
-          className="absolute inset-0 h-full w-full object-cover rounded-xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-        />
-      ) : (
-        <SaasMock />
-      )}
+      <img
+        src={project.image}
+        alt={project.title}
+        className="absolute inset-0 h-full w-full object-cover rounded-xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+      />
       <div className="absolute inset-0 rounded-xl bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity grid place-items-center pointer-events-none">
         <span className="text-sm text-foreground/90 font-medium bg-card/90 backdrop-blur px-3 py-1.5 rounded-full border border-border">
           {hoverLabel}
@@ -144,7 +113,7 @@ export function SelectedWork() {
   const t = useT();
   const projects: Project[] = t.selectedWork.projects.map((p, i) => ({
     ...p,
-    image: PROJECT_META[i]?.image ?? null,
+    image: PROJECT_META[i].image,
     stack: PROJECT_META[i]?.stack ?? [],
   }));
 
@@ -277,10 +246,10 @@ export function SelectedWork() {
                       src={active.video}
                       controls
                       playsInline
-                      poster={active.image ?? undefined}
+                      poster={active.image}
                       className="absolute inset-0 h-full w-full object-cover"
                     />
-                  ) : active.image ? (
+                  ) : (
                     <div className="absolute inset-0">
                       <img
                         src={active.image}
@@ -290,12 +259,10 @@ export function SelectedWork() {
                       <div className="absolute inset-0 flex items-center justify-center bg-background/30">
                         <div className="flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur px-4 py-2 text-sm text-muted-foreground">
                           <Play className="h-3.5 w-3.5" />
-                          Video coming soon
+                          {t.selectedWork.videoComingSoon}
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    <SaasMock />
                   )}
                 </div>
 

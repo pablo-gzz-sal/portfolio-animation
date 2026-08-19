@@ -20,7 +20,7 @@ export function Hero() {
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-start">
           <div>
-            <div className="hero-item" style={d(0)}>
+            {/* <div className="hero-item" style={d(0)}>
               <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1.5 backdrop-blur-sm">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-glow opacity-70" />
@@ -28,7 +28,7 @@ export function Hero() {
                 </span>
                 <span className="font-mono-eyebrow text-foreground/80">{t.hero.availability}</span>
               </div>
-            </div>
+            </div> */}
 
             <h1 className="font-display mt-8 text-[clamp(2.75rem,6vw,4.75rem)] leading-[1] tracking-[-0.03em] text-foreground">
               <span className="hero-line">

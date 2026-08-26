@@ -22,6 +22,15 @@ export function Hero() {
       <HeroMosaic />
       <div className="grid-veil" />
 
+      {/* Corner brackets — frames the viewport as a plate, the way a technical
+          drawing marks its own bounds. */}
+      <div aria-hidden className="pointer-events-none absolute inset-6 sm:inset-10">
+        <span className="frame-corner frame-corner-tl" />
+        <span className="frame-corner frame-corner-tr" />
+        <span className="frame-corner frame-corner-bl" />
+        <span className="frame-corner frame-corner-br" />
+      </div>
+
       <div className="shell relative pt-32 pb-24 sm:pb-28">
         <div className="hero-item" style={d(0)}>
           <div className="inline-flex items-center gap-2 rounded-full border border-hair-2 bg-foreground/[0.045] px-3 py-1.5 backdrop-blur-sm">

@@ -32,17 +32,7 @@ export function Hero() {
       </div>
 
       <div className="shell relative pt-32 pb-24 sm:pb-28">
-        <div className="hero-item" style={d(0)}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-hair-2 bg-foreground/[0.045] px-3 py-1.5 backdrop-blur-sm">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-glow opacity-70" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary-glow" />
-            </span>
-            <span className="font-mono-eyebrow text-foreground/80">{t.hero.availability}</span>
-          </div>
-        </div>
-
-        <h1 className="font-display h-display mt-7 text-foreground">
+        <h1 className="font-display h-display text-foreground">
           <span className="hero-line">
             <span style={d(100)}>{t.hero.title1}</span>
           </span>

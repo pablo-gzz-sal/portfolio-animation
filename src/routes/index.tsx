@@ -9,7 +9,6 @@ import { Stack } from "@/components/portfolio/Stack";
 import { SocialProof } from "@/components/portfolio/SocialProof";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
-import { SmoothScroll } from "@/components/portfolio/SmoothScroll";
 import { SceneCanvas } from "@/components/portfolio/SceneCanvas";
 import { Atmosphere } from "@/components/portfolio/Atmosphere";
 
@@ -39,7 +38,6 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <main className="relative min-h-screen text-foreground">
-      <SmoothScroll />
       <Atmosphere />
       <SceneCanvas />
       <Header />

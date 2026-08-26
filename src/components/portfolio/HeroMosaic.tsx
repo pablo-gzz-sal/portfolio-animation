@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/i18n";
 import { PROJECT_META } from "./SelectedWork";
@@ -40,9 +40,28 @@ const TILES: Tile[] = [
 export function HeroMosaic() {
   const t = useT();
   const projects = t.selectedWork.projects;
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [idle, setIdle] = useState(false);
+
+  // The hero is 100vh at the top of a 9000px page, so these tiles spend most
+  // of the visit off-screen. Park the animation while they are.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => setIdle(!entry.isIntersecting));
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div
+      ref={ref}
+      aria-hidden
+      className={cn(
+        "pointer-events-none absolute inset-0 overflow-hidden",
+        idle && "mosaic-idle",
+      )}
+    >
       {TILES.map((tile, i) => {
         const project = projects[tile.project];
         const meta = PROJECT_META[tile.project];

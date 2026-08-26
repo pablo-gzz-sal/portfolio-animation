@@ -168,11 +168,6 @@ export function SceneCanvas() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       scrollTarget = max > 0 ? Math.min(1, window.scrollY / max) : 0;
     };
-    const onLenis = (e: Event) => {
-      const ce = e as CustomEvent<{ progress: number }>;
-      scrollTarget = ce.detail?.progress ?? scrollTarget;
-    };
-
     if (reduceMotion) {
       // One static frame; no loop, no listeners.
       uniforms.uTime.value = 40;
@@ -190,7 +185,6 @@ export function SceneCanvas() {
 
     window.addEventListener("mousemove", onMove);
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("lenis-scroll", onLenis as EventListener);
     onScroll();
 
     let raf = 0;
@@ -228,7 +222,6 @@ export function SceneCanvas() {
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("lenis-scroll", onLenis as EventListener);
       ro.disconnect();
       geometry.dispose();
       material.dispose();

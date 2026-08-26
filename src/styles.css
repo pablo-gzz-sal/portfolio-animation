@@ -130,7 +130,16 @@
     border-color: var(--color-border);
   }
 
-  /* No native smooth scrolling — Lenis owns scroll, including anchors. */
+  /* Native smooth scrolling. Anchor targets carry scroll-mt-24 (96px), which
+     is the header offset, so anchors land correctly with no JS involved. */
+  html {
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 
   body {
     background-color: var(--color-background);
@@ -466,7 +475,12 @@
 .mosaic-tile {
   animation: tile-drift var(--dur, 22s) var(--ease-out-quart) infinite alternate;
   animation-delay: var(--d, 0ms);
-  will-change: transform;
+  /* No will-change: a transform animation is composited anyway, and holding
+     seven permanent layers for a hero you scrolled past 9000px ago is waste. */
+}
+/* Set once the hero leaves the viewport — nothing animates off-screen. */
+.mosaic-idle .mosaic-tile {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {

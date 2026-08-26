@@ -222,7 +222,6 @@ export function SelectedWork() {
 
       <Dialog open={!!active} onOpenChange={(v) => !v && setOpenIdx(null)}>
         <DialogContent
-          data-lenis-prevent
           onWheel={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
           className="max-w-3xl max-h-[90vh] overflow-y-auto overscroll-contain modal-scroll bg-card/95 backdrop-blur-xl border-border p-0 [&>button]:hidden"

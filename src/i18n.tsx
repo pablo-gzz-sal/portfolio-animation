@@ -243,7 +243,7 @@ const en: Dict = {
         role: "Founding engineer",
         outcome: "Auditable call engine",
         client: "Debt-recovery platform for the Mexican market — architected and built end to end.",
-        timeline: "10 weeks · solo build",
+        timeline: "10 weeks · founding build",
         problem:
           "Chasing overdue accounts by phone is repetitive, leaves no paper trail, and is legally hazardous in a market regulated by CONDUSEF and PROFECO. Manual collection can neither prove what it did nor guarantee it stayed inside the rules.",
         approach: [
@@ -580,7 +580,7 @@ const es: Dict = {
         role: "Ingeniero fundador",
         outcome: "Motor de llamadas auditable",
         client: "Plataforma de cobranza para el mercado mexicano — arquitectura y construcción de principio a fin.",
-        timeline: "10 semanas · construcción en solitario",
+        timeline: "10 semanas · construcción fundacional",
         problem:
           "Perseguir cartera vencida por teléfono es repetitivo, no deja rastro y es riesgoso en un mercado regulado por CONDUSEF y PROFECO. La gestión manual no puede demostrar lo que hizo ni garantizar que se mantuvo dentro de las reglas.",
         approach: [

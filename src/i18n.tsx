@@ -33,6 +33,7 @@ type Dict = {
   cta: { workTogether: string; openMenu: string };
   hero: {
     availability: string;
+    scrollHint: string;
     title1: string;
     titleEm: string;
     description: string;
@@ -135,6 +136,7 @@ const en: Dict = {
   cta: { workTogether: "Work together", openMenu: "Open menu" },
   hero: {
     availability: "Available for selective builds",
+    scrollHint: "Scroll to explore",
     title1: "Full-stack engineering with",
     titleEm: "taste and discipline.",
     description:
@@ -463,6 +465,7 @@ const es: Dict = {
   cta: { workTogether: "Trabajemos juntos", openMenu: "Abrir menú" },
   hero: {
     availability: "Disponible para proyectos selectos",
+    scrollHint: "Desliza para explorar",
     title1: "Ingeniería full-stack con",
     titleEm: "gusto y disciplina.",
     description:

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/portfolio/Header";
-import { Hero } from "@/components/portfolio/Hero";
+import { Hero, HeroStats } from "@/components/portfolio/Hero";
 import { WhoIWorkWith } from "@/components/portfolio/WhoIWorkWith";
 import { SelectedWork } from "@/components/portfolio/SelectedWork";
 import { Process } from "@/components/portfolio/Process";
@@ -44,6 +44,7 @@ function Home() {
       <SceneCanvas />
       <Header />
       <Hero />
+      <HeroStats />
       <WhoIWorkWith />
       <SelectedWork />
       <Process />

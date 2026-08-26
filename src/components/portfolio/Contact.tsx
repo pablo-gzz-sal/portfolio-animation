@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { ArrowUpRight, Mail, Linkedin, Github, Loader2 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { useT } from "@/i18n";
+import meImg from "@/assets/images/me.jpeg";
 
 export function Contact() {
   const t = useT();
@@ -46,13 +47,13 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative py-28 sm:py-40 scroll-mt-24"
+      className="relative py-24 sm:py-32 scroll-mt-24"
       style={{
         background:
           "radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--primary) 14%, transparent) 0%, transparent 60%)",
       }}
     >
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+      <div className="shell">
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-20">
           <Reveal>
             <p className="font-mono-eyebrow text-muted-foreground">{t.contact.eyebrow}</p>
@@ -99,12 +100,49 @@ export function Contact() {
                 </a>
               </li>
             </ul>
+
+            {/* Portrait relocated from the hero — a face lands better at the
+                point of contact than beside the headline. */}
+            <div className="mt-10 grid gap-5 sm:grid-cols-[minmax(0,200px)_1fr] sm:items-end">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-hair">
+                <img
+                  src={meImg}
+                  alt="Pablo Salcido"
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                />
+                {/* teal duotone wash so the portrait sits inside the palette */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 mix-blend-soft-light"
+                  style={{
+                    background:
+                      "linear-gradient(165deg, color-mix(in oklab, var(--primary) 55%, transparent), transparent 55%)",
+                  }}
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-x-0 bottom-0 h-1/3"
+                  style={{
+                    background:
+                      "linear-gradient(to top, color-mix(in oklab, var(--background) 55%, transparent), transparent)",
+                  }}
+                />
+              </div>
+
+              <div className="rounded-2xl border border-hair bg-card/60 p-5 backdrop-blur-sm">
+                <p className="font-mono-eyebrow text-ink-faint">{t.hero.currentSignal}</p>
+                <p className="mt-3 text-sm leading-relaxed text-foreground/90">
+                  {t.hero.currentSignalBody}
+                </p>
+              </div>
+            </div>
           </Reveal>
 
           <Reveal delay={100}>
             <form
               onSubmit={onSubmit}
-              className="rounded-3xl border border-border bg-card/50 backdrop-blur-sm p-6 sm:p-8"
+              className="rounded-2xl border border-hair bg-card/50 backdrop-blur-sm p-6 sm:p-8"
               style={{ boxShadow: "var(--shadow-elegant)" }}
             >
               <div className="grid sm:grid-cols-2 gap-5">
@@ -140,7 +178,7 @@ export function Contact() {
                     rows={5}
                     maxLength={5000}
                     placeholder={t.contact.fields.projectPh}
-                    className="mt-2 w-full rounded-xl border border-border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent resize-none"
+                    className="mt-2 w-full rounded-lg border border-hair bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent resize-none"
                   />
                 </label>
               </div>
@@ -148,7 +186,7 @@ export function Contact() {
               <button
                 type="submit"
                 disabled={loading}
-                className="press mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-medium hover:bg-primary-glow transition-colors disabled:opacity-60"
+                className="pill pill-solid press mt-7 justify-center disabled:opacity-60"
               >
                 {loading ? (
                   <>
@@ -193,7 +231,7 @@ function Field({
         required={required}
         placeholder={placeholder}
         maxLength={320}
-        className="mt-2 w-full rounded-xl border border-border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+        className="mt-2 w-full rounded-lg border border-hair bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
       />
     </label>
   );

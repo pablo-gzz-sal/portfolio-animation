@@ -78,7 +78,9 @@ void main() {
 
   // palette: near-black canvas, deep teal bands, rare bright wisps.
   // scroll cools the teal toward blue-green as you descend.
-  vec3 base = vec3(0.052, 0.056, 0.064);
+  // base is hand-matched to --background in styles.css: oklch(0.14 0.004 240),
+  // about #08090b. The two are coupled -- move one and the aurora seam shows.
+  vec3 base = vec3(0.032, 0.035, 0.042);
   vec3 teal = mix(vec3(0.07, 0.34, 0.32), vec3(0.05, 0.24, 0.30), uScroll);
   vec3 glow = vec3(0.42, 0.76, 0.73);
 

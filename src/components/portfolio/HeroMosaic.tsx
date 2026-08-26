@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/i18n";
-import { PROJECT_META } from "./SelectedWork";
+import { projectMeta } from "./SelectedWork";
 
 /**
  * Decorative field of work stills drifting behind the hero headline.
@@ -9,12 +9,12 @@ import { PROJECT_META } from "./SelectedWork";
  * Purely ornamental — aria-hidden, pointer-events-none. The real, navigable
  * project list is SelectedWork; nothing here is the only route to any content.
  *
- * `project` indexes into the dict order shared with PROJECT_META. Two projects
- * appear twice at different scales so the field reads as a wall rather than a
- * row of five, which is also why positions are hand-placed instead of gridded.
+ * `project` is the project slug, shared with PROJECT_META. Two projects appear
+ * twice at different scales so the field reads as a wall rather than a row of
+ * five, which is also why positions are hand-placed instead of gridded.
  */
 type Tile = {
-  project: number;
+  project: string;
   /** left / top as viewport percentages of the hero box */
   left: string;
   top: string;
@@ -28,13 +28,13 @@ type Tile = {
 };
 
 const TILES: Tile[] = [
-  { project: 0, left: "-2%", top: "6%", width: "clamp(140px, 17vw, 268px)", opacity: 0.34, dur: "23s", delay: "0ms" },
-  { project: 3, left: "17%", top: "-6%", width: "clamp(120px, 14vw, 224px)", opacity: 0.26, dur: "27s", delay: "900ms", desktopOnly: true },
-  { project: 2, left: "31%", top: "18%", width: "clamp(150px, 19vw, 300px)", opacity: 0.4, dur: "21s", delay: "400ms" },
-  { project: 4, left: "55%", top: "2%", width: "clamp(130px, 16vw, 252px)", opacity: 0.3, dur: "25s", delay: "1300ms", desktopOnly: true },
-  { project: 1, left: "72%", top: "22%", width: "clamp(140px, 17vw, 272px)", opacity: 0.38, dur: "22s", delay: "700ms" },
-  { project: 3, left: "88%", top: "-2%", width: "clamp(120px, 15vw, 236px)", opacity: 0.24, dur: "29s", delay: "200ms", desktopOnly: true },
-  { project: 2, left: "6%", top: "40%", width: "clamp(120px, 15vw, 232px)", opacity: 0.2, dur: "26s", delay: "1700ms", desktopOnly: true },
+  { project: "joseph", left: "-2%", top: "6%", width: "clamp(140px, 17vw, 268px)", opacity: 0.34, dur: "23s", delay: "0ms" },
+  { project: "esencial360", left: "17%", top: "-6%", width: "clamp(120px, 14vw, 224px)", opacity: 0.26, dur: "27s", delay: "900ms", desktopOnly: true },
+  { project: "firmexa", left: "31%", top: "18%", width: "clamp(150px, 19vw, 300px)", opacity: 0.4, dur: "21s", delay: "400ms" },
+  { project: "lending-group", left: "55%", top: "2%", width: "clamp(130px, 16vw, 252px)", opacity: 0.3, dur: "25s", delay: "1300ms", desktopOnly: true },
+  { project: "diocletians-dream", left: "72%", top: "22%", width: "clamp(140px, 17vw, 272px)", opacity: 0.38, dur: "22s", delay: "700ms" },
+  { project: "firmexa", left: "88%", top: "-2%", width: "clamp(120px, 15vw, 236px)", opacity: 0.24, dur: "29s", delay: "200ms", desktopOnly: true },
+  { project: "lending-group", left: "6%", top: "40%", width: "clamp(120px, 15vw, 232px)", opacity: 0.2, dur: "26s", delay: "1700ms", desktopOnly: true },
 ];
 
 export function HeroMosaic() {
@@ -63,8 +63,8 @@ export function HeroMosaic() {
       )}
     >
       {TILES.map((tile, i) => {
-        const project = projects[tile.project];
-        const meta = PROJECT_META[tile.project];
+        const project = projects.find((p) => p.id === tile.project);
+        const meta = projectMeta(tile.project);
         if (!project || !meta) return null;
 
         return (

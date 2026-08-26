@@ -12,6 +12,9 @@ import {
 export type Lang = "en" | "es";
 
 type ProjectCopy = {
+  /** Stable slug. Pairs dict copy with PROJECT_META and the hero mosaic —
+   *  these used to be matched by array position, which broke on reorder. */
+  id: string;
   tag: string;
   title: string;
   summary: string;
@@ -33,6 +36,7 @@ type Dict = {
   cta: { workTogether: string; openMenu: string };
   hero: {
     availability: string;
+    scrollHint: string;
     title1: string;
     titleEm: string;
     description: string;
@@ -135,6 +139,7 @@ const en: Dict = {
   cta: { workTogether: "Work together", openMenu: "Open menu" },
   hero: {
     availability: "Available for selective builds",
+    scrollHint: "Scroll to explore",
     title1: "Full-stack engineering with",
     titleEm: "taste and discipline.",
     description:
@@ -194,6 +199,7 @@ const en: Dict = {
     projects: [
       {
         tag: "Architecture + UX",
+        id: "joseph",
         title: "Joseph Battisti, NY Salon",
         video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651842/barber_kgabs3.mp4",
         summary:
@@ -228,7 +234,45 @@ const en: Dict = {
         ],
       },
       {
+        tag: "Platform + Compliance",
+        id: "firmexa",
+        title: "FIRMEXA, Debt Recovery Platform",
+        liveUrl: "https://firmexa.mx",
+        summary:
+          "Automated extrajudicial collections for the Mexican market — call engine, case state machine and audit trail built as one system.",
+        role: "Founding engineer",
+        outcome: "Auditable call engine",
+        client: "Debt-recovery platform for the Mexican market — architected and built end to end.",
+        timeline: "10 weeks · founding build",
+        problem:
+          "Chasing overdue accounts by phone is repetitive, leaves no paper trail, and is legally hazardous in a market regulated by CONDUSEF and PROFECO. Manual collection can neither prove what it did nor guarantee it stayed inside the rules.",
+        approach: [
+          "Modelled the case lifecycle as a pure, total state machine — eight states, fourteen auditable transition reasons, no clock reads — so any decision can be replayed.",
+          "Built a Twilio dialer that places calls only inside the legal window, respects per-debtor daily and weekly caps, and claims work with FOR UPDATE SKIP LOCKED rather than a queue.",
+          "Gated the recorded message behind answering-machine detection: the message naming amount and creditor plays only on an unambiguous human answer.",
+          "Layered four independent safety gates — a fail-closed kill switch, a three-state destination allowlist, cross-service config fingerprints, and audio integrity checks.",
+          "Made evidence structural: an append-only audit trail, an immutable payments ledger, and a per-call record of exactly which audio each person heard.",
+        ],
+        results: [
+          "Deployed to production infrastructure and validated end to end with real, consented calls on synthetic data.",
+          "Contract-first — zod schemas generate both the OpenAPI document and the Angular client, and CI fails if either drifts.",
+          "Commercial launch stays deliberately gated behind a legal review that engineering documented but would not sign off.",
+        ],
+        metrics: [
+          { value: "10 wks", label: "First commit to deployed" },
+          { value: "52", label: "API operations, CI-verified" },
+          { value: "2,278", label: "Automated test cases" },
+        ],
+        stackDetail: [
+          { label: "Frontend", items: ["Angular 20", "Tailwind v4", "TypeScript"] },
+          { label: "Backend", items: ["NestJS 11", "Node.js", "Zod + OpenAPI"] },
+          { label: "Data", items: ["PostgreSQL 18", "Drizzle ORM", "33 migrations"] },
+          { label: "Platform", items: ["Twilio Voice", "Auth0", "Cloudflare R2", "Render"] },
+        ],
+      },
+      {
         tag: "Headless CMS + SEO",
+        id: "diocletians-dream",
         title: "Diocletian's Dream, Split VR Museum",
         liveUrl: "https://diocletiansdream.com",
         summary:
@@ -264,6 +308,7 @@ const en: Dict = {
       },
       {
         tag: "Lead generation",
+        id: "lending-group",
         title: "Lending Group, Texas",
         video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651847/bclg_d1h8ur.mp4",
         summary:
@@ -299,6 +344,7 @@ const en: Dict = {
       },
       {
         tag: "Content platform",
+        id: "esencial360",
         title: "Esencial360, Yoga & Meditation",
         video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651843/esencial_sdxj51.mp4",
         summary:
@@ -330,39 +376,6 @@ const en: Dict = {
           { label: "Backend", items: ["Node.js", "Express", "Webhooks"] },
           { label: "Data", items: ["MongoDB", "S3 for assets"] },
           { label: "Integrations", items: ["Stripe Billing", "BunnyStream"] },
-        ],
-      },
-      {
-        tag: "Frontend experience",
-        title: "Travane, Logistics",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651837/travane_b48uyg.mp4",
-        summary:
-          "Brand-forward logistics site focused on trust, services, and client acquisition.",
-        role: "Frontend build",
-        outcome: "Sharper sales presence",
-        client: "B2B logistics operator across LATAM corridors.",
-        timeline: "4 weeks · frontend engagement",
-        problem:
-          "The existing site read as a brochure and didn't communicate the operational depth the sales team relied on.",
-        approach: [
-          "Restructured information architecture around services, corridors, and proof.",
-          "Designed a trust-first hero with concrete capabilities.",
-          "Built reusable section primitives so the team can extend content themselves.",
-        ],
-        results: [
-          "Sales conversations open with a stronger first impression.",
-          "Content team can add corridors and services without dev help.",
-          "Fast, accessible, mobile-first across the funnel.",
-        ],
-        metrics: [
-          { value: "4 wks", label: "From brief to live" },
-          { value: "A11y", label: "WCAG-aware build" },
-          { value: "≤1s", label: "Hero render" },
-        ],
-        stackDetail: [
-          { label: "Frontend", items: ["Angular", "TypeScript", "Tailwind"] },
-          { label: "Content", items: ["Structured JSON", "Image pipeline"] },
-          { label: "Ops", items: ["Static hosting", "CDN cache"] },
         ],
       },
     ],
@@ -463,6 +476,7 @@ const es: Dict = {
   cta: { workTogether: "Trabajemos juntos", openMenu: "Abrir menú" },
   hero: {
     availability: "Disponible para proyectos selectos",
+    scrollHint: "Desliza para explorar",
     title1: "Ingeniería full-stack con",
     titleEm: "gusto y disciplina.",
     description:
@@ -522,6 +536,7 @@ const es: Dict = {
     projects: [
       {
         tag: "Arquitectura + UX",
+        id: "joseph",
         title: "Joseph Battisti, Salón NY",
         video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651842/barber_kgabs3.mp4",
         summary:
@@ -556,7 +571,45 @@ const es: Dict = {
         ],
       },
       {
+        tag: "Plataforma + Cumplimiento",
+        id: "firmexa",
+        title: "FIRMEXA, Plataforma de Cobranza",
+        liveUrl: "https://firmexa.mx",
+        summary:
+          "Cobranza extrajudicial automatizada para el mercado mexicano — motor de llamadas, máquina de estados y evidencia en un solo sistema.",
+        role: "Ingeniero fundador",
+        outcome: "Motor de llamadas auditable",
+        client: "Plataforma de cobranza para el mercado mexicano — arquitectura y construcción de principio a fin.",
+        timeline: "10 semanas · construcción fundacional",
+        problem:
+          "Perseguir cartera vencida por teléfono es repetitivo, no deja rastro y es riesgoso en un mercado regulado por CONDUSEF y PROFECO. La gestión manual no puede demostrar lo que hizo ni garantizar que se mantuvo dentro de las reglas.",
+        approach: [
+          "Modelé el ciclo de vida del caso como una máquina de estados pura y total — ocho estados, catorce motivos de transición auditables, sin lecturas de reloj — para que cualquier decisión pueda reproducirse.",
+          "Construí un marcador con Twilio que solo llama dentro de la ventana legal, respeta topes diarios y semanales por deudor, y toma trabajo con FOR UPDATE SKIP LOCKED en lugar de una cola.",
+          "Condicioné el mensaje grabado a la detección de contestadora: el mensaje que nombra monto y acreedor solo se reproduce ante una respuesta humana inequívoca.",
+          "Superpuse cuatro compuertas de seguridad independientes — un kill switch que falla cerrado, una lista de destinos de tres estados, huellas de configuración entre servicios y verificación de integridad del audio.",
+          "Hice la evidencia estructural: bitácora de auditoría solo-anexable, ledger de pagos inmutable y registro por llamada de exactamente qué audio escuchó cada persona.",
+        ],
+        results: [
+          "Desplegado en infraestructura productiva y validado de extremo a extremo con llamadas reales y consentidas sobre datos sintéticos.",
+          "Contract-first — los esquemas zod generan el documento OpenAPI y el cliente Angular, y CI falla si alguno se desincroniza.",
+          "El arranque comercial sigue deliberadamente detenido tras una revisión legal que ingeniería documentó pero no quiso firmar.",
+        ],
+        metrics: [
+          { value: "10 sem", label: "Del primer commit al despliegue" },
+          { value: "52", label: "Operaciones de API verificadas en CI" },
+          { value: "2,278", label: "Casos de prueba automatizados" },
+        ],
+        stackDetail: [
+          { label: "Frontend", items: ["Angular 20", "Tailwind v4", "TypeScript"] },
+          { label: "Backend", items: ["NestJS 11", "Node.js", "Zod + OpenAPI"] },
+          { label: "Datos", items: ["PostgreSQL 18", "Drizzle ORM", "33 migraciones"] },
+          { label: "Plataforma", items: ["Twilio Voice", "Auth0", "Cloudflare R2", "Render"] },
+        ],
+      },
+      {
         tag: "CMS headless + SEO",
+        id: "diocletians-dream",
         title: "Diocletian's Dream, Museo VR en Split",
         liveUrl: "https://diocletiansdream.com",
         summary:
@@ -592,6 +645,7 @@ const es: Dict = {
       },
       {
         tag: "Generación de leads",
+        id: "lending-group",
         title: "Lending Group, Texas",
         video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651847/bclg_d1h8ur.mp4",
         summary:
@@ -627,6 +681,7 @@ const es: Dict = {
       },
       {
         tag: "Plataforma de contenido",
+        id: "esencial360",
         title: "Esencial360, Yoga y Meditación",
         video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651843/esencial_sdxj51.mp4",
         summary:
@@ -658,39 +713,6 @@ const es: Dict = {
           { label: "Backend", items: ["Node.js", "Express", "Webhooks"] },
           { label: "Datos", items: ["MongoDB", "S3 para assets"] },
           { label: "Integraciones", items: ["Stripe Billing", "BunnyStream"] },
-        ],
-      },
-      {
-        tag: "Experiencia de frontend",
-        title: "Travane, Logística",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651837/travane_b48uyg.mp4",
-        summary:
-          "Sitio de logística orientado a marca, enfocado en confianza, servicios y captación de clientes.",
-        role: "Desarrollo frontend",
-        outcome: "Presencia comercial más sólida",
-        client: "Operador B2B de logística en corredores de LATAM.",
-        timeline: "4 semanas · proyecto de frontend",
-        problem:
-          "El sitio existente parecía un folleto y no comunicaba la profundidad operativa en la que confiaba el equipo comercial.",
-        approach: [
-          "Reestructuré la arquitectura de información en servicios, corredores y pruebas.",
-          "Diseñé un hero centrado en confianza con capacidades concretas.",
-          "Construí primitivos de sección reutilizables para que el equipo extienda contenido por su cuenta.",
-        ],
-        results: [
-          "Las conversaciones de ventas abren con una mejor primera impresión.",
-          "El equipo de contenido agrega corredores y servicios sin ayuda de desarrollo.",
-          "Rápido, accesible y mobile-first en todo el funnel.",
-        ],
-        metrics: [
-          { value: "4 sem", label: "De brief a en vivo" },
-          { value: "A11y", label: "Construido con WCAG" },
-          { value: "≤1s", label: "Render del hero" },
-        ],
-        stackDetail: [
-          { label: "Frontend", items: ["Angular", "TypeScript", "Tailwind"] },
-          { label: "Contenido", items: ["JSON estructurado", "Pipeline de imagen"] },
-          { label: "Operaciones", items: ["Hosting estático", "Cache CDN"] },
         ],
       },
     ],

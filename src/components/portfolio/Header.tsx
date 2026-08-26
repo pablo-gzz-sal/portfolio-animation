@@ -42,7 +42,7 @@ export function Header() {
       >
         <nav
           className={cn(
-            "mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-border/60 px-3 pl-4 py-2 transition-[background-color,box-shadow,backdrop-filter] duration-300",
+            "mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-hair px-3 pl-4 py-2 transition-[background-color,box-shadow,backdrop-filter] duration-300",
             scrolled
               ? "bg-background/70 backdrop-blur-xl shadow-[0_8px_30px_-10px_rgba(0,0,0,0.5)]"
               : "bg-card/40 backdrop-blur-md",
@@ -52,7 +52,7 @@ export function Header() {
             <img
               src={meImg}
               alt="Pablo Salcido"
-              className="h-8 w-8 rounded-full object-cover object-top border border-border"
+              className="h-8 w-8 rounded-full object-cover object-top border border-hair"
             />
             <span className="hidden sm:inline text-sm font-medium tracking-tight">
               Pablo Salcido
@@ -75,7 +75,7 @@ export function Header() {
             <a
               ref={ctaRef}
               href="#contact"
-              className="press hidden sm:inline-flex items-center rounded-full bg-foreground text-background px-4 py-1.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+              className="press hidden sm:inline-flex items-center rounded-full bg-foreground text-background px-4 py-1.5 font-mono-eyebrow hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               {t.cta.workTogether}
             </a>
@@ -83,7 +83,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="press md:hidden grid h-9 w-9 place-items-center rounded-full border border-border text-foreground hover:bg-card/60 transition-colors"
+              className="press md:hidden grid h-9 w-9 place-items-center rounded-full border border-hair text-foreground hover:bg-card/60 transition-colors"
               aria-label={t.cta.openMenu}
             >
               <Menu className="h-4 w-4" />
@@ -189,14 +189,14 @@ function MobileMenu({
           <img
             src={meImg}
             alt="Pablo Salcido"
-            className="h-8 w-8 rounded-full object-cover object-top border border-border"
+            className="h-8 w-8 rounded-full object-cover object-top border border-hair"
           />
           <span className="text-sm font-medium tracking-tight text-foreground">Pablo Salcido</span>
         </a>
         <button
           type="button"
           onClick={onClose}
-          className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card/60 text-foreground hover:bg-card transition-colors"
+          className="grid h-10 w-10 place-items-center rounded-full border border-hair bg-card/60 text-foreground hover:bg-card transition-colors"
           aria-label="Close menu"
         >
           <X className="h-4 w-4" />
@@ -211,7 +211,7 @@ function MobileMenu({
             href={item.href}
             onClick={onClose}
             className={cn(
-              "group flex items-center justify-between border-b border-border/30 py-5 transition-all duration-500 ease-out",
+              "group flex items-center justify-between border-b border-hair py-5 transition-all duration-500 ease-out",
               visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5",
             )}
             style={{ transitionDelay: visible ? `${i * 70 + 100}ms` : "0ms" }}
@@ -278,7 +278,7 @@ function LangToggle({
       ref={groupRef}
       role="radiogroup"
       aria-label="Language"
-      className="relative inline-flex items-center rounded-full border border-border bg-background/60 p-[3px] text-xs font-medium"
+      className="relative inline-flex items-center rounded-full border border-hair bg-background/60 p-[3px] text-xs font-medium"
       onKeyDown={handleKeyDown}
     >
       <span

@@ -5,19 +5,61 @@ import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useT } from "@/i18n";
 import imgJoseph from "@/assets/images/joseph.png";
+import imgFirmexa from "@/assets/images/firmexa.png";
 import imgBclg from "@/assets/images/bclg.png";
 import imgEsencial from "@/assets/images/esencial.png";
-import imgTravane from "@/assets/images/travane.png";
 import imgDiocletiansDream from "@/assets/images/diocletiansdream.png";
+import tileJoseph from "@/assets/images/tiles/joseph-tile.webp";
+import tileFirmexa from "@/assets/images/tiles/firmexa-tile.webp";
+import tileBclg from "@/assets/images/tiles/bclg-tile.webp";
+import tileEsencial from "@/assets/images/tiles/esencial-tile.webp";
+import tileDiocletiansDream from "@/assets/images/tiles/diocletiansdream-tile.webp";
 
-// Language-neutral visual + stack chips per project (matches dict order)
-const PROJECT_META: { image: string; stack: string[] }[] = [
-  { image: imgJoseph, stack: ["Angular", "PostgreSQL", "Node.js", "Swagger"] },
-  { image: imgDiocletiansDream, stack: ["Angular", "SSG", "WordPress", "SEO"] },
-  { image: imgBclg, stack: ["Angular", "Express", "MongoDB", "CI/CD"] },
-  { image: imgEsencial, stack: ["Angular", "Express", "MongoDB", "Stripe"] },
-  { image: imgTravane, stack: ["Angular", "TypeScript", "Tailwind"] },
+export type ProjectMeta = { id: string; image: string; tile: string; stack: string[] };
+
+/**
+ * Language-neutral visuals + stack chips per project, keyed by the same slug
+ * the dict uses. `tile` is the 640px WebP the hero mosaic uses — the
+ * full-size PNGs are far too heavy to sit above the fold. Exported so the
+ * mosaic reads from here rather than keeping its own parallel array.
+ */
+export const PROJECT_META: ProjectMeta[] = [
+  {
+    id: "joseph",
+    image: imgJoseph,
+    tile: tileJoseph,
+    stack: ["Angular", "PostgreSQL", "Node.js", "Swagger"],
+  },
+  {
+    id: "firmexa",
+    image: imgFirmexa,
+    tile: tileFirmexa,
+    stack: ["NestJS", "Angular", "PostgreSQL", "Twilio"],
+  },
+  {
+    id: "diocletians-dream",
+    image: imgDiocletiansDream,
+    tile: tileDiocletiansDream,
+    stack: ["Angular", "SSG", "WordPress", "SEO"],
+  },
+  {
+    id: "lending-group",
+    image: imgBclg,
+    tile: tileBclg,
+    stack: ["Angular", "Express", "MongoDB", "CI/CD"],
+  },
+  {
+    id: "esencial360",
+    image: imgEsencial,
+    tile: tileEsencial,
+    stack: ["Angular", "Express", "MongoDB", "Stripe"],
+  },
 ];
+
+/** Look up a project's visuals by slug. Returns undefined for an unknown id. */
+export function projectMeta(id: string) {
+  return PROJECT_META.find((m) => m.id === id);
+}
 
 // Asymmetric spans for the non-featured projects (md:grid-cols-12)
 const GRID_SPANS = ["md:col-span-7", "md:col-span-5", "md:col-span-5", "md:col-span-7"];
@@ -48,6 +90,7 @@ function CardMedia({
       <img
         src={project.image}
         alt={project.title}
+        loading="lazy"
         className="absolute inset-0 h-full w-full object-cover rounded-xl transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
       />
       <div className="absolute inset-0 rounded-xl bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity grid place-items-center pointer-events-none">
@@ -63,7 +106,7 @@ function CardBody({
   project,
   roleLabel,
   outcomeLabel,
-  titleClass = "text-2xl",
+  titleClass = "h-card",
 }: {
   project: Project;
   roleLabel: string;
@@ -99,7 +142,7 @@ function CardBody({
         {project.stack.map((s) => (
           <span
             key={s}
-            className="rounded-full border border-border bg-background/40 px-2.5 py-1 text-[11px] font-mono text-muted-foreground"
+            className="rounded-full border border-hair bg-background/40 px-2.5 py-1 font-mono-eyebrow text-muted-foreground"
           >
             {s}
           </span>
@@ -111,25 +154,24 @@ function CardBody({
 
 export function SelectedWork() {
   const t = useT();
-  const projects: Project[] = t.selectedWork.projects.map((p, i) => ({
-    ...p,
-    image: PROJECT_META[i].image,
-    stack: PROJECT_META[i]?.stack ?? [],
-  }));
+  const projects: Project[] = t.selectedWork.projects.map((p) => {
+    const meta = projectMeta(p.id);
+    return { ...p, image: meta?.image ?? "", stack: meta?.stack ?? [] };
+  });
 
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const active = openIdx !== null ? projects[openIdx] : null;
 
   const cardClass =
-    "group relative w-full text-left rounded-3xl border border-border/80 bg-card/85 backdrop-blur-xl tilt-card hover:tilt-card-hover overflow-hidden shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary";
+    "group relative w-full text-left rounded-2xl border border-hair bg-card/70 backdrop-blur-xl tilt-card hover:tilt-card-hover overflow-hidden shadow-[0_12px_40px_rgb(0_0_0/0.45)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary";
 
   const [featured, ...rest] = projects;
 
   return (
-    <section id="work" className="relative py-28 sm:py-36 scroll-mt-24">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="work" className="relative py-24 sm:py-32 scroll-mt-24">
+      <div className="shell">
         <Reveal>
-          <h2 className="font-display text-4xl sm:text-5xl text-foreground max-w-3xl leading-[1.05]">
+          <h2 className="font-display h-section text-foreground max-w-3xl leading-[1.05]">
             {t.selectedWork.title1} {t.selectedWork.titleEm}
           </h2>
           <p className="mt-5 max-w-2xl text-muted-foreground">{t.selectedWork.description}</p>
@@ -199,7 +241,6 @@ export function SelectedWork() {
 
       <Dialog open={!!active} onOpenChange={(v) => !v && setOpenIdx(null)}>
         <DialogContent
-          data-lenis-prevent
           onWheel={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
           className="max-w-3xl max-h-[90vh] overflow-y-auto overscroll-contain modal-scroll bg-card/95 backdrop-blur-xl border-border p-0 [&>button]:hidden"
@@ -232,7 +273,7 @@ export function SelectedWork() {
                 <button
                   type="button"
                   onClick={() => setOpenIdx(null)}
-                  className="press shrink-0 grid h-10 w-10 place-items-center rounded-full border border-border bg-background/60 hover:bg-background transition-colors"
+                  className="press shrink-0 grid h-10 w-10 place-items-center rounded-full border border-hair bg-background/60 hover:bg-background transition-colors"
                   aria-label={t.selectedWork.closeCase}
                 >
                   <X className="h-4 w-4" />
@@ -240,7 +281,7 @@ export function SelectedWork() {
               </div>
 
               <div className="mt-8 grid gap-8">
-                <div className="relative aspect-[16/9] rounded-2xl bg-muted/30 border border-border overflow-hidden">
+                <div className="relative aspect-[16/9] rounded-2xl bg-muted/30 border border-hair overflow-hidden">
                   {active.video ? (
                     <video
                       src={active.video}
@@ -257,7 +298,7 @@ export function SelectedWork() {
                         className="h-full w-full object-cover"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-background/30">
-                        <div className="flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur px-4 py-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 rounded-full border border-hair bg-card/80 backdrop-blur px-4 py-2 text-sm text-muted-foreground">
                           <Play className="h-3.5 w-3.5" />
                           {t.selectedWork.videoComingSoon}
                         </div>
@@ -270,9 +311,9 @@ export function SelectedWork() {
                   {active.metrics.map((m) => (
                     <div
                       key={m.label}
-                      className="rounded-2xl border border-border bg-card/70 p-4 text-center"
+                      className="rounded-2xl border border-hair bg-card/70 p-4 text-center"
                     >
-                      <p className="font-display text-2xl sm:text-3xl text-primary-glow">
+                      <p className="font-display font-semibold text-2xl sm:text-3xl text-primary-glow">
                         {m.value}
                       </p>
                       <p className="mt-1 font-mono-eyebrow text-muted-foreground">{m.label}</p>
@@ -350,14 +391,14 @@ export function SelectedWork() {
                     {active.stackDetail.map((group) => (
                       <div
                         key={group.label}
-                        className="rounded-2xl border border-border bg-card/60 p-4"
+                        className="rounded-2xl border border-hair bg-card/60 p-4"
                       >
                         <p className="font-mono-eyebrow text-muted-foreground">{group.label}</p>
                         <div className="mt-2.5 flex flex-wrap gap-1.5">
                           {group.items.map((it) => (
                             <span
                               key={it}
-                              className="rounded-full border border-border bg-background/40 px-2.5 py-1 text-[11px] text-foreground/85"
+                              className="rounded-full border border-hair bg-background/40 px-2.5 py-1 font-mono-eyebrow text-foreground/85"
                             >
                               {it}
                             </span>

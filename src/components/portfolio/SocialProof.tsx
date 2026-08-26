@@ -55,10 +55,10 @@ export function SocialProof() {
   };
 
   return (
-    <section className="relative py-28 sm:py-36">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section className="relative py-24 sm:py-32">
+      <div className="shell">
         <Reveal>
-          <h2 className="font-display text-4xl sm:text-5xl text-foreground max-w-3xl leading-[1.05]">
+          <h2 className="font-display h-section text-foreground max-w-3xl leading-[1.05]">
             {t.socialProof.title1} {t.socialProof.titleEm}
           </h2>
         </Reveal>
@@ -66,7 +66,7 @@ export function SocialProof() {
         <Reveal delay={100}>
           <div className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-4 text-muted-foreground">
             {t.socialProof.logos.map((n) => (
-              <span key={n} className="font-display text-xl sm:text-2xl text-foreground/50">
+              <span key={n} className="font-display h-card text-foreground/50">
                 {n}
               </span>
             ))}
@@ -96,7 +96,7 @@ export function SocialProof() {
               <article
                 key={q.name + i}
                 data-testimonial-card
-                className="snap-center shrink-0 w-[88%] sm:w-[520px] md:w-[600px] rounded-2xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden flex flex-col"
+                className="snap-center shrink-0 w-[88%] sm:w-[520px] md:w-[600px] rounded-2xl border border-hair bg-card/60 backdrop-blur-sm overflow-hidden flex flex-col"
               >
                 {hasVideo ? (
                   <div className="relative aspect-video bg-muted/40">
@@ -148,7 +148,7 @@ export function SocialProof() {
                   <blockquote className="mt-3 text-foreground/90 leading-relaxed text-lg">
                     {q.quote}
                   </blockquote>
-                  <figcaption className="mt-6 pt-5 border-t border-border/60 font-mono-eyebrow text-muted-foreground text-xs">
+                  <figcaption className="mt-6 pt-5 border-t border-hair/60 font-mono-eyebrow text-muted-foreground text-xs">
                     {q.name} · {q.role}
                   </figcaption>
                 </div>
@@ -159,7 +159,7 @@ export function SocialProof() {
       </div>
 
       {/* Controls */}
-      <div className="mx-auto max-w-6xl px-5 sm:px-8 mt-6 flex items-center justify-between gap-6">
+      <div className="shell mt-6 flex items-center justify-between gap-6">
         <div className="flex items-center gap-2">
           {t.socialProof.quotes.map((_, i) => (
             <button
@@ -182,7 +182,7 @@ export function SocialProof() {
             type="button"
             onClick={() => scrollByDir(-1)}
             aria-label={t.socialProof.prev}
-            className="h-10 w-10 rounded-full border border-border bg-card/60 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-card hover:border-primary-glow/50 transition-colors"
+            className="h-10 w-10 rounded-full border border-hair bg-card/60 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-card hover:border-primary-glow/50 transition-colors"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -190,7 +190,7 @@ export function SocialProof() {
             type="button"
             onClick={() => scrollByDir(1)}
             aria-label={t.socialProof.next}
-            className="h-10 w-10 rounded-full border border-border bg-card/60 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-card hover:border-primary-glow/50 transition-colors"
+            className="h-10 w-10 rounded-full border border-hair bg-card/60 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-card hover:border-primary-glow/50 transition-colors"
           >
             <ChevronRight className="h-5 w-5" />
           </button>

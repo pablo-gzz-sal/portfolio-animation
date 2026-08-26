@@ -3,10 +3,10 @@ import { useT } from "@/i18n";
 export function Footer() {
   const t = useT();
   return (
-    <footer className="border-t border-border py-12">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+    <footer className="border-t border-hair py-12">
+      <div className="shell flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="flex items-center gap-2.5">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground font-display text-sm">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground font-display font-semibold text-sm">
             PS
           </span>
           <span className="text-sm text-muted-foreground">{t.footer.tagline}</span>
@@ -36,7 +36,7 @@ export function Footer() {
           </a>
         </div>
       </div>
-      <div className="mx-auto max-w-6xl px-5 sm:px-8 mt-8 text-xs text-muted-foreground">
+      <div className="shell mt-8 text-xs text-muted-foreground">
         © {new Date().getFullYear()} Pablo Salcido. {t.footer.rights}
       </div>
     </footer>

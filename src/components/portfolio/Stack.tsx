@@ -10,10 +10,10 @@ export function Stack() {
   const rows = [t.stack.groups.slice(0, mid), t.stack.groups.slice(mid)];
 
   return (
-    <section id="stack" className="relative py-20 sm:py-28 scroll-mt-24">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="stack" className="relative py-24 sm:py-32 scroll-mt-24">
+      <div className="shell">
         <Reveal>
-          <h2 className="font-display text-4xl sm:text-5xl text-foreground max-w-3xl leading-[1.05]">
+          <h2 className="font-display h-section text-foreground max-w-3xl leading-[1.05]">
             {t.stack.title1} {t.stack.titleEm}
           </h2>
           <p className="mt-5 max-w-2xl text-muted-foreground">{t.stack.description}</p>

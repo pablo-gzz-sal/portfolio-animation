@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { onIntroDone } from "@/lib/intro";
-import { PROJECT_META } from "./SelectedWork";
+import { PROJECT_META } from "./projects";
 
 /**
  * The hero's centrepiece — an Unveil-style "pixel veil" over a wall of work.

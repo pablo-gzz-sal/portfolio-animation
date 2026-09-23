@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/i18n";
-import { projectMeta } from "./SelectedWork";
+import { projectMeta } from "./projects";
 
 /**
  * Decorative field of work stills drifting behind the hero headline.

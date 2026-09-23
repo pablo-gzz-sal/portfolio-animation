@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { markIntroDone } from "@/lib/intro";
 import { useT } from "@/i18n";
-import { PROJECT_META } from "./SelectedWork";
+import { PROJECT_META } from "./projects";
 
 const SEEN_KEY = "intro-seen";
 

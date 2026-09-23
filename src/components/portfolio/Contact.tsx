@@ -1,25 +1,51 @@
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import { ArrowUpRight, Mail, Linkedin, Github, Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2 } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { SectionHeader } from "./SectionHeader";
 import { useT } from "@/i18n";
+import { sfx } from "@/lib/sound";
+import { cn } from "@/lib/utils";
 import meImg from "@/assets/images/me.jpeg";
 
+/**
+ * Contact as a sentence you complete (The Digital Panda's footer form):
+ * "Hi Pablo, my name is ___ and I'm reaching out from ___. I need help
+ * with [chips]. You can reach me at ___. A bit more about it: ___".
+ *
+ * Every blank is a real, labelled input, so it's still an ordinary form to
+ * assistive tech. The payload is unchanged — name / email / company /
+ * message — with the chosen topics prefixed onto the message, so the API
+ * route and its zod schema stay as they are.
+ */
 export function Contact() {
   const t = useT();
+  const s = t.ui.sentence;
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [topics, setTopics] = useState<string[]>([]);
+
+  const toggle = (topic: string) => {
+    sfx.click();
+    setTopics((cur) => (cur.includes(topic) ? cur.filter((x) => x !== topic) : [...cur, topic]));
+  };
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = new FormData(form);
+    const details = String(new FormData(form).get("message") || "").trim();
+    const message = [topics.length ? `[${s.topicsLabel}: ${topics.join(", ")}]` : "", details]
+      .filter(Boolean)
+      .join("\n\n");
     const payload = {
-      name: String(data.get("name") || "").trim(),
-      email: String(data.get("email") || "").trim(),
-      company: String(data.get("company") || "").trim() || undefined,
-      message: String(data.get("message") || "").trim(),
+      name: name.trim(),
+      email: email.trim(),
+      company: company.trim() || undefined,
+      message,
     };
-    if (!payload.name || !payload.email || !payload.message) {
+    if (!payload.name || !payload.email || !details) {
       toast.error(t.contact.errors.required);
       return;
     }
@@ -36,6 +62,10 @@ export function Contact() {
       }
       toast.success(t.contact.success);
       form.reset();
+      setName("");
+      setCompany("");
+      setEmail("");
+      setTopics([]);
     } catch (err) {
       const message = err instanceof Error ? err.message : t.contact.errors.generic;
       toast.error(message);
@@ -45,148 +75,107 @@ export function Contact() {
   }
 
   return (
-    <section
-      id="contact"
-      className="relative py-24 sm:py-32 scroll-mt-24"
-      style={{
-        background:
-          "radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--primary) 14%, transparent) 0%, transparent 60%)",
-      }}
-    >
-      <div className="shell">
-        <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-20">
-          <Reveal>
-            <p className="font-mono-eyebrow text-muted-foreground">{t.contact.eyebrow}</p>
-            <h2 className="font-display mt-4 text-4xl sm:text-5xl text-foreground leading-[1.05]">
+    <section id="contact" data-nav="contact" className="relative scroll-mt-24 py-28 sm:py-40">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--primary) 12%, transparent) 0%, transparent 60%)",
+        }}
+      />
+      <div className="shell relative">
+        <SectionHeader
+          index="04"
+          eyebrow={t.contact.eyebrow}
+          title={
+            <>
               {t.contact.title1} <span className="text-primary-glow">{t.contact.titleEm}</span>
-            </h2>
-            <p className="mt-5 text-muted-foreground leading-relaxed max-w-md">
-              {t.contact.description}
-            </p>
+            </>
+          }
+          description={t.contact.description}
+        />
 
-            <ul className="mt-8 space-y-3">
-              <li>
-                <a
-                  href="mailto:pablo.gzz.sal@gmail.com"
-                  className="inline-flex items-center gap-3 text-foreground hover:text-primary-glow transition-colors"
-                >
-                  <Mail className="h-4 w-4" />
-                  pablo.gzz.sal@gmail.com
-                  <ArrowUpRight className="h-4 w-4 opacity-70" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.linkedin.com/in/pablo-gonzalez-salcido-bb1a491a9/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-3 text-foreground hover:text-primary-glow transition-colors"
-                >
-                  <Linkedin className="h-4 w-4" />
-                  LinkedIn
-                  <ArrowUpRight className="h-4 w-4 opacity-70" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/pablo-gzz-sal"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-3 text-foreground hover:text-primary-glow transition-colors"
-                >
-                  <Github className="h-4 w-4" />
-                  GitHub
-                  <ArrowUpRight className="h-4 w-4 opacity-70" />
-                </a>
-              </li>
-            </ul>
-
-            {/* Portrait relocated from the hero — a face lands better at the
-                point of contact than beside the headline. */}
-            <div className="mt-10 grid gap-5 sm:grid-cols-[minmax(0,200px)_1fr] sm:items-end">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-hair">
-                <img
-                  src={meImg}
-                  alt="Pablo Salcido"
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover object-top"
-                />
-                {/* teal duotone wash so the portrait sits inside the palette */}
-                <div
-                  aria-hidden
-                  className="absolute inset-0 mix-blend-soft-light"
-                  style={{
-                    background:
-                      "linear-gradient(165deg, color-mix(in oklab, var(--primary) 55%, transparent), transparent 55%)",
-                  }}
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-x-0 bottom-0 h-1/3"
-                  style={{
-                    background:
-                      "linear-gradient(to top, color-mix(in oklab, var(--background) 55%, transparent), transparent)",
-                  }}
-                />
-              </div>
-
-              <div className="rounded-2xl border border-hair bg-card/60 p-5 backdrop-blur-sm">
-                <p className="font-mono-eyebrow text-ink-faint">{t.hero.currentSignal}</p>
-                <p className="mt-3 text-sm leading-relaxed text-foreground/90">
-                  {t.hero.currentSignalBody}
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={100}>
-            <form
-              onSubmit={onSubmit}
-              className="rounded-2xl border border-hair bg-card/50 backdrop-blur-sm p-6 sm:p-8"
-              style={{ boxShadow: "var(--shadow-elegant)" }}
+        <Reveal className="mt-16 lg:ml-[240px] sm:mt-20">
+          <form
+            onSubmit={onSubmit}
+            className="font-display text-[clamp(1.6rem,3.2vw,3rem)] leading-[1.45] tracking-[-0.03em] text-foreground/60"
+          >
+            {s.hi}{" "}
+            <Blank
+              name="name"
+              label={t.contact.fields.name}
+              value={name}
+              onChange={setName}
+              placeholder={s.name}
+              required
+              autoComplete="name"
+            />{" "}
+            {s.from}{" "}
+            <Blank
+              name="company"
+              label={t.contact.fields.company}
+              value={company}
+              onChange={setCompany}
+              placeholder={s.company}
+              autoComplete="organization"
+            />
+            {s.need}{" "}
+            <span
+              className="inline-flex flex-wrap gap-2 align-middle"
+              role="group"
+              aria-label={s.topicsLabel}
             >
-              <div className="grid sm:grid-cols-2 gap-5">
-                <Field
-                  label={t.contact.fields.name}
-                  name="name"
-                  required
-                  placeholder={t.contact.fields.namePh}
-                />
-                <Field
-                  label={t.contact.fields.email}
-                  name="email"
-                  type="email"
-                  required
-                  placeholder={t.contact.fields.emailPh}
-                />
-              </div>
-              <div className="mt-5">
-                <Field
-                  label={t.contact.fields.company}
-                  name="company"
-                  placeholder={t.contact.fields.companyPh}
-                />
-              </div>
-              <div className="mt-5">
-                <label className="block">
-                  <span className="font-mono-eyebrow text-muted-foreground">
-                    {t.contact.fields.project}
-                  </span>
-                  <textarea
-                    name="message"
-                    required
-                    rows={5}
-                    maxLength={5000}
-                    placeholder={t.contact.fields.projectPh}
-                    className="mt-2 w-full rounded-lg border border-hair bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent resize-none"
-                  />
-                </label>
-              </div>
-
+              {s.topics.map((topic) => {
+                const on = topics.includes(topic);
+                return (
+                  <button
+                    key={topic}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => toggle(topic)}
+                    onMouseEnter={sfx.hover}
+                    className={cn(
+                      "press rounded-full border px-4 py-1.5 font-sans text-sm tracking-normal transition-colors duration-300 sm:text-base",
+                      on
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-hair-2 text-foreground/80 hover:border-foreground/50 hover:text-foreground",
+                    )}
+                  >
+                    {topic}
+                  </button>
+                );
+              })}
+            </span>
+            {s.reach}{" "}
+            <Blank
+              name="email"
+              label={t.contact.fields.email}
+              value={email}
+              onChange={setEmail}
+              placeholder={s.email}
+              type="email"
+              required
+              autoComplete="email"
+            />
+            {s.more}
+            <label className="mt-6 block">
+              <span className="sr-only">{t.contact.fields.project}</span>
+              <textarea
+                name="message"
+                required
+                rows={3}
+                maxLength={5000}
+                placeholder={s.messagePh}
+                className="w-full resize-none border-b border-hair-2 bg-transparent py-3 font-sans text-lg leading-relaxed tracking-normal text-foreground placeholder:text-ink-faint focus:border-primary-glow focus:outline-none sm:text-xl"
+              />
+            </label>
+            <div className="mt-10 flex flex-wrap items-center gap-6">
               <button
                 type="submit"
                 disabled={loading}
-                className="pill pill-solid press mt-7 justify-center disabled:opacity-60"
+                onMouseEnter={sfx.hover}
+                className="pill pill-solid press tracking-[0.12em] disabled:opacity-60"
               >
                 {loading ? (
                   <>
@@ -200,8 +189,63 @@ export function Contact() {
                   </>
                 )}
               </button>
-              <p className="mt-3 text-xs text-muted-foreground">{t.contact.reply}</p>
-            </form>
+              <p className="font-sans text-sm tracking-normal text-muted-foreground">
+                {t.contact.reply}
+              </p>
+            </div>
+          </form>
+        </Reveal>
+
+        {/* who you're writing to */}
+        <div className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-hair bg-hair sm:mt-28 lg:ml-[240px] lg:grid-cols-[240px_1fr]">
+          <Reveal className="bg-background">
+            <div className="relative aspect-[4/5] h-full overflow-hidden lg:aspect-auto">
+              <img
+                src={meImg}
+                alt="Pablo Salcido"
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover object-top grayscale-[35%]"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 mix-blend-soft-light"
+                style={{
+                  background:
+                    "linear-gradient(165deg, color-mix(in oklab, var(--primary) 55%, transparent), transparent 55%)",
+                }}
+              />
+            </div>
+          </Reveal>
+          <Reveal delay={90} className="bg-background">
+            <div className="flex h-full flex-col justify-between gap-10 p-7 sm:p-9">
+              <div>
+                <p className="font-mono-eyebrow text-ink-faint">{t.hero.currentSignal}</p>
+                <p className="mt-4 max-w-xl text-lg leading-relaxed text-foreground/90">
+                  {t.hero.currentSignalBody}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-x-8 gap-y-3 font-mono text-xs uppercase tracking-[0.14em]">
+                <a href="mailto:pablo.gzz.sal@gmail.com" className="nav-link text-foreground">
+                  pablo.gzz.sal@gmail.com
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/pablo-gonzalez-salcido-bb1a491a9/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="nav-link text-ink-dim hover:text-foreground"
+                >
+                  LinkedIn ↗
+                </a>
+                <a
+                  href="https://github.com/pablo-gzz-sal"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="nav-link text-ink-dim hover:text-foreground"
+                >
+                  GitHub ↗
+                </a>
+              </div>
+            </div>
           </Reveal>
         </div>
       </div>
@@ -209,29 +253,41 @@ export function Contact() {
   );
 }
 
-function Field({
-  label,
+/** An inline blank: underline input that grows with what's typed. */
+function Blank({
   name,
+  label,
+  value,
+  onChange,
+  placeholder,
   type = "text",
   required,
-  placeholder,
+  autoComplete,
 }: {
-  label: string;
   name: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
   type?: string;
   required?: boolean;
-  placeholder?: string;
+  autoComplete?: string;
 }) {
+  const ch = Math.max(placeholder.length, value.length) + 1;
   return (
-    <label className="block">
-      <span className="font-mono-eyebrow text-muted-foreground">{label}</span>
+    <label className="inline-block align-baseline">
+      <span className="sr-only">{label}</span>
       <input
         type={type}
         name={name}
+        value={value}
         required={required}
-        placeholder={placeholder}
+        autoComplete={autoComplete}
         maxLength={320}
-        className="mt-2 w-full rounded-lg border border-hair bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ width: `min(${ch}ch, 80vw)` }}
+        className="border-b border-hair-2 bg-transparent px-1 text-foreground placeholder:text-ink-faint/70 transition-colors focus:border-primary-glow focus:outline-none"
       />
     </label>
   );

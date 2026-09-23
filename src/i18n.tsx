@@ -80,7 +80,7 @@ type Dict = {
     title1: string;
     titleEm: string;
     description: string;
-    steps: { n: string; eyebrow: string; title: string; body: string }[];
+    steps: { n: string; eyebrow: string; title: string; body: string; log: string[] }[];
   };
   stack: {
     eyebrow: string;
@@ -127,6 +127,35 @@ type Dict = {
     success: string;
   };
   footer: { tagline: string; rights: string };
+  ui: {
+    preloader: string;
+    intro: string;
+    featured: string;
+    index: string;
+    cols: { project: string; discipline: string; stack: string };
+    next: string;
+    close: string;
+    soundOn: string;
+    soundOff: string;
+    localTime: string;
+    backToTop: string;
+    footerCta1: string;
+    footerCtaEm: string;
+    footerSay: string;
+    sentence: {
+      hi: string;
+      name: string;
+      from: string;
+      company: string;
+      need: string;
+      topics: string[];
+      reach: string;
+      email: string;
+      more: string;
+      messagePh: string;
+      topicsLabel: string;
+    };
+  };
 };
 
 const en: Dict = {
@@ -387,11 +416,11 @@ const en: Dict = {
     description:
       "I keep the engagement disciplined: define the valuable version, build the system in vertical slices, and leave behind code that can be operated.",
     steps: [
-      { n: "01", eyebrow: "Clarity", title: "Shape the brief", body: "Translate unclear goals into user flows, constraints, risks, and a version that can ship value." },
-      { n: "02", eyebrow: "Structure", title: "Design the system", body: "Define contracts, data models, authentication, and service boundaries before implementation gets expensive." },
-      { n: "03", eyebrow: "Execution", title: "Build vertical slices", body: "Move from interface to API to data in thin, testable increments with clean component boundaries." },
-      { n: "04", eyebrow: "Quality", title: "Harden the release", body: "Add validation, edge case handling, documentation, and quality checks before production." },
-      { n: "05", eyebrow: "Launch", title: "Ship and support", body: "Deploy, monitor, and leave the product with a clean path for maintenance and iteration." },
+      { n: "01", eyebrow: "Clarity", title: "Shape the brief", body: "Translate unclear goals into user flows, constraints, risks, and a version that can ship value.", log: ["Kickoff call — goals, users, constraints", "User flows mapped for the core journey", "Scope cut to the version that ships value"] },
+      { n: "02", eyebrow: "Structure", title: "Design the system", body: "Define contracts, data models, authentication, and service boundaries before implementation gets expensive.", log: ["Data model + API contracts drafted", "Auth and roles decided up front", "Service boundaries reviewed with the team"] },
+      { n: "03", eyebrow: "Execution", title: "Build vertical slices", body: "Move from interface to API to data in thin, testable increments with clean component boundaries.", log: ["Slice 1: UI → API → DB, deployed to staging", "Weekly demo on a live preview URL", "Components extracted as patterns repeat"] },
+      { n: "04", eyebrow: "Quality", title: "Harden the release", body: "Add validation, edge case handling, documentation, and quality checks before production.", log: ["Validation on every boundary", "Edge cases and empty states covered", "Docs written for the next engineer"] },
+      { n: "05", eyebrow: "Launch", title: "Ship and support", body: "Deploy, monitor, and leave the product with a clean path for maintenance and iteration.", log: ["Production deploy with monitoring", "Error tracking and alerts wired", "Handover: runbook and roadmap"] },
     ],
   },
   stack: {
@@ -463,6 +492,35 @@ const en: Dict = {
   footer: {
     tagline: "Pablo Salcido · Munich, Germany · Remote-first",
     rights: "All rights reserved.",
+  },
+  ui: {
+    preloader: "Loading portfolio",
+    intro: "Pablo Salcido — Full-stack engineer",
+    featured: "Featured case",
+    index: "Index",
+    cols: { project: "Project", discipline: "Discipline", stack: "Stack" },
+    next: "Next project",
+    close: "Close",
+    soundOn: "Sound on",
+    soundOff: "Sound off",
+    localTime: "Munich",
+    backToTop: "Back to top",
+    footerCta1: "Let’s build something",
+    footerCtaEm: "worth shipping.",
+    footerSay: "Say hello",
+    sentence: {
+      hi: "Hi Pablo, my name is",
+      name: "your name",
+      from: "and I’m reaching out from",
+      company: "company (optional)",
+      need: ". I need help with",
+      topics: ["a new product", "a redesign", "APIs & backend", "something else"],
+      reach: ". You can reach me at",
+      email: "you@company.com",
+      more: ". A bit more about it:",
+      messagePh: "The problem, the timeline, and the outcome you need.",
+      topicsLabel: "Topics",
+    },
   },
 };
 
@@ -724,11 +782,11 @@ const es: Dict = {
     description:
       "Mantengo el proyecto disciplinado: definir la versión valiosa, construir el sistema en cortes verticales y dejar código que se pueda operar.",
     steps: [
-      { n: "01", eyebrow: "Claridad", title: "Definir el brief", body: "Traduzco metas poco claras en flujos de usuario, restricciones, riesgos y una versión que puede entregar valor." },
-      { n: "02", eyebrow: "Estructura", title: "Diseñar el sistema", body: "Defino contratos, modelos de datos, autenticación y fronteras de servicios antes de que la implementación se vuelva costosa." },
-      { n: "03", eyebrow: "Ejecución", title: "Construir cortes verticales", body: "Voy de interfaz a API y datos en incrementos delgados y testeables, con fronteras de componente limpias." },
-      { n: "04", eyebrow: "Calidad", title: "Endurecer el release", body: "Agrego validación, manejo de casos límite, documentación y revisiones de calidad antes de producción." },
-      { n: "05", eyebrow: "Lanzamiento", title: "Lanzar y dar soporte", body: "Despliego, monitoreo y entrego el producto con un camino claro para mantenimiento e iteración." },
+      { n: "01", eyebrow: "Claridad", title: "Definir el brief", body: "Traduzco metas poco claras en flujos de usuario, restricciones, riesgos y una versión que puede entregar valor.", log: ["Llamada inicial — metas, usuarios, restricciones", "Flujos de usuario del recorrido principal", "Alcance recortado a la versión que entrega valor"] },
+      { n: "02", eyebrow: "Estructura", title: "Diseñar el sistema", body: "Defino contratos, modelos de datos, autenticación y fronteras de servicios antes de que la implementación se vuelva costosa.", log: ["Modelo de datos y contratos de API", "Autenticación y roles definidos desde el inicio", "Fronteras de servicio revisadas con el equipo"] },
+      { n: "03", eyebrow: "Ejecución", title: "Construir cortes verticales", body: "Voy de interfaz a API y datos en incrementos delgados y testeables, con fronteras de componente limpias.", log: ["Corte 1: UI → API → BD, desplegado en staging", "Demo semanal en una URL de preview", "Componentes extraídos cuando se repiten patrones"] },
+      { n: "04", eyebrow: "Calidad", title: "Endurecer el release", body: "Agrego validación, manejo de casos límite, documentación y revisiones de calidad antes de producción.", log: ["Validación en cada frontera", "Casos límite y estados vacíos cubiertos", "Documentación para el siguiente ingeniero"] },
+      { n: "05", eyebrow: "Lanzamiento", title: "Lanzar y dar soporte", body: "Despliego, monitoreo y entrego el producto con un camino claro para mantenimiento e iteración.", log: ["Despliegue a producción con monitoreo", "Rastreo de errores y alertas conectados", "Entrega: runbook y roadmap"] },
     ],
   },
   stack: {
@@ -800,6 +858,35 @@ const es: Dict = {
   footer: {
     tagline: "Pablo Salcido · Múnich, Alemania · Remoto",
     rights: "Todos los derechos reservados.",
+  },
+  ui: {
+    preloader: "Cargando portafolio",
+    intro: "Pablo Salcido — Ingeniero full-stack",
+    featured: "Caso destacado",
+    index: "Índice",
+    cols: { project: "Proyecto", discipline: "Disciplina", stack: "Stack" },
+    next: "Siguiente proyecto",
+    close: "Cerrar",
+    soundOn: "Sonido activado",
+    soundOff: "Sonido desactivado",
+    localTime: "Múnich",
+    backToTop: "Volver arriba",
+    footerCta1: "Construyamos algo que",
+    footerCtaEm: "valga la pena lanzar.",
+    footerSay: "Escríbeme",
+    sentence: {
+      hi: "Hola Pablo, mi nombre es",
+      name: "tu nombre",
+      from: "y te escribo desde",
+      company: "empresa (opcional)",
+      need: ". Necesito ayuda con",
+      topics: ["un producto nuevo", "un rediseño", "APIs y backend", "otra cosa"],
+      reach: ". Puedes contactarme en",
+      email: "tu@empresa.com",
+      more: ". Un poco más de contexto:",
+      messagePh: "El problema, los tiempos y el resultado que necesitas.",
+      topicsLabel: "Temas",
+    },
   },
 };
 

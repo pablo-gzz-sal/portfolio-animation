@@ -3,6 +3,7 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n, type Lang } from "@/i18n";
 import { useMagnetic } from "@/hooks/use-magnetic";
+import { setSound, sfx, useSoundEnabled } from "@/lib/sound";
 import meImg from "@/assets/images/me.jpeg";
 
 export function Header() {
@@ -10,6 +11,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const ctaRef = useMagnetic<HTMLAnchorElement>();
+  const current = useActiveSection();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -42,7 +44,7 @@ export function Header() {
       >
         <nav
           className={cn(
-            "mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-hair px-3 pl-4 py-2 transition-[background-color,box-shadow,backdrop-filter] duration-300",
+            "mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-full border border-hair px-3 pl-4 py-2 transition-[background-color,box-shadow,backdrop-filter] duration-300",
             scrolled
               ? "bg-background/70 backdrop-blur-xl shadow-[0_8px_30px_-10px_rgba(0,0,0,0.5)]"
               : "bg-card/40 backdrop-blur-md",
@@ -60,16 +62,37 @@ export function Header() {
           </a>
 
           <ul className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
-            {NAV.map((item) => (
-              <li key={item.href}>
-                <a href={item.href} className="nav-link hover:text-foreground transition-colors">
-                  {item.label}
-                </a>
-              </li>
-            ))}
+            {NAV.map((item) => {
+              const on = current === item.href.slice(1);
+              return (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    onMouseEnter={sfx.hover}
+                    aria-current={on ? "location" : undefined}
+                    className={cn(
+                      "nav-link inline-flex items-baseline gap-1.5 transition-colors hover:text-foreground",
+                      on && "text-foreground",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "font-num text-[14px] italic leading-none transition-colors",
+                        on ? "text-primary-glow" : "text-ink-faint",
+                      )}
+                    >
+                      {item.n}
+                    </span>
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="flex items-center gap-2">
+            <LocalTime label={t.ui.localTime} />
+            <SoundToggle onLabel={t.ui.soundOn} offLabel={t.ui.soundOff} />
             <LangToggle lang={lang} setLang={setLang} disabled={isTransitioning} />
 
             <a
@@ -102,6 +125,83 @@ export function Header() {
         cta={t.cta.workTogether}
       />
     </>
+  );
+}
+
+/** Which `[data-nav]` section the reading line (40% down the viewport) is in. */
+function useActiveSection() {
+  const [id, setId] = useState("top");
+  useEffect(() => {
+    let raf = 0;
+    const measure = () => {
+      raf = 0;
+      const line = window.innerHeight * 0.4;
+      let cur = "top";
+      document.querySelectorAll<HTMLElement>("main [data-nav]").forEach((el) => {
+        if (el.getBoundingClientRect().top <= line) cur = el.dataset.nav ?? cur;
+      });
+      setId(cur);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+  return id;
+}
+
+/** Munich wall clock — Unveil's timecode, as a signal of where the work happens. */
+export function LocalTime({ label, className }: { label: string; className?: string }) {
+  const [now, setNow] = useState<string | null>(null);
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/Berlin",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    const tick = () => setNow(fmt.format(new Date()));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <span
+      className={cn(
+        "hidden xl:inline-flex items-center gap-2 px-2 font-mono text-[11px] tabular-nums text-ink-faint",
+        className,
+      )}
+    >
+      {label} {now ?? "--:--:--"}
+    </span>
+  );
+}
+
+function SoundToggle({ onLabel, offLabel }: { onLabel: string; offLabel: string }) {
+  const on = useSoundEnabled();
+  return (
+    <button
+      type="button"
+      onClick={() => setSound(!on)}
+      aria-pressed={on}
+      aria-label={on ? onLabel : offLabel}
+      title={on ? onLabel : offLabel}
+      className="press grid h-8 w-8 place-items-center rounded-full border border-hair text-foreground transition-colors hover:border-hair-2"
+    >
+      <span className={cn("sound-bars", on && "is-on")} aria-hidden>
+        <span />
+        <span />
+        <span />
+        <span />
+      </span>
+    </button>
   );
 }
 
@@ -217,7 +317,7 @@ function MobileMenu({
             style={{ transitionDelay: visible ? `${i * 70 + 100}ms` : "0ms" }}
           >
             <div className="flex items-baseline gap-4">
-              <span className="font-mono text-xs text-muted-foreground/50 tracking-widest select-none">
+              <span className="font-num text-lg italic text-muted-foreground/60 select-none">
                 {item.n}
               </span>
               <span className="font-display text-[2.6rem] leading-none text-foreground group-hover:text-primary-glow transition-colors duration-200">

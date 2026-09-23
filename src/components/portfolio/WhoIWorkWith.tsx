@@ -28,7 +28,12 @@ export function WhoIWorkWith() {
             opacity: 1,
             stagger: 0.1,
             ease: "none",
-            scrollTrigger: { trigger: ".mf-statement", start: "top 80%", end: "bottom 40%", scrub: true },
+            scrollTrigger: {
+              trigger: ".mf-statement",
+              start: "top 80%",
+              end: "bottom 40%",
+              scrub: true,
+            },
           },
         );
       });
@@ -47,7 +52,10 @@ export function WhoIWorkWith() {
           </Reveal>
           <p className="mf-statement font-display text-[clamp(2.4rem,5.6vw,6rem)] leading-[0.98] tracking-[-0.05em] text-foreground">
             {words.map((w, i) => (
-              <span key={`${lang}-${i}`} className={i >= emFrom ? "mf-word text-primary-glow" : "mf-word"}>
+              <span
+                key={`${lang}-${i}`}
+                className={i >= emFrom ? "mf-word text-primary-glow" : "mf-word"}
+              >
                 {w}{" "}
               </span>
             ))}

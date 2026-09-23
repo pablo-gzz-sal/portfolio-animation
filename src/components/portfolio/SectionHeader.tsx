@@ -45,7 +45,9 @@ export function SectionHeader({
         <span className="font-mono-eyebrow text-ink-dim">{eyebrow}</span>
       </Reveal>
       <div>
-        <SplitReveal className="font-display h-section max-w-4xl text-foreground">{title}</SplitReveal>
+        <SplitReveal className="font-display h-section max-w-4xl text-foreground">
+          {title}
+        </SplitReveal>
         {description && (
           <Reveal delay={120}>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">

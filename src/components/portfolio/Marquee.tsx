@@ -43,7 +43,12 @@ export function Marquee({ items, duration = 40, reverse, className }: MarqueePro
             const boost = Math.min(Math.abs(v) / 250, 7);
             settle?.kill();
             loop.timeScale(self.direction * (1 + boost));
-            settle = gsap.to(loop, { timeScale: self.direction, duration: 1.2, ease: "power2.out", delay: 0.05 });
+            settle = gsap.to(loop, {
+              timeScale: self.direction,
+              duration: 1.2,
+              ease: "power2.out",
+              delay: 0.05,
+            });
             skew(gsap.utils.clamp(-7, 7, v / -180));
             gsap.delayedCall(0.12, () => skew(0));
           },

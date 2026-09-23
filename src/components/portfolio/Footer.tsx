@@ -53,10 +53,20 @@ export function Footer() {
             <LocalTime label={t.ui.localTime} className="!inline-flex !px-0" />
           </span>
           <span className="flex gap-6 md:justify-self-center">
-            <a href="https://www.linkedin.com/in/pablo-gonzalez-salcido-bb1a491a9/" target="_blank" rel="noreferrer" className="nav-link hover:text-foreground">
+            <a
+              href="https://www.linkedin.com/in/pablo-gonzalez-salcido-bb1a491a9/"
+              target="_blank"
+              rel="noreferrer"
+              className="nav-link hover:text-foreground"
+            >
               LinkedIn
             </a>
-            <a href="https://github.com/pablo-gzz-sal" target="_blank" rel="noreferrer" className="nav-link hover:text-foreground">
+            <a
+              href="https://github.com/pablo-gzz-sal"
+              target="_blank"
+              rel="noreferrer"
+              className="nav-link hover:text-foreground"
+            >
               GitHub
             </a>
           </span>

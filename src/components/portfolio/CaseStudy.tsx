@@ -162,7 +162,8 @@ export function CaseStudy({
               <div className="sticky top-0 z-10 border-b border-hair bg-background/80 backdrop-blur-xl">
                 <div className="shell flex items-center justify-between gap-6 py-4">
                   <p className="font-mono text-xs tabular-nums text-ink-faint">
-                    <span className="text-primary-glow">{String(shown + 1).padStart(2, "0")}</span> / {total}
+                    <span className="text-primary-glow">{String(shown + 1).padStart(2, "0")}</span>{" "}
+                    / {total}
                     <span className="mx-3 text-hair-2">—</span>
                     <span className="font-mono-eyebrow">{p.tag}</span>
                   </p>
@@ -215,7 +216,11 @@ export function CaseStudy({
                     />
                   ) : (
                     <>
-                      <img src={p.image} alt={p.title} className="absolute inset-0 h-full w-full object-cover" />
+                      <img
+                        src={p.image}
+                        alt={p.title}
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
                       <div className="absolute bottom-5 left-5 flex items-center gap-2 rounded-full border border-hair bg-background/70 px-4 py-2 font-mono-eyebrow text-ink-dim backdrop-blur">
                         <Play className="h-3 w-3" />
                         {t.selectedWork.videoComingSoon}
@@ -230,7 +235,11 @@ export function CaseStudy({
                     <Reveal
                       key={m.label}
                       delay={i * 80}
-                      className={i === 0 ? "py-8 sm:pr-8" : "border-t border-hair py-8 sm:border-l sm:border-t-0 sm:px-8"}
+                      className={
+                        i === 0
+                          ? "py-8 sm:pr-8"
+                          : "border-t border-hair py-8 sm:border-l sm:border-t-0 sm:px-8"
+                      }
                     >
                       <dd className="font-display text-5xl tabular-nums text-foreground sm:text-6xl">
                         <CountUp value={m.value} />
@@ -256,7 +265,9 @@ export function CaseStudy({
                           </div>
                         ))}
                         <div className="border-t border-hair pt-4">
-                          <dt className="font-mono-eyebrow text-ink-faint">{t.selectedWork.sections.techStack}</dt>
+                          <dt className="font-mono-eyebrow text-ink-faint">
+                            {t.selectedWork.sections.techStack}
+                          </dt>
                           <dd className="mt-3 flex flex-wrap gap-1.5">
                             {p.stack.map((s) => (
                               <span
@@ -274,7 +285,9 @@ export function CaseStudy({
 
                   <div className="space-y-16">
                     <CaseBlock n="01" label={t.selectedWork.sections.problem}>
-                      <p className="font-display text-2xl leading-snug text-foreground sm:text-3xl">{p.problem}</p>
+                      <p className="font-display text-2xl leading-snug text-foreground sm:text-3xl">
+                        {p.problem}
+                      </p>
                     </CaseBlock>
                     <CaseBlock n="02" label={t.selectedWork.sections.approach}>
                       <List items={p.approach} />
@@ -326,12 +339,21 @@ export function CaseStudy({
   );
 }
 
-function CaseBlock({ n, label, children }: { n: string; label: string; children: React.ReactNode }) {
+function CaseBlock({
+  n,
+  label,
+  children,
+}: {
+  n: string;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <Reveal>
       <section>
         <p className="mb-6 font-mono text-xs text-ink-faint">
-          <span className="text-primary-glow">({n})</span> <span className="font-mono-eyebrow">{label}</span>
+          <span className="text-primary-glow">({n})</span>{" "}
+          <span className="font-mono-eyebrow">{label}</span>
         </p>
         {children}
       </section>
@@ -343,8 +365,13 @@ function List({ items }: { items: string[] }) {
   return (
     <ul className="divide-y divide-hair border-y border-hair">
       {items.map((a, i) => (
-        <li key={a} className="grid grid-cols-[40px_1fr] gap-4 py-5 text-base leading-relaxed text-foreground/85 sm:text-lg">
-          <span className="pt-1 font-mono text-xs tabular-nums text-ink-faint">{String(i + 1).padStart(2, "0")}</span>
+        <li
+          key={a}
+          className="grid grid-cols-[40px_1fr] gap-4 py-5 text-base leading-relaxed text-foreground/85 sm:text-lg"
+        >
+          <span className="pt-1 font-mono text-xs tabular-nums text-ink-faint">
+            {String(i + 1).padStart(2, "0")}
+          </span>
           <span>{a}</span>
         </li>
       ))}

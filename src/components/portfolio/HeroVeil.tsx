@@ -131,7 +131,10 @@ async function buildWall(): Promise<HTMLCanvasElement> {
         new Promise<HTMLImageElement | null>((resolve) => {
           const img = new Image();
           img.src = m.tile;
-          img.decode().then(() => resolve(img), () => resolve(null));
+          img.decode().then(
+            () => resolve(img),
+            () => resolve(null),
+          );
         }),
     ),
   );
@@ -259,7 +262,10 @@ export function HeroVeil() {
       veilUniforms.uRes.value.set(w, h);
       veilUniforms.uCell.value = Math.round(Math.max(20, Math.min(34, w / 56)));
       const a = w / h;
-      veilUniforms.uCover.value.set(a > WALL_ASPECT ? 1 : a / WALL_ASPECT, a > WALL_ASPECT ? WALL_ASPECT / a : 1);
+      veilUniforms.uCover.value.set(
+        a > WALL_ASPECT ? 1 : a / WALL_ASPECT,
+        a > WALL_ASPECT ? WALL_ASPECT / a : 1,
+      );
       trailUniforms.uAspect.value = a;
       const tw = Math.max(32, Math.round(w / 10));
       const th = Math.max(32, Math.round(h / 10));

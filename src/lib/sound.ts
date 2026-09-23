@@ -65,7 +65,13 @@ function startPad() {
   };
 }
 
-function blip(freq: number, dur: number, gain: number, type: OscillatorType = "sine", glideTo?: number) {
+function blip(
+  freq: number,
+  dur: number,
+  gain: number,
+  type: OscillatorType = "sine",
+  glideTo?: number,
+) {
   if (!enabled) return;
   const c = ensureContext();
   if (!c || !master || c.state !== "running") return;
@@ -108,7 +114,9 @@ export function setSound(on: boolean) {
   enabled = on;
   try {
     window.localStorage.setItem(KEY, on ? "1" : "0");
-  } catch {}
+  } catch {
+    // storage blocked — the toggle still works for this page view
+  }
   if (on) {
     const c = ensureContext();
     void c?.resume();
@@ -138,7 +146,9 @@ function restore() {
       };
       window.addEventListener("pointerdown", resume);
     }
-  } catch {}
+  } catch {
+    // storage blocked — stay off
+  }
 }
 
 function subscribe(fn: () => void) {

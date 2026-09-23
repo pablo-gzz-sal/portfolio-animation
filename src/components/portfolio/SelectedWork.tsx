@@ -37,7 +37,8 @@ export function SelectedWork() {
           eyebrow={t.selectedWork.eyebrow}
           title={
             <>
-              {t.selectedWork.title1} <span className="text-primary-glow">{t.selectedWork.titleEm}</span>
+              {t.selectedWork.title1}{" "}
+              <span className="text-primary-glow">{t.selectedWork.titleEm}</span>
             </>
           }
           description={t.selectedWork.description}
@@ -86,7 +87,11 @@ function Featured({ project, onOpen }: { project: Project; onOpen: () => void })
           )
           .fromTo(".feat-img", { scale: 1.35 }, { scale: 1, ease: "power2.inOut", duration: 1 }, 0)
           .fromTo(".feat-label", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.25 }, 0)
-          .from(".feat-in", { y: 60, autoAlpha: 0, stagger: 0.06, duration: 0.4, ease: "power3.out" }, 0.7)
+          .from(
+            ".feat-in",
+            { y: 60, autoAlpha: 0, stagger: 0.06, duration: 0.4, ease: "power3.out" },
+            0.7,
+          )
           // hold the final frame for a beat before the pin releases
           .to({}, { duration: 0.35 });
       });
@@ -132,7 +137,9 @@ function Featured({ project, onOpen }: { project: Project; onOpen: () => void })
               <p className="feat-in font-mono-eyebrow text-primary-glow">
                 {t.ui.featured} · {project.tag}
               </p>
-              <h3 className="feat-in mt-4 max-w-4xl font-display h-section text-foreground">{project.title}</h3>
+              <h3 className="feat-in mt-4 max-w-4xl font-display h-section text-foreground">
+                {project.title}
+              </h3>
               <p className="feat-in mt-5 max-w-xl text-muted-foreground">{project.summary}</p>
             </div>
             <div className="feat-in flex items-end gap-10">

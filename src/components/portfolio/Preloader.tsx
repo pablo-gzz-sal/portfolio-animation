@@ -78,24 +78,43 @@ export function Preloader() {
 
       const progress = { v: 0 };
       const render = () => {
-        if (counter.current) counter.current.textContent = String(Math.round(progress.v)).padStart(3, "0");
+        if (counter.current)
+          counter.current.textContent = String(Math.round(progress.v)).padStart(3, "0");
         if (bar.current) bar.current.style.transform = `scaleX(${progress.v / 100})`;
       };
 
       // The first stretch runs on a clock so the curtain always has a beat;
       // the count only completes once fonts and hero stills are decoded.
-      const clock = gsap.to(progress, { v: 72, duration: 1.3, ease: "power2.inOut", onUpdate: render });
+      const clock = gsap.to(progress, {
+        v: 72,
+        duration: 1.3,
+        ease: "power2.inOut",
+        onUpdate: render,
+      });
       let exit: gsap.core.Timeline | null = null;
       Promise.all([clock.then(), waitForAssets()]).then(() => {
         exit = gsap
           .timeline()
           .to(progress, { v: 100, duration: 0.55, ease: "power3.out", onUpdate: render })
-          .to(".pl-roll", { yPercent: -110, duration: 0.7, ease: "expo.in", stagger: 0.04 }, "+=0.15")
-          .to(".pl-bar", { scaleY: 0, transformOrigin: "50% 0%", duration: 0.4, ease: "expo.in" }, "<")
+          .to(
+            ".pl-roll",
+            { yPercent: -110, duration: 0.7, ease: "expo.in", stagger: 0.04 },
+            "+=0.15",
+          )
+          .to(
+            ".pl-bar",
+            { scaleY: 0, transformOrigin: "50% 0%", duration: 0.4, ease: "expo.in" },
+            "<",
+          )
           .call(markIntroDone, [], "+=0.05")
           .to(
             el,
-            { clipPath: "inset(0% 0% 100% 0%)", duration: 1.1, ease: "expo.inOut", onComplete: finish },
+            {
+              clipPath: "inset(0% 0% 100% 0%)",
+              duration: 1.1,
+              ease: "expo.inOut",
+              onComplete: finish,
+            },
             "<-0.1",
           );
       });

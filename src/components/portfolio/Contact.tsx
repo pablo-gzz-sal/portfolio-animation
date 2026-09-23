@@ -97,13 +97,35 @@ export function Contact() {
         />
 
         <Reveal className="mt-16 lg:ml-[240px] sm:mt-20">
-          <form onSubmit={onSubmit} className="font-display text-[clamp(1.6rem,3.2vw,3rem)] leading-[1.45] tracking-[-0.03em] text-foreground/60">
+          <form
+            onSubmit={onSubmit}
+            className="font-display text-[clamp(1.6rem,3.2vw,3rem)] leading-[1.45] tracking-[-0.03em] text-foreground/60"
+          >
             {s.hi}{" "}
-            <Blank name="name" label={t.contact.fields.name} value={name} onChange={setName} placeholder={s.name} required autoComplete="name" />{" "}
+            <Blank
+              name="name"
+              label={t.contact.fields.name}
+              value={name}
+              onChange={setName}
+              placeholder={s.name}
+              required
+              autoComplete="name"
+            />{" "}
             {s.from}{" "}
-            <Blank name="company" label={t.contact.fields.company} value={company} onChange={setCompany} placeholder={s.company} autoComplete="organization" />
+            <Blank
+              name="company"
+              label={t.contact.fields.company}
+              value={company}
+              onChange={setCompany}
+              placeholder={s.company}
+              autoComplete="organization"
+            />
             {s.need}{" "}
-            <span className="inline-flex flex-wrap gap-2 align-middle" role="group" aria-label={s.topicsLabel}>
+            <span
+              className="inline-flex flex-wrap gap-2 align-middle"
+              role="group"
+              aria-label={s.topicsLabel}
+            >
               {s.topics.map((topic) => {
                 const on = topics.includes(topic);
                 return (
@@ -126,7 +148,16 @@ export function Contact() {
               })}
             </span>
             {s.reach}{" "}
-            <Blank name="email" label={t.contact.fields.email} value={email} onChange={setEmail} placeholder={s.email} type="email" required autoComplete="email" />
+            <Blank
+              name="email"
+              label={t.contact.fields.email}
+              value={email}
+              onChange={setEmail}
+              placeholder={s.email}
+              type="email"
+              required
+              autoComplete="email"
+            />
             {s.more}
             <label className="mt-6 block">
               <span className="sr-only">{t.contact.fields.project}</span>
@@ -139,7 +170,6 @@ export function Contact() {
                 className="w-full resize-none border-b border-hair-2 bg-transparent py-3 font-sans text-lg leading-relaxed tracking-normal text-foreground placeholder:text-ink-faint focus:border-primary-glow focus:outline-none sm:text-xl"
               />
             </label>
-
             <div className="mt-10 flex flex-wrap items-center gap-6">
               <button
                 type="submit"
@@ -159,7 +189,9 @@ export function Contact() {
                   </>
                 )}
               </button>
-              <p className="font-sans text-sm tracking-normal text-muted-foreground">{t.contact.reply}</p>
+              <p className="font-sans text-sm tracking-normal text-muted-foreground">
+                {t.contact.reply}
+              </p>
             </div>
           </form>
         </Reveal>
@@ -188,16 +220,28 @@ export function Contact() {
             <div className="flex h-full flex-col justify-between gap-10 p-7 sm:p-9">
               <div>
                 <p className="font-mono-eyebrow text-ink-faint">{t.hero.currentSignal}</p>
-                <p className="mt-4 max-w-xl text-lg leading-relaxed text-foreground/90">{t.hero.currentSignalBody}</p>
+                <p className="mt-4 max-w-xl text-lg leading-relaxed text-foreground/90">
+                  {t.hero.currentSignalBody}
+                </p>
               </div>
               <div className="flex flex-wrap gap-x-8 gap-y-3 font-mono text-xs uppercase tracking-[0.14em]">
                 <a href="mailto:pablo.gzz.sal@gmail.com" className="nav-link text-foreground">
                   pablo.gzz.sal@gmail.com
                 </a>
-                <a href="https://www.linkedin.com/in/pablo-gonzalez-salcido-bb1a491a9/" target="_blank" rel="noreferrer" className="nav-link text-ink-dim hover:text-foreground">
+                <a
+                  href="https://www.linkedin.com/in/pablo-gonzalez-salcido-bb1a491a9/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="nav-link text-ink-dim hover:text-foreground"
+                >
                   LinkedIn ↗
                 </a>
-                <a href="https://github.com/pablo-gzz-sal" target="_blank" rel="noreferrer" className="nav-link text-ink-dim hover:text-foreground">
+                <a
+                  href="https://github.com/pablo-gzz-sal"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="nav-link text-ink-dim hover:text-foreground"
+                >
                   GitHub ↗
                 </a>
               </div>

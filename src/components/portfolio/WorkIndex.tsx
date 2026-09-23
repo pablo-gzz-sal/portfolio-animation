@@ -17,12 +17,22 @@ import type { Project } from "./SelectedWork";
  *
  * Touch: the same rows, each with its own thumbnail — nothing depends on hover.
  */
-export function WorkIndex({ projects, onOpen }: { projects: Project[]; onOpen: (i: number) => void }) {
+export function WorkIndex({
+  projects,
+  onOpen,
+}: {
+  projects: Project[];
+  onOpen: (i: number) => void;
+}) {
   const t = useT();
   const root = useRef<HTMLDivElement>(null);
   const media = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<number | null>(null);
-  const mover = useRef<{ x: (v: number) => void; y: (v: number) => void; r: (v: number) => void } | null>(null);
+  const mover = useRef<{
+    x: (v: number) => void;
+    y: (v: number) => void;
+    r: (v: number) => void;
+  } | null>(null);
   const last = useRef({ x: 0, t: 0 });
 
   useGSAP(
@@ -54,15 +64,32 @@ export function WorkIndex({ projects, onOpen }: { projects: Project[]; onOpen: (
     if (!isDesktopPointer()) return;
     sfx.hover();
     setActive(i);
-    gsap.to(media.current, { scale: 1, autoAlpha: 1, duration: 0.5, ease: "expo.out", overwrite: "auto" });
+    gsap.to(media.current, {
+      scale: 1,
+      autoAlpha: 1,
+      duration: 0.5,
+      ease: "expo.out",
+      overwrite: "auto",
+    });
   };
   const leave = () => {
     setActive(null);
-    gsap.to(media.current, { scale: 0.6, autoAlpha: 0, duration: 0.4, ease: "power3.out", overwrite: "auto" });
+    gsap.to(media.current, {
+      scale: 0.6,
+      autoAlpha: 0,
+      duration: 0.4,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
   };
 
   return (
-    <div ref={root} className="relative mt-24 sm:mt-32" onPointerMove={onMove} onPointerLeave={leave}>
+    <div
+      ref={root}
+      className="relative mt-24 sm:mt-32"
+      onPointerMove={onMove}
+      onPointerLeave={leave}
+    >
       <Reveal className="hidden grid-cols-[80px_1.6fr_1fr_1fr_40px] gap-6 pb-4 font-mono-eyebrow text-ink-faint lg:grid">
         <span>{t.ui.index}</span>
         <span>{t.ui.cols.project}</span>
@@ -106,7 +133,9 @@ export function WorkIndex({ projects, onOpen }: { projects: Project[]; onOpen: (
                   </span>
                 </span>
                 <span className="hidden font-mono-eyebrow text-ink-dim lg:block">{p.tag}</span>
-                <span className="hidden font-mono text-xs text-ink-faint lg:block">{p.stack.slice(0, 3).join(" / ")}</span>
+                <span className="hidden font-mono text-xs text-ink-faint lg:block">
+                  {p.stack.slice(0, 3).join(" / ")}
+                </span>
                 <ArrowUpRight className="h-5 w-5 self-start text-ink-faint transition-all duration-500 group-hover:rotate-45 group-hover:text-primary-glow lg:self-center" />
               </button>
             </Reveal>

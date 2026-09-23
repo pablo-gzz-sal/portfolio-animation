@@ -58,7 +58,8 @@ export function Stack() {
             <Reveal key={g.title} delay={(i % 3) * 70} className="bg-background">
               <div className="h-full p-6 sm:p-7">
                 <p className="font-mono-eyebrow text-ink-faint">
-                  <span className="text-primary-glow">{String(i + 1).padStart(2, "0")}</span> {g.title}
+                  <span className="text-primary-glow">{String(i + 1).padStart(2, "0")}</span>{" "}
+                  {g.title}
                 </p>
                 <p className="mt-4 leading-relaxed text-foreground/85">{g.items.join(" · ")}</p>
               </div>

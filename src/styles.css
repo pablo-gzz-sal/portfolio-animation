@@ -222,26 +222,6 @@
   filter: blur(0);
 }
 
-@utility tilt-card {
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.4s ease, box-shadow 0.5s ease;
-}
-
-@utility tilt-card-hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in oklab, var(--primary) 45%, var(--hair-2));
-  box-shadow: var(--shadow-elegant);
-}
-
-@keyframes marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
 /* ---------- Preloader ---------- */
 /* If JS dies mid-intro, the curtain still lifts on its own. */
 .preloader {
@@ -342,60 +322,6 @@
   margin-bottom: -0.06em;
 }
 
-/* ---------- Hero entrance choreography (runs once on load) ---------- */
-.hero-line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.08em; /* keep descenders inside the mask */
-}
-.hero-line > span {
-  display: block;
-  transform: translateY(110%);
-  animation: hero-line-in 0.9s var(--ease-out-expo) forwards;
-  animation-delay: var(--d, 0ms);
-}
-@keyframes hero-line-in {
-  to {
-    transform: translateY(0);
-  }
-}
-
-.hero-item {
-  opacity: 0;
-  transform: translateY(18px);
-  filter: blur(8px);
-  animation: hero-item-in 0.8s var(--ease-out-expo) forwards;
-  animation-delay: var(--d, 0ms);
-}
-@keyframes hero-item-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-.hero-media {
-  clip-path: inset(0 0 100% 0);
-  animation: hero-media-in 1.1s var(--ease-out-expo) forwards;
-  animation-delay: 450ms;
-}
-@keyframes hero-media-in {
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-.hero-media img {
-  transform: scale(1.06);
-  animation: hero-media-img-in 1.4s var(--ease-out-expo) forwards;
-  animation-delay: 450ms;
-}
-@keyframes hero-media-img-in {
-  to {
-    transform: scale(1);
-  }
-}
-
 /* ---------- Micro-interactions ---------- */
 
 /* Press feedback for pills/CTAs — the UI acknowledges the press. */
@@ -403,26 +329,6 @@
   transition: transform 160ms var(--ease-out-quart);
   &:active {
     transform: scale(0.97);
-  }
-}
-
-/* Pointer-tracked specular sheen on work cards (driven by --mx/--my). */
-.card-sheen {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  background: radial-gradient(
-    480px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--primary-glow) 10%, transparent),
-    transparent 65%
-  );
-}
-@media (hover: hover) and (pointer: fine) {
-  .group:hover > .card-sheen,
-  .group:hover .card-sheen {
-    opacity: 1;
   }
 }
 
@@ -447,15 +353,6 @@
     transform: scaleX(1);
     transform-origin: left;
   }
-}
-
-/* Image clip reveal — scoped under the Reveal wrapper's state classes. */
-.clip-reveal {
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 1.1s var(--ease-out-expo);
-}
-.reveal-in .clip-reveal {
-  clip-path: inset(0 0 0 0);
 }
 
 /* ---------- Statement CTA: label rides above a fill that rises from below ---------- */
@@ -598,23 +495,6 @@
     filter: none;
     transition: none;
   }
-  .marquee-track {
-    animation: none !important;
-  }
-  .hero-line > span,
-  .hero-item,
-  .hero-media,
-  .hero-media img {
-    animation: none;
-    transform: none;
-    opacity: 1;
-    filter: none;
-    clip-path: none;
-  }
-  .clip-reveal {
-    clip-path: none;
-    transition: none;
-  }
   .mosaic-tile {
     animation: none;
     transform: none;
@@ -626,7 +506,7 @@
 }
 
 
-/* ---------- Atmosphere: film grain + custom cursor ---------- */
+/* ---------- Atmosphere: film grain ---------- */
 .noise-overlay {
   position: fixed;
   inset: 0;

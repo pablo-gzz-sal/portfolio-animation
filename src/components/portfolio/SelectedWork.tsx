@@ -102,16 +102,19 @@ function Featured({ project, onOpen }: { project: Project; onOpen: () => void })
         data-case-origin={0}
         onClick={onOpen}
         onMouseEnter={sfx.hover}
-        className="feat-card group relative block w-[calc(100%-2*clamp(1.25rem,3vw,3.5rem))] mx-auto aspect-[4/5] overflow-hidden rounded-2xl text-left sm:aspect-[16/10] lg:absolute lg:inset-0 lg:mx-0 lg:aspect-auto lg:w-full lg:rounded-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="feat-card group relative mx-auto block w-[calc(100%-2*clamp(1.25rem,3vw,3.5rem))] overflow-hidden rounded-2xl border border-hair text-left lg:absolute lg:inset-0 lg:mx-0 lg:w-full lg:rounded-none lg:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
-        <img
-          src={project.image}
-          alt={project.title}
-          className="feat-img absolute inset-0 h-full w-full object-cover object-[center_40%]"
-        />
+        {/* media: its own block on touch, the full-bleed backdrop on desktop */}
+        <div className="relative aspect-[16/10] overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="feat-img absolute inset-0 h-full w-full object-cover object-[center_40%]"
+          />
+        </div>
         <div
           aria-hidden
-          className="absolute inset-0"
+          className="absolute inset-0 hidden lg:block"
           style={{
             background:
               "linear-gradient(to top, var(--background) 0%, color-mix(in oklab, var(--background) 70%, transparent) 32%, transparent 65%)",
@@ -123,7 +126,7 @@ function Featured({ project, onOpen }: { project: Project; onOpen: () => void })
           {t.ui.featured} — ↓
         </span>
 
-        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10 lg:p-[clamp(2.5rem,5vw,5rem)]">
+        <div className="relative bg-card/60 p-6 sm:p-10 lg:absolute lg:inset-x-0 lg:bottom-0 lg:bg-transparent lg:p-[clamp(2.5rem,5vw,5rem)]">
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <p className="feat-in font-mono-eyebrow text-primary-glow">

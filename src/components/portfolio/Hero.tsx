@@ -42,17 +42,26 @@ export function Hero() {
 
       mm.add(MQ.motion, () => {
         const h1 = el.querySelector<HTMLElement>(".hero-title")!;
+        let repel: (() => void) | undefined;
+        let entered = false;
+        // autoSplit re-splits on resize / font load so the line masks always
+        // match the wrap; each fresh split is put back in the right state.
         const split = SplitText.create(h1, {
-          type: "lines,chars",
+          type: "words,lines,chars",
           mask: "lines",
           linesClass: "split-line",
           charsClass: "hero-char",
+          autoSplit: true,
+          onSplit(self) {
+            repel?.();
+            repel = undefined;
+            if (!entered) gsap.set(self.chars, { yPercent: 118 });
+            else if (isDesktopPointer()) repel = letterRepel(el, self.chars as HTMLElement[]);
+          },
         });
-        gsap.set(split.chars, { yPercent: 118 });
         gsap.set(".hero-fade", { autoAlpha: 0, y: 24 });
         gsap.set(".hero-rule", { scaleX: 0 });
 
-        let repel: (() => void) | undefined;
         const off = onIntroDone(() => {
           gsap
             .timeline({ defaults: { ease: "expo.out" } })
@@ -60,6 +69,7 @@ export function Hero() {
             .to(".hero-rule", { scaleX: 1, duration: 1.4, ease: "expo.inOut" }, 0.25)
             .to(".hero-fade", { autoAlpha: 1, y: 0, duration: 1, stagger: 0.07 }, 0.55)
             .call(() => {
+              entered = true;
               if (isDesktopPointer()) repel = letterRepel(el, split.chars as HTMLElement[]);
             });
         });

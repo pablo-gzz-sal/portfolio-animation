@@ -65,7 +65,7 @@ function SplitInner({
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         const split = SplitText.create(el, {
-          type: by === "chars" ? "lines,chars" : "lines",
+          type: by === "chars" ? "words,lines,chars" : "lines",
           mask: "lines",
           linesClass: "split-line",
           autoSplit: true,

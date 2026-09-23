@@ -11,6 +11,7 @@ import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { SceneCanvas } from "@/components/portfolio/SceneCanvas";
 import { Atmosphere } from "@/components/portfolio/Atmosphere";
+import { Preloader } from "@/components/portfolio/Preloader";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <main className="relative min-h-screen text-foreground">
+      <Preloader />
       <Atmosphere />
       <SceneCanvas />
       <Header />

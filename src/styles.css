@@ -175,17 +175,25 @@
 
 /* ---------- Heading scale — the type ramp lives here, not per component ---------- */
 @utility h-display {
-  /* Capped so each headline line still fits one .hero-line mask at shell width;
-     a wrap inside a mask reads as a clipped line, not a second one. */
-  font-size: clamp(2.5rem, 5.6vw, 5.5rem);
-  line-height: 0.98;
-  letter-spacing: -0.042em;
+  /* Lusion-scale. Lines are split by SplitText from the rendered layout, so
+     the headline may wrap freely — each wrapped line gets its own mask. */
+  font-size: clamp(2.9rem, 7.4vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  font-weight: 400;
 }
 
 @utility h-section {
-  font-size: clamp(2.25rem, 4vw, 3.75rem);
-  line-height: 1;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.35rem, 4.8vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+@utility h-mega {
+  font-size: clamp(3.25rem, 11vw, 12.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+  font-weight: 400;
 }
 
 @utility h-card {
@@ -232,6 +240,24 @@
   to {
     transform: translate3d(-50%, 0, 0);
   }
+}
+
+/* ---------- Preloader ---------- */
+/* If JS dies mid-intro, the curtain still lifts on its own. */
+.preloader {
+  animation: preloader-failsafe 0.5s ease 7.5s forwards;
+}
+@keyframes preloader-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* SplitText masks — a little bottom room so descenders survive the clip. */
+.split-line {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
 }
 
 /* ---------- Hero entrance choreography (runs once on load) ---------- */

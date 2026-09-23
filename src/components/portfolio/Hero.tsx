@@ -43,35 +43,72 @@ export function Hero() {
       mm.add(MQ.motion, () => {
         const h1 = el.querySelector<HTMLElement>(".hero-title")!;
         let repel: (() => void) | undefined;
-        let entered = false;
-        // autoSplit re-splits on resize / font load so the line masks always
-        // match the wrap; each fresh split is put back in the right state.
-        const split = SplitText.create(h1, {
-          type: "words,lines,chars",
-          mask: "lines",
-          linesClass: "split-line",
-          charsClass: "hero-char",
-          autoSplit: true,
-          onSplit(self) {
-            repel?.();
-            repel = undefined;
-            if (!entered) gsap.set(self.chars, { yPercent: 118 });
-            else if (isDesktopPointer()) repel = letterRepel(el, self.chars as HTMLElement[]);
-          },
-        });
+        let split: SplitText | null = null;
+        let cancelled = false;
+        const tweens: gsap.core.Animation[] = [];
+        // "waiting" until the preloader clears, "playing" during the entrance,
+        // "entered" after. Every (re-)split is put into the state for its phase —
+        // a re-split mid-entrance (fonts landing late) must animate its fresh
+        // letters in, not park them below the mask.
+        let phase: "waiting" | "playing" | "entered" = "waiting";
+        const charsIn = (chars: Element[], stagger = 0.014) =>
+          gsap.fromTo(
+            chars,
+            { yPercent: 118 },
+            { yPercent: 0, duration: 1.35, stagger, ease: "expo.out" },
+          );
+
+        // Keep the headline hidden until it is split against the real font;
+        // splitting against the fallback font is what forced the late re-split.
+        gsap.set(h1, { autoAlpha: 0 });
         gsap.set(".hero-fade", { autoAlpha: 0, y: 24 });
         gsap.set(".hero-rule", { scaleX: 0 });
 
-        const off = onIntroDone(() => {
-          gsap
-            .timeline({ defaults: { ease: "expo.out" } })
-            .to(split.chars, { yPercent: 0, duration: 1.35, stagger: 0.014 }, 0.1)
-            .to(".hero-rule", { scaleX: 1, duration: 1.4, ease: "expo.inOut" }, 0.25)
-            .to(".hero-fade", { autoAlpha: 1, y: 0, duration: 1, stagger: 0.07 }, 0.55)
-            .call(() => {
-              entered = true;
-              if (isDesktopPointer()) repel = letterRepel(el, split.chars as HTMLElement[]);
-            });
+        const fonts = Promise.race([
+          document.fonts?.ready ?? Promise.resolve(),
+          new Promise((r) => setTimeout(r, 2500)),
+        ]).then(() => {
+          if (cancelled) return;
+          split = SplitText.create(h1, {
+            type: "words,lines,chars",
+            mask: "lines",
+            linesClass: "split-line",
+            charsClass: "hero-char",
+            autoSplit: true,
+            onSplit(self) {
+              repel?.();
+              repel = undefined;
+              if (phase === "waiting") gsap.set(self.chars, { yPercent: 118 });
+              else if (phase === "playing") tweens.push(charsIn(self.chars, 0.006));
+              else {
+                gsap.set(self.chars, { yPercent: 0 });
+                if (isDesktopPointer()) repel = letterRepel(el, self.chars as HTMLElement[]);
+              }
+            },
+          });
+          gsap.set(h1, { autoAlpha: 1 });
+        });
+
+        let off = () => {};
+        const intro = new Promise<void>((r) => {
+          off = onIntroDone(r);
+        });
+
+        Promise.all([fonts, intro]).then(() => {
+          if (cancelled || !split) return;
+          phase = "playing";
+          tweens.push(
+            gsap
+              .timeline({ defaults: { ease: "expo.out" } })
+              .add(charsIn(split.chars), 0.1)
+              .to(".hero-rule", { scaleX: 1, duration: 1.4, ease: "expo.inOut" }, 0.25)
+              .to(".hero-fade", { autoAlpha: 1, y: 0, duration: 1, stagger: 0.07 }, 0.55)
+              .call(() => {
+                phase = "entered";
+                if (isDesktopPointer() && split)
+                  repel = letterRepel(el, split.chars as HTMLElement[]);
+              }),
+          );
         });
 
         // Scroll exit — the plate becomes a card and falls back; copy lifts off.
@@ -88,9 +125,12 @@ export function Hero() {
           .to(".hero-copy", { yPercent: -18, autoAlpha: 0, ease: "power1.in" }, 0);
 
         return () => {
+          cancelled = true;
           off();
           repel?.();
-          split.revert();
+          tweens.forEach((tw) => tw.kill());
+          split?.revert();
+          gsap.set(h1, { clearProps: "opacity,visibility" });
         };
       });
 

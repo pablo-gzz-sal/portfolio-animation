@@ -11,10 +11,15 @@ import type { Project } from "./SelectedWork";
 /**
  * Full-screen case study.
  *
- * Opens as a clip-path wipe from the rect of whatever was clicked (featured
- * card or index row) out to the full viewport — the same "the thing you
- * clicked becomes the page" move Lusion makes with a route change — and
- * closes back into that rect if it is still on screen, or wipes down if not.
+ * Opening is a shared-element flight: the image you were looking at (the
+ * index's floating preview, a touch thumbnail, or the featured card) lifts
+ * off the page and lands as the case study's hero media while the sheet
+ * fades up around it, then the copy rises in. If no image is on screen the
+ * sheet simply fades and rises. Closing flies the hero back to its source
+ * when that is still visible, otherwise the sheet fades away.
+ *
+ * "Next project" is an in-place swap: current content lifts out, the sheet
+ * scrolls to top, the next project's media unmasks and its copy rises in.
  *
  * Radix Dialog still owns focus trapping, Escape, scroll lock and aria; we
  * only intercept the close so it can animate first.
@@ -25,28 +30,55 @@ const CONTENT_TO = { y: 0, autoAlpha: 1, duration: 0.9, ease: "expo.out" };
 
 type Rect = { top: number; left: number; width: number; height: number };
 
-function insetFrom(r: Rect | null) {
-  if (!r) return "inset(100% 0% 0% 0% round 0px)";
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const top = Math.max(0, r.top);
-  const left = Math.max(0, r.left);
-  const right = Math.max(0, vw - (r.left + r.width));
-  const bottom = Math.max(0, vh - (r.top + r.height));
-  return `inset(${top}px ${right}px ${bottom}px ${left}px round 18px)`;
-}
+const onScreen = (r: DOMRect) => r.bottom > 0 && r.top < window.innerHeight && r.width > 0;
 
-/** Rect of an on-screen element that opens project `i` (featured card or
- *  index row — whichever is visible), or null. */
-function originRect(i: number): Rect | null {
-  for (const el of document.querySelectorAll<HTMLElement>(`[data-case-origin="${i}"]`)) {
+/** Rect of a visible image showing project `i` — the index's floating
+ *  preview, a touch thumbnail, or the featured card image — or null. */
+function sourceRect(i: number): Rect | null {
+  for (const el of document.querySelectorAll<HTMLElement>(`[data-case-media="${i}"]`)) {
+    const cs = getComputedStyle(el);
+    if (cs.visibility === "hidden" || parseFloat(cs.opacity) < 0.5) continue;
     const r = el.getBoundingClientRect();
-    if (r.bottom > 0 && r.top < window.innerHeight && r.width > 0) {
-      return { top: r.top, left: r.left, width: r.width, height: r.height };
-    }
+    if (onScreen(r)) return { top: r.top, left: r.left, width: r.width, height: r.height };
   }
   return null;
 }
+
+/** The sharp still if the browser already has it (the index preloads it on
+ *  hover), otherwise the light tile — never wait on a 3MB PNG mid-flight. */
+function flightSrc(p: Project) {
+  const probe = new Image();
+  probe.src = p.image;
+  return probe.complete && probe.naturalWidth > 0 ? p.image : p.tile;
+}
+
+/** A fixed-position copy of the project still, for the flight between rects. */
+function makeFlyer(src: string, r: Rect, radius: number) {
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = "";
+  img.setAttribute("aria-hidden", "true");
+  Object.assign(img.style, {
+    position: "fixed",
+    top: `${r.top}px`,
+    left: `${r.left}px`,
+    width: `${r.width}px`,
+    height: `${r.height}px`,
+    objectFit: "cover",
+    objectPosition: "center top",
+    borderRadius: `${radius}px`,
+    zIndex: "90",
+    pointerEvents: "none",
+    boxShadow: "0 40px 90px -30px rgb(0 0 0 / 0.75)",
+  });
+  document.body.appendChild(img);
+  return img;
+}
+
+const rectOf = (el: Element): Rect => {
+  const r = el.getBoundingClientRect();
+  return { top: r.top, left: r.left, width: r.width, height: r.height };
+};
 
 export function CaseStudy({
   projects,
@@ -60,7 +92,6 @@ export function CaseStudy({
   const t = useT();
   const sheet = useRef<HTMLDivElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
-  const curtain = useRef<HTMLDivElement>(null);
   const closing = useRef(false);
   // The project on screen can lag `index` during the next-project wipe.
   const [shown, setShown] = useState<number | null>(index);
@@ -68,9 +99,16 @@ export function CaseStudy({
 
   const indexRef = useRef(index);
   indexRef.current = index;
+  const projectsRef = useRef(projects);
+  projectsRef.current = projects;
+  const flyer = useRef<HTMLImageElement | null>(null);
+  const dropFlyer = () => {
+    flyer.current?.remove();
+    flyer.current = null;
+  };
 
-  // Open: wipe out from the origin rect. Radix portals the content a render
-  // after `open` flips, so this hangs off a callback ref, not an effect.
+  // Open. Radix portals the content a render after `open` flips, so this
+  // hangs off a callback ref, not an effect.
   const openTl = useRef<gsap.core.Timeline | null>(null);
   const attachSheet = useCallback((el: HTMLDivElement | null) => {
     sheet.current = el;
@@ -78,64 +116,122 @@ export function CaseStudy({
     if (!el || i === null) return;
     // StrictMode attaches refs twice; restart cleanly rather than stacking.
     openTl.current?.kill();
+    dropFlyer();
     closing.current = false;
     sfx.open();
-    if (prefersReducedMotion()) {
-      gsap.set(el, { clipPath: "none" });
+    const copy = el.querySelectorAll(".case-in");
+    const media = el.querySelector<HTMLElement>(".case-media");
+    if (prefersReducedMotion() || !media) {
+      gsap.set(el, { autoAlpha: 1 });
       return;
     }
-    openTl.current = gsap
-      .timeline()
-      .fromTo(
-        el,
-        { clipPath: insetFrom(originRect(i)) },
-        { clipPath: "inset(0px 0px 0px 0px round 0px)", duration: 1.05, ease: "expo.inOut" },
-      )
-      .fromTo(el.querySelectorAll(".case-in"), CONTENT_FROM, { ...CONTENT_TO, stagger: 0.06 }, 0.55)
-      .set(el, { clipPath: "none" });
+
+    const from = sourceRect(i);
+    const tl = gsap.timeline();
+    openTl.current = tl;
+    tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.55, ease: "power2.out" }, 0);
+
+    if (from) {
+      const to = rectOf(media);
+      const img = makeFlyer(flightSrc(projectsRef.current[i]), from, 12);
+      flyer.current = img;
+      gsap.set(media, { autoAlpha: 0 });
+      tl.to(img, { ...to, borderRadius: 16, duration: 1.05, ease: "expo.inOut" }, 0)
+        .set(media, { autoAlpha: 1 })
+        .to(img, { autoAlpha: 0, duration: 0.25, onComplete: dropFlyer });
+    } else {
+      tl.fromTo(
+        media,
+        { clipPath: "inset(100% 0% 0% 0% round 16px)", scale: 1.04 },
+        { clipPath: "inset(0% 0% 0% 0% round 16px)", scale: 1, duration: 1.1, ease: "expo.out" },
+        0.2,
+      );
+    }
+    tl.fromTo(copy, CONTENT_FROM, { ...CONTENT_TO, stagger: 0.07 }, 0.3);
   }, []);
 
   const requestClose = useCallback(() => {
     if (index === null || closing.current) return;
     closing.current = true;
     sfx.close();
+    openTl.current?.kill();
+    dropFlyer();
     const done = () => {
+      dropFlyer();
       onIndexChange(null);
       setShown(null);
     };
-    if (prefersReducedMotion() || !sheet.current) return done();
-    const origin = shown !== null ? originRect(shown) : null;
-    gsap.to(sheet.current, {
-      clipPath: insetFrom(origin),
-      duration: origin ? 0.85 : 0.7,
-      ease: "expo.inOut",
-      onComplete: done,
-    });
+    const el = sheet.current;
+    if (prefersReducedMotion() || !el || shown === null) return done();
+
+    const media = el.querySelector<HTMLElement>(".case-media");
+    const mr = media?.getBoundingClientRect();
+    // Fly home only if both ends are visible: the hero in the sheet, and a
+    // still of this project on the page behind it (e.g. the featured card).
+    const home = media && mr && onScreen(mr) ? sourceRect(shown) : null;
+    const tl = gsap.timeline({ onComplete: done });
+    if (media && home) {
+      const img = makeFlyer(flightSrc(projectsRef.current[shown]), rectOf(media), 16);
+      flyer.current = img;
+      gsap.set(media, { autoAlpha: 0 });
+      tl.to(img, { ...home, borderRadius: 12, duration: 0.85, ease: "expo.inOut" }, 0).to(
+        el,
+        { autoAlpha: 0, duration: 0.45, ease: "power2.inOut" },
+        0.1,
+      );
+    } else {
+      tl.to(el.querySelectorAll(".case-in, .case-media"), {
+        y: -24,
+        autoAlpha: 0,
+        duration: 0.35,
+        stagger: 0.03,
+        ease: "power2.in",
+      }).to(el, { autoAlpha: 0, duration: 0.4, ease: "power2.inOut" }, 0.15);
+    }
   }, [index, shown, onIndexChange]);
 
   const goTo = useCallback(
     (next: number) => {
       sfx.click();
+      const el = sheet.current;
       const swap = () => {
         onIndexChange(next);
         setShown(next);
         if (scroller.current) scroller.current.scrollTop = 0;
       };
-      if (prefersReducedMotion() || !curtain.current) return swap();
+      if (prefersReducedMotion() || !el) return swap();
       gsap
         .timeline()
-        .fromTo(
-          curtain.current,
-          { scaleY: 0, transformOrigin: "50% 100%" },
-          { scaleY: 1, duration: 0.6, ease: "expo.in" },
-        )
+        .to(el.querySelectorAll(".case-in, .case-media, .case-next"), {
+          y: -30,
+          autoAlpha: 0,
+          duration: 0.4,
+          stagger: 0.03,
+          ease: "power2.in",
+        })
         .call(swap)
-        .set(curtain.current, { transformOrigin: "50% 0%" }, "+=0.08")
-        .to(curtain.current, { scaleY: 0, duration: 0.75, ease: "expo.out" })
+        // New content mounts on the swap; animate it on the next frame.
         .add(() => {
-          const els = sheet.current?.querySelectorAll(".case-in");
-          if (els?.length) gsap.fromTo(els, CONTENT_FROM, { ...CONTENT_TO, stagger: 0.06 });
-        }, "<0.1");
+          requestAnimationFrame(() => {
+            const media = el.querySelector(".case-media");
+            if (media)
+              gsap.fromTo(
+                media,
+                { clipPath: "inset(100% 0% 0% 0% round 16px)", scale: 1.04, y: 0, autoAlpha: 1 },
+                {
+                  clipPath: "inset(0% 0% 0% 0% round 16px)",
+                  scale: 1,
+                  duration: 1.1,
+                  ease: "expo.out",
+                },
+              );
+            gsap.fromTo(el.querySelectorAll(".case-in"), CONTENT_FROM, {
+              ...CONTENT_TO,
+              stagger: 0.07,
+            });
+            gsap.set(el.querySelectorAll(".case-next"), { y: 0, autoAlpha: 1 });
+          });
+        }, "+=0.05");
     },
     [onIndexChange],
   );
@@ -154,16 +250,15 @@ export function CaseStudy({
             requestClose();
           }}
           className="fixed inset-0 z-[70] bg-background outline-none"
-          style={{ clipPath: "inset(100% 0% 0% 0%)" }}
         >
           {p && shown !== null && (
             <div ref={scroller} className="modal-scroll h-full overflow-y-auto overscroll-contain">
               {/* top bar */}
               <div className="sticky top-0 z-10 border-b border-hair bg-background/80 backdrop-blur-xl">
                 <div className="shell flex items-center justify-between gap-6 py-4">
-                  <p className="font-mono text-xs tabular-nums text-ink-faint">
-                    <span className="text-primary-glow">{String(shown + 1).padStart(2, "0")}</span>{" "}
-                    / {total}
+                  <p className="flex items-baseline font-num text-lg italic leading-none text-ink-faint">
+                    <span className="text-primary-glow">{String(shown + 1).padStart(2, "0")}</span>
+                    &nbsp;/ {total}
                     <span className="mx-3 text-hair-2">—</span>
                     <span className="font-mono-eyebrow">{p.tag}</span>
                   </p>
@@ -184,7 +279,7 @@ export function CaseStudy({
               </div>
 
               <article key={shown} className="shell pb-10 pt-16 sm:pt-24">
-                <DialogPrimitive.Title className="case-in font-display h-display max-w-5xl text-foreground">
+                <DialogPrimitive.Title className="case-in font-display h-section max-w-4xl text-foreground">
                   {p.title}
                 </DialogPrimitive.Title>
                 <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
@@ -205,7 +300,7 @@ export function CaseStudy({
                   )}
                 </div>
 
-                <div className="case-in relative mt-12 aspect-[16/9] overflow-hidden rounded-2xl border border-hair bg-muted/30 sm:mt-16">
+                <div className="case-media relative mt-12 aspect-[16/9] overflow-hidden rounded-2xl border border-hair bg-muted/30 sm:mt-14">
                   {p.video ? (
                     <video
                       src={p.video}
@@ -241,7 +336,7 @@ export function CaseStudy({
                           : "border-t border-hair py-8 sm:border-l sm:border-t-0 sm:px-8"
                       }
                     >
-                      <dd className="font-display text-5xl tabular-nums text-foreground sm:text-6xl">
+                      <dd className="font-num text-6xl leading-none text-foreground sm:text-7xl">
                         <CountUp value={m.value} />
                       </dd>
                       <dt className="mt-3 font-mono-eyebrow text-ink-faint">{m.label}</dt>
@@ -314,7 +409,7 @@ export function CaseStudy({
                 type="button"
                 onClick={() => goTo(next)}
                 onMouseEnter={sfx.hover}
-                className="group block w-full border-t border-hair py-16 text-left transition-colors hover:bg-card/60 sm:py-24"
+                className="case-next group block w-full border-t border-hair py-16 text-left transition-colors hover:bg-card/60 sm:py-24"
               >
                 <div className="shell">
                   <p className="flex items-center gap-3 font-mono-eyebrow text-ink-faint">
@@ -328,11 +423,6 @@ export function CaseStudy({
               </button>
             </div>
           )}
-          <div
-            ref={curtain}
-            aria-hidden
-            className="pointer-events-none absolute inset-0 z-20 origin-bottom scale-y-0 bg-primary"
-          />
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
@@ -351,8 +441,8 @@ function CaseBlock({
   return (
     <Reveal>
       <section>
-        <p className="mb-6 font-mono text-xs text-ink-faint">
-          <span className="text-primary-glow">({n})</span>{" "}
+        <p className="mb-6 flex items-baseline gap-2 text-ink-faint">
+          <span className="font-num text-lg italic text-primary-glow">({n})</span>
           <span className="font-mono-eyebrow">{label}</span>
         </p>
         {children}
@@ -369,7 +459,7 @@ function List({ items }: { items: string[] }) {
           key={a}
           className="grid grid-cols-[40px_1fr] gap-4 py-5 text-base leading-relaxed text-foreground/85 sm:text-lg"
         >
-          <span className="pt-1 font-mono text-xs tabular-nums text-ink-faint">
+          <span className="font-num text-xl italic leading-snug text-ink-faint">
             {String(i + 1).padStart(2, "0")}
           </span>
           <span>{a}</span>

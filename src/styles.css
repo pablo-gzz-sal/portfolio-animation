@@ -54,6 +54,9 @@
   --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Numerals — an editorial serif, so indices and figures read as typography
+     rather than terminal output. */
+  --font-num: "Instrument Serif", ui-serif, Georgia, serif;
 }
 
 :root {
@@ -165,6 +168,13 @@
   font-variation-settings: "opsz" 96;
 }
 
+@utility font-num {
+  font-family: var(--font-num);
+  font-weight: 400;
+  letter-spacing: 0;
+  font-variant-numeric: lining-nums;
+}
+
 @utility font-mono-eyebrow {
   font-family: var(--font-mono);
   text-transform: uppercase;
@@ -243,7 +253,7 @@
 }
 .sound-bars > span {
   width: 2px;
-  height: 2px;
+  height: 5px;
   border-radius: 1px;
   background: currentColor;
   transition: height 0.3s var(--ease-out-expo);
@@ -254,6 +264,10 @@
 .sound-bars.is-on > span:nth-child(2) { animation-delay: -0.3s; }
 .sound-bars.is-on > span:nth-child(3) { animation-delay: -0.6s; }
 .sound-bars.is-on > span:nth-child(4) { animation-delay: -0.15s; }
+.sound-bars:not(.is-on) > span { opacity: 0.55; }
+.sound-bars:not(.is-on) > span:nth-child(2) { height: 8px; }
+.sound-bars:not(.is-on) > span:nth-child(3) { height: 4px; }
+.sound-bars:not(.is-on) > span:nth-child(4) { height: 7px; }
 @keyframes sound-bar {
   from { height: 3px; }
   to { height: 12px; }

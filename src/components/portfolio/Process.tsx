@@ -101,7 +101,7 @@ export function Process() {
                     >
                       <span
                         className={cn(
-                          "font-mono text-xs tabular-nums transition-colors duration-500",
+                          "font-num text-2xl italic transition-colors duration-500",
                           on ? "text-primary-glow" : "text-ink-faint",
                         )}
                       >
@@ -170,7 +170,7 @@ export function Process() {
                           : "translate-y-6 opacity-0",
                     )}
                   >
-                    <span className="font-display text-[clamp(5rem,9vw,9rem)] leading-none tracking-[-0.06em] text-primary-glow/90">
+                    <span className="font-num text-[clamp(6rem,11vw,11rem)] italic leading-[0.8] text-primary-glow/90">
                       {s.n}
                     </span>
                     <ul className="space-y-3 font-mono text-[13px]">

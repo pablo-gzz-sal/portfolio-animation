@@ -146,7 +146,7 @@ export function Preloader() {
         <div className="overflow-hidden">
           <span
             ref={counter}
-            className="pl-roll block font-display h-mega tabular-nums text-foreground"
+            className="pl-roll block font-num h-mega tabular-nums text-foreground"
           >
             000
           </span>

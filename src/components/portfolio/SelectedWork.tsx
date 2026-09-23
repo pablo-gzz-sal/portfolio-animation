@@ -107,7 +107,10 @@ function Featured({ project, onOpen }: { project: Project; onOpen: () => void })
         className="feat-card group relative mx-auto block w-[calc(100%-2*clamp(1.25rem,3vw,3.5rem))] overflow-hidden rounded-2xl border border-hair text-left lg:absolute lg:inset-0 lg:mx-0 lg:w-full lg:rounded-none lg:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
         {/* media: its own block on touch, the full-bleed backdrop on desktop */}
-        <div className="relative aspect-[16/10] overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
+        <div
+          data-case-media={0}
+          className="relative aspect-[16/10] overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto"
+        >
           <img
             src={project.image}
             alt={project.title}
@@ -143,9 +146,7 @@ function Featured({ project, onOpen }: { project: Project; onOpen: () => void })
               <dl className="hidden gap-10 sm:flex">
                 {project.metrics.map((m) => (
                   <div key={m.label}>
-                    <dd className="font-display text-4xl tabular-nums text-foreground">
-                      {m.value}
-                    </dd>
+                    <dd className="font-num text-5xl leading-none text-foreground">{m.value}</dd>
                     <dt className="mt-1 font-mono-eyebrow text-ink-faint">{m.label}</dt>
                   </div>
                 ))}

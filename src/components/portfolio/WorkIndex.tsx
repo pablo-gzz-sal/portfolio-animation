@@ -62,6 +62,8 @@ export function WorkIndex({
 
   const enter = (i: number) => {
     if (!isDesktopPointer()) return;
+    // Warm the full-size still so the case study's opening flight is sharp.
+    new Image().src = projects[i].image;
     sfx.hover();
     setActive(i);
     gsap.to(media.current, {
@@ -114,7 +116,7 @@ export function WorkIndex({
                   active !== null && active !== i && "lg:opacity-30",
                 )}
               >
-                <span className="font-mono text-xs tabular-nums text-ink-faint transition-colors group-hover:text-primary-glow">
+                <span className="self-start font-num text-2xl italic leading-none text-ink-faint transition-colors group-hover:text-primary-glow lg:self-center">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="min-w-0">
@@ -125,6 +127,7 @@ export function WorkIndex({
                   <span className="mt-4 block lg:hidden">
                     <span className="block font-mono-eyebrow text-ink-dim">{p.tag}</span>
                     <img
+                      data-case-media={i}
                       src={p.tile}
                       alt=""
                       loading="lazy"
@@ -147,6 +150,7 @@ export function WorkIndex({
       <div
         ref={media}
         aria-hidden
+        data-case-media={active ?? -1}
         className="pointer-events-none absolute left-0 top-0 z-10 hidden aspect-[16/10] w-[clamp(280px,26vw,420px)] overflow-hidden rounded-xl border border-hair-2 shadow-[0_30px_80px_-20px_rgb(0_0_0/0.7)] lg:block"
       >
         {projects.map((p, i) => (

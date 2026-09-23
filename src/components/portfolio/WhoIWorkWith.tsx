@@ -66,7 +66,7 @@ export function WhoIWorkWith() {
           {t.whoIWorkWith.items.map((item, i) => (
             <Reveal key={item.title} delay={i * 90} className="bg-background">
               <article className="group h-full p-7 transition-colors duration-500 hover:bg-card sm:p-9">
-                <span className="font-mono text-xs tabular-nums text-ink-faint transition-colors group-hover:text-primary-glow">
+                <span className="font-num text-2xl italic text-ink-faint transition-colors group-hover:text-primary-glow">
                   0{i + 1}
                 </span>
                 <h3 className="mt-10 font-display h-card text-foreground">{item.title}</h3>

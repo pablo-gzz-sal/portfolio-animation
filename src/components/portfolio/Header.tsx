@@ -77,7 +77,7 @@ export function Header() {
                   >
                     <span
                       className={cn(
-                        "font-mono text-[10px] tabular-nums transition-colors",
+                        "font-num text-[14px] italic leading-none transition-colors",
                         on ? "text-primary-glow" : "text-ink-faint",
                       )}
                     >
@@ -179,10 +179,6 @@ export function LocalTime({ label, className }: { label: string; className?: str
         className,
       )}
     >
-      <span className="relative flex h-1.5 w-1.5">
-        <span className="absolute inset-0 animate-ping rounded-full bg-primary-glow/60" />
-        <span className="relative h-1.5 w-1.5 rounded-full bg-primary-glow" />
-      </span>
       {label} {now ?? "--:--:--"}
     </span>
   );
@@ -321,7 +317,7 @@ function MobileMenu({
             style={{ transitionDelay: visible ? `${i * 70 + 100}ms` : "0ms" }}
           >
             <div className="flex items-baseline gap-4">
-              <span className="font-mono text-xs text-muted-foreground/50 tracking-widest select-none">
+              <span className="font-num text-lg italic text-muted-foreground/60 select-none">
                 {item.n}
               </span>
               <span className="font-display text-[2.6rem] leading-none text-foreground group-hover:text-primary-glow transition-colors duration-200">

@@ -263,8 +263,11 @@ export function HeroStats() {
                   : "border-t border-hair py-8 sm:border-t-0 sm:border-l sm:py-10 sm:pl-10 sm:pr-10"
               }
             >
-              <dt className="font-mono text-xs tabular-nums text-ink-faint">
-                <span className="text-primary-glow">0{i + 1}</span> — {m.k}
+              <dt className="flex items-baseline gap-2 font-mono-eyebrow text-ink-faint">
+                <span className="font-num text-lg normal-case italic tracking-normal text-primary-glow">
+                  0{i + 1}
+                </span>
+                {m.k}
               </dt>
               <dd className="mt-3 font-display text-xl leading-snug text-foreground/90 sm:text-2xl">
                 {m.v}

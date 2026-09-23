@@ -33,7 +33,7 @@ export function SectionHeader({
   return (
     <header className={cn("grid gap-6 lg:grid-cols-[200px_1fr] lg:gap-10", className)}>
       <Reveal className="flex items-baseline gap-3 lg:flex-col lg:gap-2 lg:pt-3">
-        <span className="font-mono text-xs tabular-nums text-ink-faint">
+        <span className="font-num text-lg italic leading-none text-ink-faint">
           {index ? (
             <>
               <span className="text-primary-glow">{index}</span> / {SECTION_TOTAL}

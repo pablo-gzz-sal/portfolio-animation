@@ -8,9 +8,6 @@ import { SectionHeader } from "./SectionHeader";
 import { WorkIndex } from "./WorkIndex";
 import { projectMeta } from "./projects";
 
-// Re-exported for existing imports.
-export { PROJECT_META, projectMeta, type ProjectMeta } from "./projects";
-
 export type Project = ReturnType<typeof useT>["selectedWork"]["projects"][number] & {
   image: string;
   tile: string;

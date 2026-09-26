@@ -177,9 +177,8 @@ export function Hero() {
       </div>
 
       <div className="hero-copy shell relative pt-36 pb-16 sm:pb-20">
-        <div className="hero-fade mb-8 flex items-center justify-between gap-6 font-mono-eyebrow text-ink-faint">
+        <div className="hero-fade mb-8 font-mono-eyebrow text-ink-faint">
           <span>{t.hero.senior}</span>
-          <span className="hidden sm:inline">48.14°N — 11.58°E</span>
         </div>
 
         {/* Keyed so a language switch gives SplitText a fresh node to own. */}

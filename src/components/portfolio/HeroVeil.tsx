@@ -24,6 +24,8 @@ import { PROJECT_META } from "./projects";
  * off-screen or the tab is hidden.
  */
 
+const WALL_ASPECT = 16 / 9;
+
 const VERT = /* glsl */ `
 varying vec2 vUv;
 void main() {
@@ -45,7 +47,7 @@ void main() {
   // Drag the field a touch along the motion so fast swipes leave a comet tail.
   vec2 uv = vUv - uVel * 0.35;
   float prev = texture2D(uPrev, uv).r;
-  prev = max(prev * 0.962 - 0.0025, 0.0);
+  prev = max(prev * 0.968 - 0.0022, 0.0);
   vec2 d = vUv - uPoint;
   d.x *= uAspect;
   float splat = exp(-dot(d, d) / (uRadius * uRadius)) * uStrength;
@@ -78,13 +80,13 @@ void main() {
   // lens bulge around the pointer
   vec2 d = vUv - uPoint;
   vec2 da = d * vec2(uRes.x / uRes.y, 1.0);
-  float lens = exp(-dot(da, da) / 0.03);
-  vec2 warped = vUv - d * lens * 0.22;
+  float lens = exp(-dot(da, da) / 0.07);
+  vec2 warped = vUv - d * lens * 0.12;
 
   // low disturbance samples one colour per cell (pixelated),
   // saturation blends to the continuous, lensed image
-  float smoothAmt = smoothstep(0.55, 0.95, t);
-  vec2 suv = mix(cellUv - d * lens * 0.22, warped, smoothAmt);
+  float smoothAmt = smoothstep(0.42, 0.82, t);
+  vec2 suv = mix(cellUv - d * lens * 0.12, warped, smoothAmt);
   suv = (suv - 0.5) * uCover + 0.5;
   vec3 img = texture2D(uWall, suv).rgb;
 
@@ -102,7 +104,7 @@ void main() {
   vec3 col = mix(frost, img, smoothAmt);
   col += glow * flick * 0.35;
 
-  float a = sq * smoothstep(0.02, 0.18, t) * mix(0.72, 0.96, smoothAmt);
+  float a = sq * smoothstep(0.02, 0.18, t) * mix(0.72, 1.0, smoothAmt);
 
   // idle grid dots, fading under active cells
   float dotMask = (1.0 - smoothstep(0.035, 0.06, length(local))) * 0.16 * uIntro;
@@ -114,10 +116,13 @@ void main() {
 }
 `;
 
-/** Paint the five project stills into one staggered wall texture. */
-async function buildWall(): Promise<HTMLCanvasElement> {
-  const W = 2048;
-  const H = 1152;
+/**
+ * Paint the five project stills into one staggered wall texture. Built twice
+ * at the same size — first from the light 640px tiles so the veil is ready
+ * with the intro, then from the 1280px `veil` stills for a crisp reveal.
+ */
+async function buildWall(src: "tile" | "veil", W: number): Promise<HTMLCanvasElement> {
+  const H = Math.round(W / WALL_ASPECT);
   const canvas = document.createElement("canvas");
   canvas.width = W;
   canvas.height = H;
@@ -130,7 +135,7 @@ async function buildWall(): Promise<HTMLCanvasElement> {
       (m) =>
         new Promise<HTMLImageElement | null>((resolve) => {
           const img = new Image();
-          img.src = m.tile;
+          img.src = m[src];
           img.decode().then(
             () => resolve(img),
             () => resolve(null),
@@ -143,7 +148,7 @@ async function buildWall(): Promise<HTMLCanvasElement> {
 
   // 4 columns, staggered vertically, tiles repeated to fill.
   const cols = 4;
-  const gap = 28;
+  const gap = Math.round(W * 0.0137);
   const tw = (W - gap * (cols + 1)) / cols;
   const th = tw * 0.66;
   let n = 0;
@@ -158,7 +163,7 @@ async function buildWall(): Promise<HTMLCanvasElement> {
       const sh = th / s;
       g.save();
       g.beginPath();
-      g.roundRect(x, y, tw, th, 18);
+      g.roundRect(x, y, tw, th, W * 0.0088);
       g.clip();
       g.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, x, y, tw, th);
       g.restore();
@@ -180,7 +185,7 @@ export function HeroVeil() {
       premultipliedAlpha: true,
       powerPreference: "high-performance",
     });
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(dpr);
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.style.width = "100%";
@@ -223,8 +228,10 @@ export function HeroVeil() {
     const wallTex = new THREE.Texture();
     // Raw sRGB in, raw sRGB out — the ShaderMaterial does no colour management.
     wallTex.colorSpace = THREE.NoColorSpace;
-    wallTex.minFilter = THREE.LinearFilter;
-    wallTex.generateMipmaps = false;
+    // Mipmapped + anisotropic: the wall is usually drawn smaller than it is.
+    wallTex.minFilter = THREE.LinearMipmapLinearFilter;
+    wallTex.generateMipmaps = true;
+    wallTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
     const veilUniforms = {
       uTrail: { value: rtB.texture as THREE.Texture },
       uWall: { value: wallTex },
@@ -248,19 +255,23 @@ export function HeroVeil() {
     veilScene.add(new THREE.Mesh(quad, veilMat));
 
     let disposed = false;
-    buildWall().then((canvas) => {
+    const wallW = renderer.capabilities.maxTextureSize >= 4096 ? 3072 : 2048;
+    const setWall = (canvas: HTMLCanvasElement) => {
       if (disposed) return;
       wallTex.image = canvas;
       wallTex.needsUpdate = true;
-    });
+    };
+    buildWall("tile", wallW)
+      .then(setWall)
+      .then(() => (disposed ? undefined : buildWall("veil", wallW)))
+      .then((canvas) => canvas && setWall(canvas));
 
-    const WALL_ASPECT = 2048 / 1152;
     const applySize = () => {
       const w = Math.max(container.clientWidth, 1);
       const h = Math.max(container.clientHeight, 1);
       renderer.setSize(w, h, false);
       veilUniforms.uRes.value.set(w, h);
-      veilUniforms.uCell.value = Math.round(Math.max(20, Math.min(34, w / 56)));
+      veilUniforms.uCell.value = Math.round(Math.max(18, Math.min(30, w / 60)));
       const a = w / h;
       veilUniforms.uCover.value.set(
         a > WALL_ASPECT ? 1 : a / WALL_ASPECT,
@@ -337,8 +348,8 @@ export function HeroVeil() {
 
       trailUniforms.uPoint.value.set(tx, ty);
       trailUniforms.uVel.value.set(vx * 0.5, vy * 0.5);
-      trailUniforms.uRadius.value = 0.045 + Math.min(speed * 1.6, 0.09);
-      const base = ghost ? 0.1 : 0.06;
+      trailUniforms.uRadius.value = 0.085 + Math.min(speed * 2, 0.13);
+      const base = ghost ? 0.1 : 0.07;
       trailUniforms.uStrength.value = Math.min(base + speed * (ghost ? 5 : 9), 0.55);
 
       // ping-pong

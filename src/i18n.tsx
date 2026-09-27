@@ -336,6 +336,43 @@ const en: Dict = {
         ],
       },
       {
+        tag: "Brand site + SSR",
+        id: "display-con-sentido",
+        title: "DISSEN, Display Con Sentido",
+        liveUrl: "https://www.displayconsentido.com",
+        summary:
+          "Bilingual, server-rendered marketing site for a Mexican furniture, construction, and interior design studio, with a Cloudinary-driven project gallery and a contact form that lands in their inbox.",
+        role: "Design + full-stack build",
+        outcome: "Portfolio online, leads by email",
+        client:
+          "Mexican studio for custom furniture, construction, and interior design, working on residential and retail spaces.",
+        timeline: "~2 weeks · solo build",
+        problem:
+          "Twenty years of residential and retail work had no home online. The studio needed a site that showed the work at full quality, read well in Spanish and English, and turned visits into project inquiries.",
+        approach: [
+          "Built on Angular 20 with SSR — the landing page is prerendered to HTML, everything else renders on the server.",
+          "Served the project gallery from Cloudinary: auto format and quality, 1x–3x srcsets, Residential / Retail tabs, a swipeable carousel, and a keyboard-driven lightbox.",
+          "Shipped Spanish and English copy behind a signal-based i18n service, with the visitor's choice remembered.",
+          "Routed the contact form through a Vercel serverless function that emails each inquiry over SMTP, reply-to set to the lead.",
+        ],
+        results: [
+          "Residential and retail projects presented in one gallery, sized for every screen.",
+          "Inquiries arrive in the studio's inbox with name, phone, and message, ready to reply.",
+          "Motion respects reduced-motion preferences; the landing page ships as static HTML.",
+        ],
+        metrics: [
+          { value: "2", label: "Languages, ES / EN" },
+          { value: "SSR", label: "Prerendered landing" },
+          { value: "3x", label: "Retina image srcsets" },
+        ],
+        stackDetail: [
+          { label: "Frontend", items: ["Angular 20", "Signals", "Tailwind v4", "TypeScript"] },
+          { label: "Rendering", items: ["Angular SSR", "Prerender", "Express"] },
+          { label: "Media", items: ["Cloudinary", "f_auto / q_auto", "Responsive srcset"] },
+          { label: "Platform", items: ["Vercel", "Serverless function", "Nodemailer SMTP"] },
+        ],
+      },
+      {
         tag: "Lead generation",
         id: "lending-group",
         title: "Lending Group, Texas",
@@ -699,6 +736,43 @@ const es: Dict = {
           { label: "Contenido", items: ["WordPress headless", "API REST", "CMS multilingüe"] },
           { label: "SEO", items: ["Sitemap generado", "hreflang", "Canónicas"] },
           { label: "Integraciones", items: ["Reservas TuriTop", "GA4", "Google Ads"] },
+        ],
+      },
+      {
+        tag: "Sitio de marca + SSR",
+        id: "display-con-sentido",
+        title: "DISSEN, Display Con Sentido",
+        liveUrl: "https://www.displayconsentido.com",
+        summary:
+          "Sitio bilingüe renderizado en servidor para un estudio mexicano de mobiliario, obra e interiorismo, con galería de proyectos en Cloudinary y un formulario de contacto que llega directo a su correo.",
+        role: "Diseño + desarrollo full-stack",
+        outcome: "Portafolio en línea, leads por correo",
+        client:
+          "Estudio mexicano de mobiliario a la medida, obra e interiorismo para espacios residenciales y comerciales.",
+        timeline: "~2 semanas · construcción en solitario",
+        problem:
+          "Veinte años de proyectos residenciales y retail no tenían presencia en línea. El estudio necesitaba un sitio que mostrara el trabajo con calidad, se leyera bien en español e inglés y convirtiera visitas en solicitudes de proyecto.",
+        approach: [
+          "Construí sobre Angular 20 con SSR: la landing se prerenderiza a HTML y el resto se renderiza en servidor.",
+          "Serví la galería desde Cloudinary: formato y calidad automáticos, srcsets 1x–3x, pestañas Residencial / Retail, carrusel deslizable y lightbox con teclado.",
+          "Entregué el contenido en español e inglés con un servicio de i18n basado en signals que recuerda la elección del visitante.",
+          "Conecté el formulario a una función serverless en Vercel que envía cada solicitud por SMTP, con reply-to al prospecto.",
+        ],
+        results: [
+          "Proyectos residenciales y retail en una sola galería, optimizada para cada pantalla.",
+          "Las solicitudes llegan al correo del estudio con nombre, teléfono y mensaje, listas para responder.",
+          "La animación respeta reduced-motion; la landing se entrega como HTML estático.",
+        ],
+        metrics: [
+          { value: "2", label: "Idiomas, ES / EN" },
+          { value: "SSR", label: "Landing prerenderizada" },
+          { value: "3x", label: "Srcsets para Retina" },
+        ],
+        stackDetail: [
+          { label: "Frontend", items: ["Angular 20", "Signals", "Tailwind v4", "TypeScript"] },
+          { label: "Renderizado", items: ["Angular SSR", "Prerender", "Express"] },
+          { label: "Medios", items: ["Cloudinary", "f_auto / q_auto", "srcset responsivo"] },
+          { label: "Plataforma", items: ["Vercel", "Función serverless", "Nodemailer SMTP"] },
         ],
       },
       {

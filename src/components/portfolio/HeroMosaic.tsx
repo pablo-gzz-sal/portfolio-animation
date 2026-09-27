@@ -9,9 +9,9 @@ import { projectMeta } from "./projects";
  * Purely ornamental — aria-hidden, pointer-events-none. The real, navigable
  * project list is SelectedWork; nothing here is the only route to any content.
  *
- * `project` is the project slug, shared with PROJECT_META. Two projects appear
- * twice at different scales so the field reads as a wall rather than a row of
- * five, which is also why positions are hand-placed instead of gridded.
+ * `project` is the project slug, shared with PROJECT_META. Firmexa appears
+ * twice at different scales so the field reads as a wall rather than a row,
+ * which is also why positions are hand-placed instead of gridded.
  */
 type Tile = {
   project: string;
@@ -34,7 +34,7 @@ const TILES: Tile[] = [
   { project: "lending-group", left: "55%", top: "2%", width: "clamp(130px, 16vw, 252px)", opacity: 0.3, dur: "25s", delay: "1300ms", desktopOnly: true },
   { project: "diocletians-dream", left: "72%", top: "22%", width: "clamp(140px, 17vw, 272px)", opacity: 0.38, dur: "22s", delay: "700ms" },
   { project: "firmexa", left: "88%", top: "-2%", width: "clamp(120px, 15vw, 236px)", opacity: 0.24, dur: "29s", delay: "200ms", desktopOnly: true },
-  { project: "lending-group", left: "6%", top: "40%", width: "clamp(120px, 15vw, 232px)", opacity: 0.2, dur: "26s", delay: "1700ms", desktopOnly: true },
+  { project: "display-con-sentido", left: "6%", top: "40%", width: "clamp(120px, 15vw, 232px)", opacity: 0.2, dur: "26s", delay: "1700ms", desktopOnly: true },
 ];
 
 export function HeroMosaic() {

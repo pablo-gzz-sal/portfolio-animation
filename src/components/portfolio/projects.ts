@@ -3,16 +3,19 @@ import imgFirmexa from "@/assets/images/firmexa.png";
 import imgBclg from "@/assets/images/bclg.png";
 import imgEsencial from "@/assets/images/esencial.png";
 import imgDiocletiansDream from "@/assets/images/diocletiansdream.png";
+import imgDisplayConSentido from "@/assets/images/displayconsentido.png";
 import tileJoseph from "@/assets/images/tiles/joseph-tile.webp";
 import tileFirmexa from "@/assets/images/tiles/firmexa-tile.webp";
 import tileBclg from "@/assets/images/tiles/bclg-tile.webp";
 import tileEsencial from "@/assets/images/tiles/esencial-tile.webp";
 import tileDiocletiansDream from "@/assets/images/tiles/diocletiansdream-tile.webp";
+import tileDisplayConSentido from "@/assets/images/tiles/displayconsentido-tile.webp";
 import veilJoseph from "@/assets/images/tiles/joseph-hq.webp";
 import veilFirmexa from "@/assets/images/tiles/firmexa-hq.webp";
 import veilBclg from "@/assets/images/tiles/bclg-hq.webp";
 import veilEsencial from "@/assets/images/tiles/esencial-hq.webp";
 import veilDiocletiansDream from "@/assets/images/tiles/diocletiansdream-hq.webp";
+import veilDisplayConSentido from "@/assets/images/tiles/displayconsentido-hq.webp";
 
 export type ProjectMeta = {
   id: string;
@@ -50,6 +53,13 @@ export const PROJECT_META: ProjectMeta[] = [
     tile: tileDiocletiansDream,
     veil: veilDiocletiansDream,
     stack: ["Angular", "SSG", "WordPress", "SEO"],
+  },
+  {
+    id: "display-con-sentido",
+    image: imgDisplayConSentido,
+    tile: tileDisplayConSentido,
+    veil: veilDisplayConSentido,
+    stack: ["Angular", "SSR", "Cloudinary", "Vercel"],
   },
   {
     id: "lending-group",

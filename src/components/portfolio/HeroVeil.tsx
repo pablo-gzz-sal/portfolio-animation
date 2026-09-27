@@ -117,7 +117,7 @@ void main() {
 `;
 
 /**
- * Paint the five project stills into one staggered wall texture. Built twice
+ * Paint the project stills into one staggered wall texture. Built twice
  * at the same size — first from the light 640px tiles so the veil is ready
  * with the intro, then from the 1280px `veil` stills for a crisp reveal.
  */

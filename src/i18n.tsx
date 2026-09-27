@@ -230,7 +230,7 @@ const en: Dict = {
         tag: "Architecture + UX",
         id: "joseph",
         title: "Joseph Battisti, NY Salon",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651842/barber_kgabs3.mp4",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/joseph_uocvsc.mp4",
         summary:
           "Booking platform with Shopify integration and real-time scheduling for a Manhattan salon.",
         role: "Full-stack build",
@@ -267,6 +267,7 @@ const en: Dict = {
         id: "firmexa",
         title: "FIRMEXA, Debt Recovery Platform",
         liveUrl: "https://firmexa.mx",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/firmexa_bapzaq.mp4",
         summary:
           "Automated extrajudicial collections for the Mexican market — call engine, case state machine and audit trail built as one system.",
         role: "Founding engineer",
@@ -304,6 +305,8 @@ const en: Dict = {
         id: "diocletians-dream",
         title: "Diocletian's Dream, Split VR Museum",
         liveUrl: "https://diocletiansdream.com",
+        video:
+          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/diocletians-dream_jeng9n.mp4",
         summary:
           "Bilingual prerendered site for a VR heritage museum, with a headless WordPress blog and booking conversions that actually report.",
         role: "Full-stack build",
@@ -376,7 +379,8 @@ const en: Dict = {
         tag: "Lead generation",
         id: "lending-group",
         title: "Lending Group, Texas",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651847/bclg_d1h8ur.mp4",
+        video:
+          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/lending-group_qwi2a8.mp4",
         summary:
           "Lead-generation application for an employment and lending firm with clean intake and routing.",
         role: "Full-stack build",
@@ -412,7 +416,8 @@ const en: Dict = {
         tag: "Content platform",
         id: "esencial360",
         title: "Esencial360, Yoga & Meditation",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651843/esencial_sdxj51.mp4",
+        video:
+          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/esencial360_sr8qub.mp4",
         summary:
           "Subscription platform with BunnyStream video delivery, Stripe billing, and admin tooling.",
         role: "Platform build",
@@ -633,7 +638,7 @@ const es: Dict = {
         tag: "Arquitectura + UX",
         id: "joseph",
         title: "Joseph Battisti, Salón NY",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651842/barber_kgabs3.mp4",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/joseph_uocvsc.mp4",
         summary:
           "Plataforma de reservas con integración a Shopify y agenda en tiempo real para un salón de Manhattan.",
         role: "Desarrollo full-stack",
@@ -670,6 +675,7 @@ const es: Dict = {
         id: "firmexa",
         title: "FIRMEXA, Plataforma de Cobranza",
         liveUrl: "https://firmexa.mx",
+        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/firmexa_bapzaq.mp4",
         summary:
           "Cobranza extrajudicial automatizada para el mercado mexicano — motor de llamadas, máquina de estados y evidencia en un solo sistema.",
         role: "Ingeniero fundador",
@@ -707,6 +713,8 @@ const es: Dict = {
         id: "diocletians-dream",
         title: "Diocletian's Dream, Museo VR en Split",
         liveUrl: "https://diocletiansdream.com",
+        video:
+          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/diocletians-dream_jeng9n.mp4",
         summary:
           "Sitio bilingüe prerenderizado para un museo de realidad virtual, con blog en WordPress headless y conversiones de reserva que sí se registran.",
         role: "Desarrollo full-stack",
@@ -779,7 +787,8 @@ const es: Dict = {
         tag: "Generación de leads",
         id: "lending-group",
         title: "Lending Group, Texas",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651847/bclg_d1h8ur.mp4",
+        video:
+          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/lending-group_qwi2a8.mp4",
         summary:
           "Aplicación de generación de leads para una firma de empleo y préstamos con captura y enrutamiento limpios.",
         role: "Desarrollo full-stack",
@@ -815,7 +824,8 @@ const es: Dict = {
         tag: "Plataforma de contenido",
         id: "esencial360",
         title: "Esencial360, Yoga y Meditación",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1782651843/esencial_sdxj51.mp4",
+        video:
+          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/esencial360_sr8qub.mp4",
         summary:
           "Plataforma por suscripción con video vía BunnyStream, cobros en Stripe y herramientas de administración.",
         role: "Construcción de plataforma",

@@ -140,11 +140,18 @@ export function Hero() {
     { scope: root, dependencies: [lang], revertOnUpdate: true },
   );
 
-  // Pins further down change the page height after first layout.
+  // Pins further down change the page height after first layout, and a
+  // language switch rebuilds them (and reflows every section). Rebuilt pins
+  // land at the end of ScrollTrigger's list, so re-sort by page position
+  // before refreshing — otherwise everything below them (the stack marquee's
+  // play/pause range, the heading reveals) is measured without their spacing.
   useEffect(() => {
-    const id = setTimeout(() => ScrollTrigger.refresh(), 600);
+    const id = setTimeout(() => {
+      ScrollTrigger.sort();
+      ScrollTrigger.refresh();
+    }, 600);
     return () => clearTimeout(id);
-  }, []);
+  }, [lang]);
 
   return (
     <section

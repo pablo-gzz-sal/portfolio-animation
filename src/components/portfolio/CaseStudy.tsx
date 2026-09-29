@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ArrowUpRight, ArrowDown, Play, X } from "lucide-react";
+import { ArrowUpRight, ArrowDown, X } from "lucide-react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { sfx } from "@/lib/sound";
 import { useT } from "@/i18n";
@@ -310,17 +310,11 @@ export function CaseStudy({
                       className="absolute inset-0 h-full w-full object-cover"
                     />
                   ) : (
-                    <>
-                      <img
-                        src={p.image}
-                        alt={p.title}
-                        className="absolute inset-0 h-full w-full object-cover"
-                      />
-                      <div className="absolute bottom-5 left-5 flex items-center gap-2 rounded-full border border-hair bg-background/70 px-4 py-2 font-mono-eyebrow text-ink-dim backdrop-blur">
-                        <Play className="h-3 w-3" />
-                        {t.selectedWork.videoComingSoon}
-                      </div>
-                    </>
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
                   )}
                 </div>
 

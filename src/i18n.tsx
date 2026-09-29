@@ -63,7 +63,6 @@ type Dict = {
     outcome: string;
     closeCase: string;
     viewLive: string;
-    videoComingSoon: string;
     sections: {
       client: string;
       role: string;
@@ -215,7 +214,6 @@ const en: Dict = {
     outcome: "Outcome",
     closeCase: "Close case study",
     viewLive: "View live site",
-    videoComingSoon: "Video coming soon",
     sections: {
       client: "Client",
       role: "Role",
@@ -623,7 +621,6 @@ const es: Dict = {
     outcome: "Resultado",
     closeCase: "Cerrar caso de estudio",
     viewLive: "Ver sitio en vivo",
-    videoComingSoon: "Video en camino",
     sections: {
       client: "Cliente",
       role: "Rol",

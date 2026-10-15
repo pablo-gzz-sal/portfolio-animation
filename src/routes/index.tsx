@@ -7,6 +7,7 @@ import { SelectedWork } from "@/components/portfolio/SelectedWork";
 import { Process } from "@/components/portfolio/Process";
 import { Stack } from "@/components/portfolio/Stack";
 import { SocialProof } from "@/components/portfolio/SocialProof";
+import { Testimonials } from "@/components/portfolio/Testimonials";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { SceneCanvas } from "@/components/portfolio/SceneCanvas";
@@ -49,6 +50,7 @@ function Home() {
       <SelectedWork />
       <Process />
       <Stack />
+      <Testimonials />
       {/* <SocialProof /> */}
       <Contact />
       <Footer />

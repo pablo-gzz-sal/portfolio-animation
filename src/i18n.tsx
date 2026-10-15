@@ -32,7 +32,7 @@ type ProjectCopy = {
 };
 
 type Dict = {
-  nav: { projects: string; process: string; stack: string; contact: string };
+  nav: { projects: string; process: string; stack: string; testimonials: string; contact: string };
   cta: { workTogether: string; openMenu: string };
   hero: {
     availability: string;
@@ -87,6 +87,15 @@ type Dict = {
     titleEm: string;
     description: string;
     groups: { title: string; items: string[] }[];
+  };
+  testimonials: {
+    eyebrow: string;
+    title1: string;
+    titleEm: string;
+    description: string;
+    play: string;
+    prev: string;
+    next: string;
   };
   socialProof: {
     eyebrow: string;
@@ -162,6 +171,7 @@ const en: Dict = {
     projects: "Projects",
     process: "Process",
     stack: "Stack",
+    testimonials: "Testimonials",
     contact: "Contact",
   },
   cta: { workTogether: "Work together", openMenu: "Open menu" },
@@ -478,6 +488,16 @@ const en: Dict = {
       { title: "Security", items: ["Kali", "PortSwigger", "Red/Blue Team", "Pentesting"] },
     ],
   },
+  testimonials: {
+    eyebrow: "Testimonials",
+    title1: "Don't take my word for it —",
+    titleEm: "take theirs.",
+    description:
+      "Unscripted video notes from the clients I've shipped with. No edits, no talking points — just what it was like to build together.",
+    play: "Play testimonial",
+    prev: "Previous testimonial",
+    next: "Next testimonial",
+  },
   socialProof: {
     eyebrow: "Signal",
     title1: "Trusted by enterprises and",
@@ -569,6 +589,7 @@ const es: Dict = {
     projects: "Proyectos",
     process: "Proceso",
     stack: "Stack",
+    testimonials: "Testimonios",
     contact: "Contacto",
   },
   cta: { workTogether: "Trabajemos juntos", openMenu: "Abrir menú" },
@@ -884,6 +905,16 @@ const es: Dict = {
       { title: "Infraestructura", items: ["Docker", "Swagger/OpenAPI", "Stripe", "CI/CD", "Azure"] },
       { title: "Seguridad", items: ["Kali", "PortSwigger", "Red/Blue Team", "Pentesting"] },
     ],
+  },
+  testimonials: {
+    eyebrow: "Testimonios",
+    title1: "No lo digo yo —",
+    titleEm: "lo dicen ellos.",
+    description:
+      "Notas en video, sin guion, de los clientes con los que he construido. Sin ediciones ni frases preparadas — solo cómo fue trabajar juntos.",
+    play: "Reproducir testimonio",
+    prev: "Testimonio anterior",
+    next: "Siguiente testimonio",
   },
   socialProof: {
     eyebrow: "Señal",

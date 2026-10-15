@@ -31,7 +31,8 @@ export function Header() {
     { href: "#work", label: t.nav.projects, n: "01" },
     { href: "#process", label: t.nav.process, n: "02" },
     { href: "#stack", label: t.nav.stack, n: "03" },
-    { href: "#contact", label: t.nav.contact, n: "04" },
+    { href: "#testimonials", label: t.nav.testimonials, n: "04" },
+    { href: "#contact", label: t.nav.contact, n: "05" },
   ];
 
   return (

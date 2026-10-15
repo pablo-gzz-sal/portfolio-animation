@@ -3,7 +3,7 @@ import { SplitReveal } from "./SplitReveal";
 import { Reveal } from "./Reveal";
 import { cn } from "@/lib/utils";
 
-export const SECTION_TOTAL = "04";
+export const SECTION_TOTAL = "05";
 
 interface SectionHeaderProps {
   /** "01" … — omit for unnumbered sections (the rail then shows a dash). */

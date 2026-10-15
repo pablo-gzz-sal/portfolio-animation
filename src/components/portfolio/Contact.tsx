@@ -86,7 +86,7 @@ export function Contact() {
       />
       <div className="shell relative">
         <SectionHeader
-          index="04"
+          index="05"
           eyebrow={t.contact.eyebrow}
           title={
             <>

@@ -17,20 +17,19 @@ import { Preloader } from "@/components/portfolio/Preloader";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Pablo Salcido — Senior Full-Stack Engineer" },
+      { title: "Pablo Salcido | Senior Full-Stack Engineer" },
       {
         name: "description",
         content:
-          "Pablo Salcido — senior full-stack engineer building polished SaaS products and production systems for founders and small-to-medium businesses.",
+          "Full-stack engineer in Munich building web apps, APIs and deployments for SaaS founders and small businesses.",
       },
       {
         property: "og:title",
-        content: "Pablo Salcido — Senior Full-Stack Engineer",
+        content: "Pablo Salcido | Senior Full-Stack Engineer",
       },
       {
         property: "og:description",
-        content:
-          "Polished frontends, Node.js APIs, and production systems for SaaS founders and growing businesses.",
+        content: "Web apps, Node.js APIs and deployments for SaaS founders and small businesses.",
       },
     ],
   }),

@@ -17,9 +17,7 @@ export function Footer() {
     <footer className="relative overflow-hidden border-t border-hair pt-28 sm:pt-40">
       <div className="shell">
         <Reveal>
-          <p className="font-mono-eyebrow text-ink-faint">
-            <span className="text-primary-glow">—</span> {t.ui.footerSay}
-          </p>
+          <p className="font-mono-eyebrow text-ink-faint">{t.ui.footerSay}</p>
         </Reveal>
         <SplitReveal as="p" className="mt-8 font-display h-mega text-foreground">
           {t.ui.footerCta1} <span className="text-primary-glow">{t.ui.footerCtaEm}</span>

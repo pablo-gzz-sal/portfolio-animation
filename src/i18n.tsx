@@ -176,49 +176,48 @@ const en: Dict = {
   },
   cta: { workTogether: "Work together", openMenu: "Open menu" },
   hero: {
-    availability: "Available for selective builds",
-    scrollHint: "Scroll to explore",
-    title1: "Full-stack engineering with",
-    titleEm: "taste and discipline.",
+    availability: "Open to new projects",
+    scrollHint: "Scroll",
+    title1: "I build web products for",
+    titleEm: "founders and small businesses.",
     description:
-      "I design and ship polished frontends, Node.js APIs, and production systems for SaaS founders and growing businesses that need one senior builder from first brief to launch.",
+      "I build frontends, Node.js APIs and the systems that keep them running. One engineer, from first brief to launch.",
     viewWork: "View selected work",
     startConversation: "Start a conversation",
     stats: [
-      { k: "Proof", v: "Airbus, Bosch, EU & LATAM client work" },
-      { k: "Range", v: "Frontend, backend, payments, deployment" },
-      { k: "Based in", v: "Munich, Germany. Remote-first." },
+      { k: "Clients", v: "Airbus, Bosch, and teams across Europe and LATAM" },
+      { k: "Covers", v: "Frontend, backend, payments, deployment" },
+      { k: "Based in", v: "Munich, Germany. Remote." },
     ],
-    currentSignal: "Current signal",
+    currentSignal: "About",
     currentSignalBody:
-      "Enterprise consulting experience with Airbus and Bosch, paired with end-to-end product work for SaaS founders and independent businesses.",
+      "Consulting work with Airbus and Bosch, and full products for SaaS founders and independent businesses.",
     senior: "Senior Full-Stack Engineer",
   },
   whoIWorkWith: {
     eyebrow: "Who I work with",
-    title1: "Senior execution for the teams that",
-    titleEm: "cannot afford a miss.",
+    title1: "For teams that want one engineer to",
+    titleEm: "own the build.",
     items: [
       {
         title: "SaaS founders",
-        body: "0→1 product builds, MVP-to-scale rewrites, and the unglamorous integrations that make a product feel real.",
+        body: "First versions, MVP rewrites and the integrations that make a product feel real.",
       },
       {
         title: "Small & medium businesses",
-        body: "Booking, lead generation, internal tools, and brand-forward sites that turn into a measurable sales channel.",
+        body: "Booking, lead generation, internal tools and sites that bring in sales.",
       },
       {
         title: "Independent operators",
-        body: "Content platforms, subscription products, and service businesses that need one senior builder from brief to launch.",
+        body: "Content platforms, subscriptions and service businesses that need one person to build it.",
       },
     ],
   },
   selectedWork: {
     eyebrow: "Selected work",
-    title1: "Real products,",
-    titleEm: "shipped with care.",
-    description:
-      "A focused selection across booking, cultural heritage, lead generation, subscription content, and logistics — paired with brand-forward execution.",
+    title1: "A few things",
+    titleEm: "I've built.",
+    description: "Booking, heritage, lead generation, subscriptions and collections.",
     viewCaseStudy: "View case study",
     role: "Role",
     outcome: "Outcome",
@@ -242,21 +241,20 @@ const en: Dict = {
         summary:
           "Booking platform with Shopify integration and real-time scheduling for a Manhattan salon.",
         role: "Full-stack build",
-        outcome: "Premium booking flow",
-        client: "Independent Manhattan salon — luxury hair brand.",
+        outcome: "Online booking with deposits",
+        client: "Independent hair salon in Manhattan.",
         timeline: "8 weeks · solo build",
         problem:
-          "The salon was juggling DMs, calls, and a spreadsheet to manage bookings. Their Shopify storefront and scheduling were disconnected, so loyal clients had a clumsy path to rebook.",
+          "Bookings ran through DMs, calls and a spreadsheet, and the Shopify store wasn't connected to any of it.",
         approach: [
-          "Mapped the real-world booking flow with the owner — service, stylist, time, deposit, confirmation.",
-          "Built a custom scheduling engine in Node.js + PostgreSQL with stylist availability rules and buffer time.",
-          "Integrated Shopify for product upsells inside the booking confirmation step.",
-          "Designed an admin view to manage stylists, services, deposits and no-shows.",
+          "Mapped the booking flow with the owner: service, stylist, time, deposit, confirmation.",
+          "Built the scheduling engine in Node.js and PostgreSQL, with availability rules and buffer time per stylist.",
+          "Added Shopify upsells to the confirmation step, and an admin view for stylists, services, deposits and no-shows.",
         ],
         results: [
-          "Bookings collected directly online, including paid deposits.",
-          "Front-desk time on phone scheduling cut significantly.",
-          "Single source of truth for the calendar, accessible from any device.",
+          "Clients book and pay deposits online.",
+          "Much less phone scheduling for the front desk.",
+          "One calendar, on any device.",
         ],
         metrics: [
           { value: "100%", label: "Online deposits" },
@@ -277,24 +275,23 @@ const en: Dict = {
         liveUrl: "https://firmexa.mx",
         video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/firmexa_bapzaq.mp4",
         summary:
-          "Automated extrajudicial collections for the Mexican market — call engine, case state machine and audit trail built as one system.",
+          "Automated extrajudicial collections for the Mexican market: call engine, case state machine and audit trail in one system.",
         role: "Founding engineer",
         outcome: "Auditable call engine",
-        client: "Debt-recovery platform for the Mexican market — architected and built end to end.",
+        client: "Debt recovery platform for the Mexican market. I designed and built all of it.",
         timeline: "10 weeks · founding build",
         problem:
-          "Chasing overdue accounts by phone is repetitive, leaves no paper trail, and is legally hazardous in a market regulated by CONDUSEF and PROFECO. Manual collection can neither prove what it did nor guarantee it stayed inside the rules.",
+          "Chasing overdue accounts by phone is repetitive, leaves no paper trail and is legally risky in a market regulated by CONDUSEF and PROFECO. Manual collection can't prove what it did or that it followed the rules.",
         approach: [
-          "Modelled the case lifecycle as a pure, total state machine — eight states, fourteen auditable transition reasons, no clock reads — so any decision can be replayed.",
-          "Built a Twilio dialer that places calls only inside the legal window, respects per-debtor daily and weekly caps, and claims work with FOR UPDATE SKIP LOCKED rather than a queue.",
-          "Gated the recorded message behind answering-machine detection: the message naming amount and creditor plays only on an unambiguous human answer.",
-          "Layered four independent safety gates — a fail-closed kill switch, a three-state destination allowlist, cross-service config fingerprints, and audio integrity checks.",
-          "Made evidence structural: an append-only audit trail, an immutable payments ledger, and a per-call record of exactly which audio each person heard.",
+          "Modelled each case as a state machine with eight states and fourteen auditable transition reasons, so any decision can be replayed.",
+          "Built a Twilio dialer that only calls inside the legal window, respects daily and weekly caps per debtor, and plays the recorded message only after answering machine detection confirms a human.",
+          "Added four independent safety gates: a kill switch that fails closed, a destination allowlist, config checks across services and audio integrity checks.",
+          "Kept the evidence by design: an append-only audit trail, an immutable payments ledger and a record of exactly which audio each person heard.",
         ],
         results: [
-          "Deployed to production infrastructure and validated end to end with real, consented calls on synthetic data.",
-          "Contract-first — zod schemas generate both the OpenAPI document and the Angular client, and CI fails if either drifts.",
-          "Commercial launch stays deliberately gated behind a legal review that engineering documented but would not sign off.",
+          "Deployed to production infrastructure and tested end to end with real, consented calls on synthetic data.",
+          "Contract-first: zod schemas generate the OpenAPI document and the Angular client, and CI fails if they drift.",
+          "Commercial launch waits on a legal review that engineering documented but won't sign off.",
         ],
         metrics: [
           { value: "10 wks", label: "First commit to deployed" },
@@ -316,23 +313,23 @@ const en: Dict = {
         video:
           "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/diocletians-dream_jeng9n.mp4",
         summary:
-          "Bilingual prerendered site for a VR heritage museum, with a headless WordPress blog and booking conversions that actually report.",
+          "Bilingual prerendered site for a VR heritage museum, with a headless WordPress blog and tracked booking conversions.",
         role: "Full-stack build",
         outcome: "Bookings tracked, content indexed",
         client: "Virtual reality heritage museum at Diocletian's Palace in Split, Croatia.",
         timeline: "Ongoing · live since July 2026",
         problem:
-          "Paid bookings were landing without ever registering as conversions, so ad spend flew blind. Content lived in WordPress, but the marketing site needed to be fast, indexable, and available in Croatian.",
+          "Paid bookings never registered as conversions, so ad spend ran blind. Content lived in WordPress, but the site had to be fast, indexable and available in Croatian.",
         approach: [
-          "Built the site as a prerendered Angular static build — every route ships as HTML, served as plain files with no Node runtime.",
-          "Ran WordPress headless as the content source, normalising Elementor markup, image URLs, and SEO metadata at render time.",
-          "Shipped a full Croatian tree — routes, hreflang pairs, sitemap — bridging the CMS language data the REST API didn't expose.",
-          "Wired the booking provider's thank-you page to GA4 and Google Ads so completed bookings report with their real value.",
+          "Built a prerendered Angular site. Every route ships as plain HTML, with no Node runtime.",
+          "Used WordPress headless for content, cleaning up Elementor markup, image URLs and SEO metadata at render time.",
+          "Shipped a full Croatian version with routes, hreflang pairs and a sitemap, filling in language data the REST API didn't expose.",
+          "Connected the booking provider's thank-you page to GA4 and Google Ads so each booking reports its value.",
         ],
         results: [
-          "Bookings register as conversions with value attached, after a month of firing pageviews only.",
-          "76 routes prerendered and sitemapped, each language under exactly one canonical path.",
-          "Editors publish in WordPress; a rebuild ships that content as static HTML.",
+          "Bookings now register as conversions with their value, after a month of pageviews only.",
+          "76 routes prerendered and in the sitemap, each language on one canonical path.",
+          "Editors publish in WordPress, and a rebuild ships it as static HTML.",
         ],
         metrics: [
           { value: "76", label: "Prerendered routes" },
@@ -352,24 +349,23 @@ const en: Dict = {
         title: "DISSEN, Display Con Sentido",
         liveUrl: "https://www.displayconsentido.com",
         summary:
-          "Bilingual, server-rendered marketing site for a Mexican furniture, construction, and interior design studio, with a Cloudinary-driven project gallery and a contact form that lands in their inbox.",
+          "Bilingual site for a Mexican furniture and interior design studio, with a project gallery and a contact form that lands in their inbox.",
         role: "Design + full-stack build",
         outcome: "Portfolio online, leads by email",
-        client:
-          "Mexican studio for custom furniture, construction, and interior design, working on residential and retail spaces.",
+        client: "Mexican studio for custom furniture, construction and interior design.",
         timeline: "~2 weeks · solo build",
         problem:
-          "Twenty years of residential and retail work had no home online. The studio needed a site that showed the work at full quality, read well in Spanish and English, and turned visits into project inquiries.",
+          "Twenty years of residential and retail work had no home online. The studio needed a site that showed it properly, worked in Spanish and English, and turned visits into inquiries.",
         approach: [
-          "Built on Angular 20 with SSR — the landing page is prerendered to HTML, everything else renders on the server.",
-          "Served the project gallery from Cloudinary: auto format and quality, 1x–3x srcsets, Residential / Retail tabs, a swipeable carousel, and a keyboard-driven lightbox.",
-          "Shipped Spanish and English copy behind a signal-based i18n service, with the visitor's choice remembered.",
-          "Routed the contact form through a Vercel serverless function that emails each inquiry over SMTP, reply-to set to the lead.",
+          "Built on Angular 20 with SSR. The landing page is prerendered and the rest renders on the server.",
+          "Served the gallery from Cloudinary with automatic format and quality, responsive srcsets, Residential and Retail tabs, a carousel and a keyboard-friendly lightbox.",
+          "Added Spanish and English copy with a signal-based i18n service that remembers the visitor's choice.",
+          "Routed the contact form through a Vercel serverless function that emails each inquiry over SMTP.",
         ],
         results: [
-          "Residential and retail projects presented in one gallery, sized for every screen.",
-          "Inquiries arrive in the studio's inbox with name, phone, and message, ready to reply.",
-          "Motion respects reduced-motion preferences; the landing page ships as static HTML.",
+          "Residential and retail projects in one gallery, sized for every screen.",
+          "Inquiries land in the studio's inbox with name, phone and message.",
+          "Respects reduced-motion settings, and the landing page ships as static HTML.",
         ],
         metrics: [
           { value: "2", label: "Languages, ES / EN" },
@@ -389,23 +385,22 @@ const en: Dict = {
         title: "Lending Group, Texas",
         video:
           "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/lending-group_qwi2a8.mp4",
-        summary:
-          "Lead-generation application for an employment and lending firm with clean intake and routing.",
+        summary: "Lead intake and routing app for an employment and lending firm.",
         role: "Full-stack build",
         outcome: "Cleaner lead pipeline",
         client: "US lending and employment firm with multiple offices.",
         timeline: "6 weeks · solo build",
         problem:
-          "Leads arrived via PDFs, calls, and email. Routing was manual, follow-ups slipped, and the team had no visibility into pipeline health.",
+          "Leads arrived by PDF, phone and email. Routing was manual, follow-ups slipped and nobody could see the pipeline.",
         approach: [
-          "Designed a focused intake form with conditional logic and validation.",
-          "Built routing rules per office, product line, and case type.",
-          "Shipped an internal dashboard with status, owner, and SLA timers.",
-          "Wired CI/CD on every push for safe weekly improvements.",
+          "Designed a short intake form with conditional logic and validation.",
+          "Built routing rules per office, product line and case type.",
+          "Shipped an internal dashboard with status, owner and SLA timers.",
+          "Set up CI/CD on every push for safe weekly releases.",
         ],
         results: [
           "Every lead lands in one inbox with an owner.",
-          "Drop-off in intake reduced by tightening the form.",
+          "Less drop-off at intake after tightening the form.",
           "Weekly deploys without downtime.",
         ],
         metrics: [
@@ -427,23 +422,23 @@ const en: Dict = {
         video:
           "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/esencial360_sr8qub.mp4",
         summary:
-          "Subscription platform with BunnyStream video delivery, Stripe billing, and admin tooling.",
+          "Subscription platform with BunnyStream video, Stripe billing and an admin console.",
         role: "Platform build",
-        outcome: "Premium content access",
+        outcome: "Paid content access",
         client: "Wellness brand offering paid yoga and meditation content.",
         timeline: "10 weeks · solo build",
         problem:
-          "The founder wanted a recurring revenue product without giving up brand control to a generic course platform.",
+          "The founder wanted recurring revenue without handing brand control to a generic course platform.",
         approach: [
-          "Built a subscription gate on top of Stripe with monthly and annual tiers.",
-          "Delivered video via BunnyStream with signed URLs to protect content.",
-          "Designed an admin console for uploading, categorizing, and scheduling releases.",
-          "Crafted a member-area UX that feels editorial, not corporate.",
+          "Built a subscription gate on Stripe with monthly and annual plans.",
+          "Delivered video through BunnyStream with signed URLs to protect the content.",
+          "Built an admin console to upload, categorize and schedule releases.",
+          "Designed the member area around the brand's own look.",
         ],
         results: [
-          "Paid subscriptions live with self-serve billing and cancellation.",
-          "Founder publishes new sessions without engineering help.",
-          "Brand-led member experience, no third-party watermarks.",
+          "Paid subscriptions live, with self-serve billing and cancellation.",
+          "The founder publishes new sessions without engineering help.",
+          "Members get the brand's own experience, with no third-party watermarks.",
         ],
         metrics: [
           { value: "Stripe", label: "Self-serve billing" },
@@ -461,39 +456,93 @@ const en: Dict = {
   },
   process: {
     eyebrow: "How I work",
-    title1: "Clarity first. Architecture second.",
-    titleEm: "Production always.",
+    title1: "How a project",
+    titleEm: "usually goes.",
     description:
-      "I keep the engagement disciplined: define the valuable version, build the system in vertical slices, and leave behind code that can be operated.",
+      "Agree on what to build, build it in small pieces, and hand over something you can run without me.",
     steps: [
-      { n: "01", eyebrow: "Clarity", title: "Shape the brief", body: "Translate unclear goals into user flows, constraints, risks, and a version that can ship value.", log: ["Kickoff call — goals, users, constraints", "User flows mapped for the core journey", "Scope cut to the version that ships value"] },
-      { n: "02", eyebrow: "Structure", title: "Design the system", body: "Define contracts, data models, authentication, and service boundaries before implementation gets expensive.", log: ["Data model + API contracts drafted", "Auth and roles decided up front", "Service boundaries reviewed with the team"] },
-      { n: "03", eyebrow: "Execution", title: "Build vertical slices", body: "Move from interface to API to data in thin, testable increments with clean component boundaries.", log: ["Slice 1: UI → API → DB, deployed to staging", "Weekly demo on a live preview URL", "Components extracted as patterns repeat"] },
-      { n: "04", eyebrow: "Quality", title: "Harden the release", body: "Add validation, edge case handling, documentation, and quality checks before production.", log: ["Validation on every boundary", "Edge cases and empty states covered", "Docs written for the next engineer"] },
-      { n: "05", eyebrow: "Launch", title: "Ship and support", body: "Deploy, monitor, and leave the product with a clean path for maintenance and iteration.", log: ["Production deploy with monitoring", "Error tracking and alerts wired", "Handover: runbook and roadmap"] },
+      {
+        n: "01",
+        eyebrow: "Scope",
+        title: "Agree on what to build",
+        body: "Turn vague goals into user flows, constraints and a first version worth shipping.",
+        log: [
+          "Kickoff call on goals, users and constraints",
+          "User flows mapped",
+          "Scope cut to the first release",
+        ],
+      },
+      {
+        n: "02",
+        eyebrow: "Plan",
+        title: "Design the system",
+        body: "Settle the data model, auth and API contracts before changes get expensive.",
+        log: [
+          "Data model and API contracts drafted",
+          "Auth and roles decided up front",
+          "Service boundaries reviewed",
+        ],
+      },
+      {
+        n: "03",
+        eyebrow: "Build",
+        title: "Ship in small slices",
+        body: "Work from interface to API to database in small, testable steps.",
+        log: [
+          "Slice 1 deployed to staging",
+          "Weekly demo on a live preview",
+          "Components extracted as patterns repeat",
+        ],
+      },
+      {
+        n: "04",
+        eyebrow: "Test",
+        title: "Cover the edge cases",
+        body: "Add validation, handle errors and write the docs before production.",
+        log: [
+          "Validation at every boundary",
+          "Edge cases and empty states covered",
+          "Docs for the next engineer",
+        ],
+      },
+      {
+        n: "05",
+        eyebrow: "Launch",
+        title: "Deploy and hand over",
+        body: "Deploy, monitor, and leave a clear path for maintenance.",
+        log: [
+          "Production deploy with monitoring",
+          "Error tracking and alerts",
+          "Handover: runbook and roadmap",
+        ],
+      },
     ],
   },
   stack: {
     eyebrow: "Stack",
-    title1: "The tools are broad.",
-    titleEm: "The decisions stay focused.",
-    description:
-      "I choose boring foundations where reliability matters and reserve craft for the places customers actually feel.",
+    title1: "What I",
+    titleEm: "work with.",
+    description: "I default to proven tools and reach for new ones only when there's a reason.",
     groups: [
       { title: "Frontend", items: ["Angular", "React", "Vue", "TypeScript", "Tailwind", "RxJS"] },
       { title: "Mobile", items: ["React Native", "Ionic", "Expo", "Android Studio"] },
-      { title: "Backend", items: ["Node.js", "Express", "NestJS", ".NET", "Python", "REST APIs", "Auth0"] },
+      {
+        title: "Backend",
+        items: ["Node.js", "Express", "NestJS", ".NET", "Python", "REST APIs", "Auth0"],
+      },
       { title: "Databases", items: ["PostgreSQL", "MongoDB", "MariaDB"] },
-      { title: "Infra & tooling", items: ["Docker", "Swagger/OpenAPI", "Stripe", "CI/CD", "Azure"] },
+      {
+        title: "Infra & tooling",
+        items: ["Docker", "Swagger/OpenAPI", "Stripe", "CI/CD", "Azure"],
+      },
       { title: "Security", items: ["Kali", "PortSwigger", "Red/Blue Team", "Pentesting"] },
     ],
   },
   testimonials: {
     eyebrow: "Testimonials",
-    title1: "Don't take my word for it —",
-    titleEm: "take theirs.",
-    description:
-      "Unscripted video notes from the clients I've shipped with. No edits, no talking points — just what it was like to build together.",
+    title1: "Clients,",
+    titleEm: "in their own words.",
+    description: "Short video notes from clients I've worked with.",
     play: "Play testimonial",
     prev: "Previous testimonial",
     next: "Next testimonial",
@@ -508,15 +557,22 @@ const en: Dict = {
     playVideo: "Play video testimonial",
     quotes: [
       {
-        quote: "Pablo turned an unclear product idea into something that actually shipped — and kept shipping every week after that.",
+        quote:
+          "Pablo turned an unclear product idea into something that actually shipped, and kept shipping every week after that.",
         name: "SaaS founder",
         role: "Early-stage operator",
         videoSrc: "/testimonials/founder-1.mp4",
         poster: "/testimonials/founder-1.jpg",
       },
-      { quote: "Senior judgement without the agency overhead. Architecture decisions held up six months later.", name: "CTO", role: "Series A startup" },
       {
-        quote: "He owns the whole stack. We didn't need a frontend agency, a backend dev, and a project manager.",
+        quote:
+          "Senior judgement without the agency overhead. Architecture decisions held up six months later.",
+        name: "CTO",
+        role: "Series A startup",
+      },
+      {
+        quote:
+          "He owns the whole stack. We didn't need a frontend agency, a backend dev, and a project manager.",
         name: "Founder",
         role: "SMB services",
         videoSrc: "/testimonials/founder-2.mp4",
@@ -526,10 +582,9 @@ const en: Dict = {
   },
   contact: {
     eyebrow: "Contact",
-    title1: "Have a product that needs",
-    titleEm: "senior execution?",
-    description:
-      "I take on a small number of focused builds. Send the problem, the timeline, and the outcome you need.",
+    title1: "Got a project?",
+    titleEm: "Let's talk.",
+    description: "Tell me what you need built and by when.",
     fields: {
       name: "Name",
       namePh: "Your name",
@@ -538,16 +593,16 @@ const en: Dict = {
       company: "Company",
       companyPh: "Optional",
       project: "Project",
-      projectPh: "Problem, timeline, outcome you need.",
+      projectPh: "What you need and by when.",
     },
     send: "Send message",
     sending: "Sending…",
-    reply: "I read every message. Expect a reply within 1–2 business days.",
+    reply: "I reply within 1 to 2 business days.",
     errors: {
       required: "Please fill in name, email, and a short message.",
       generic: "Something went wrong.",
     },
-    success: "Message sent — I'll reply within 1–2 business days.",
+    success: "Message sent. I'll reply within 1 to 2 business days.",
   },
   footer: {
     tagline: "Pablo Salcido · Munich, Germany · Remote-first",
@@ -555,7 +610,7 @@ const en: Dict = {
   },
   ui: {
     preloader: "Loading portfolio",
-    intro: "Pablo Salcido — Full-stack engineer",
+    intro: "Pablo Salcido · Full-stack engineer",
     featured: "Featured case",
     index: "Index",
     cols: { project: "Project", discipline: "Discipline", stack: "Stack" },
@@ -565,8 +620,8 @@ const en: Dict = {
     soundOff: "Sound off",
     localTime: "Munich",
     backToTop: "Back to top",
-    footerCta1: "Let’s build something",
-    footerCtaEm: "worth shipping.",
+    footerCta1: "Let's work",
+    footerCtaEm: "together.",
     footerSay: "Say hello",
     sentence: {
       hi: "Hi Pablo, my name is",
@@ -578,7 +633,7 @@ const en: Dict = {
       reach: ". You can reach me at",
       email: "you@company.com",
       more: ". A bit more about it:",
-      messagePh: "The problem, the timeline, and the outcome you need.",
+      messagePh: "What you need and by when.",
       topicsLabel: "Topics",
     },
   },
@@ -594,49 +649,48 @@ const es: Dict = {
   },
   cta: { workTogether: "Trabajemos juntos", openMenu: "Abrir menú" },
   hero: {
-    availability: "Disponible para proyectos selectos",
-    scrollHint: "Desliza para explorar",
-    title1: "Ingeniería full-stack con",
-    titleEm: "gusto y disciplina.",
+    availability: "Disponible para nuevos proyectos",
+    scrollHint: "Desliza",
+    title1: "Construyo productos web para",
+    titleEm: "fundadores y pequeños negocios.",
     description:
-      "Diseño y entrego frontends pulidos, APIs en Node.js y sistemas en producción para fundadores SaaS y negocios en crecimiento que necesitan un ingeniero senior de principio a fin.",
+      "Hago frontends, APIs en Node.js y los sistemas que los mantienen funcionando. Un solo ingeniero, del primer brief al lanzamiento.",
     viewWork: "Ver proyectos",
     startConversation: "Iniciar una conversación",
     stats: [
-      { k: "Prueba", v: "Trabajo con Airbus, Bosch y clientes en EU y LATAM" },
-      { k: "Alcance", v: "Frontend, backend, pagos y despliegue" },
+      { k: "Clientes", v: "Airbus, Bosch y equipos en Europa y LATAM" },
+      { k: "Cubre", v: "Frontend, backend, pagos y despliegue" },
       { k: "Ubicación", v: "Múnich, Alemania. Remoto." },
     ],
-    currentSignal: "Señal actual",
+    currentSignal: "Sobre mí",
     currentSignalBody:
-      "Experiencia consultiva en empresa con Airbus y Bosch, junto con producto de principio a fin para fundadores SaaS y negocios independientes.",
+      "Consultoría para Airbus y Bosch, y productos completos para fundadores SaaS y negocios independientes.",
     senior: "Ingeniero Full-Stack Senior",
   },
   whoIWorkWith: {
     eyebrow: "Con quién trabajo",
-    title1: "Ejecución senior para equipos que",
-    titleEm: "no pueden fallar.",
+    title1: "Para equipos que quieren un ingeniero que",
+    titleEm: "se haga cargo de todo.",
     items: [
       {
         title: "Fundadores SaaS",
-        body: "Productos de 0→1, reescrituras de MVP a escala y las integraciones poco glamorosas que hacen que un producto se sienta real.",
+        body: "Primeras versiones, reescrituras de MVP y las integraciones que hacen que un producto se sienta real.",
       },
       {
         title: "Pequeñas y medianas empresas",
-        body: "Reservas, generación de leads, herramientas internas y sitios orientados a marca que se convierten en un canal de ventas medible.",
+        body: "Reservas, generación de leads, herramientas internas y sitios que generan ventas.",
       },
       {
         title: "Operadores independientes",
-        body: "Plataformas de contenido, productos por suscripción y negocios de servicio que necesitan un solo ingeniero senior de principio a fin.",
+        body: "Plataformas de contenido, suscripciones y negocios de servicio que necesitan a una sola persona que lo construya.",
       },
     ],
   },
   selectedWork: {
     eyebrow: "Trabajo seleccionado",
-    title1: "Productos reales,",
-    titleEm: "lanzados con cuidado.",
-    description:
-      "Una selección enfocada en reservas, patrimonio cultural, generación de leads, contenido por suscripción y logística — con ejecución orientada a marca.",
+    title1: "Algunas cosas",
+    titleEm: "que he construido.",
+    description: "Reservas, patrimonio, generación de leads, suscripciones y cobranza.",
     viewCaseStudy: "Ver caso de estudio",
     role: "Rol",
     outcome: "Resultado",
@@ -660,21 +714,20 @@ const es: Dict = {
         summary:
           "Plataforma de reservas con integración a Shopify y agenda en tiempo real para un salón de Manhattan.",
         role: "Desarrollo full-stack",
-        outcome: "Flujo de reservas premium",
-        client: "Salón independiente en Manhattan — marca de lujo en cabello.",
+        outcome: "Reservas en línea con depósito",
+        client: "Salón de cabello independiente en Manhattan.",
         timeline: "8 semanas · construcción en solitario",
         problem:
-          "El salón gestionaba reservas entre DMs, llamadas y una hoja de cálculo. Su tienda en Shopify y la agenda estaban desconectadas, por lo que reservar era torpe para clientes leales.",
+          "Las reservas pasaban por DMs, llamadas y una hoja de cálculo, y la tienda de Shopify no estaba conectada a nada de eso.",
         approach: [
-          "Mapeé el flujo real de reservas con la dueña — servicio, estilista, horario, depósito, confirmación.",
-          "Construí un motor de agenda en Node.js + PostgreSQL con reglas de disponibilidad y tiempos de buffer por estilista.",
-          "Integré Shopify para upsells de producto dentro del paso de confirmación.",
-          "Diseñé una vista de administración para gestionar estilistas, servicios, depósitos y no-shows.",
+          "Mapeé el flujo de reservas con la dueña: servicio, estilista, horario, depósito y confirmación.",
+          "Construí el motor de agenda en Node.js y PostgreSQL, con reglas de disponibilidad y tiempos de buffer por estilista.",
+          "Agregué upsells de Shopify en la confirmación y una vista de administración para estilistas, servicios, depósitos y no-shows.",
         ],
         results: [
-          "Reservas recibidas directamente en línea, incluyendo depósitos pagados.",
-          "Tiempo de recepción al teléfono reducido significativamente.",
-          "Una sola fuente de verdad para el calendario, accesible desde cualquier dispositivo.",
+          "Los clientes reservan y pagan el depósito en línea.",
+          "Mucho menos tiempo en el teléfono para recepción.",
+          "Un solo calendario, en cualquier dispositivo.",
         ],
         metrics: [
           { value: "100%", label: "Depósitos en línea" },
@@ -695,24 +748,23 @@ const es: Dict = {
         liveUrl: "https://firmexa.mx",
         video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/firmexa_bapzaq.mp4",
         summary:
-          "Cobranza extrajudicial automatizada para el mercado mexicano — motor de llamadas, máquina de estados y evidencia en un solo sistema.",
+          "Cobranza extrajudicial automatizada para el mercado mexicano: motor de llamadas, máquina de estados y bitácora de auditoría en un solo sistema.",
         role: "Ingeniero fundador",
         outcome: "Motor de llamadas auditable",
-        client: "Plataforma de cobranza para el mercado mexicano — arquitectura y construcción de principio a fin.",
+        client: "Plataforma de cobranza para el mercado mexicano. La diseñé y construí completa.",
         timeline: "10 semanas · construcción fundacional",
         problem:
-          "Perseguir cartera vencida por teléfono es repetitivo, no deja rastro y es riesgoso en un mercado regulado por CONDUSEF y PROFECO. La gestión manual no puede demostrar lo que hizo ni garantizar que se mantuvo dentro de las reglas.",
+          "Perseguir cartera vencida por teléfono es repetitivo, no deja rastro y es riesgoso en un mercado regulado por CONDUSEF y PROFECO. La gestión manual no puede demostrar lo que hizo ni que respetó las reglas.",
         approach: [
-          "Modelé el ciclo de vida del caso como una máquina de estados pura y total — ocho estados, catorce motivos de transición auditables, sin lecturas de reloj — para que cualquier decisión pueda reproducirse.",
-          "Construí un marcador con Twilio que solo llama dentro de la ventana legal, respeta topes diarios y semanales por deudor, y toma trabajo con FOR UPDATE SKIP LOCKED en lugar de una cola.",
-          "Condicioné el mensaje grabado a la detección de contestadora: el mensaje que nombra monto y acreedor solo se reproduce ante una respuesta humana inequívoca.",
-          "Superpuse cuatro compuertas de seguridad independientes — un kill switch que falla cerrado, una lista de destinos de tres estados, huellas de configuración entre servicios y verificación de integridad del audio.",
-          "Hice la evidencia estructural: bitácora de auditoría solo-anexable, ledger de pagos inmutable y registro por llamada de exactamente qué audio escuchó cada persona.",
+          "Modelé cada caso como una máquina de estados con ocho estados y catorce motivos de transición auditables, para poder reproducir cualquier decisión.",
+          "Construí un marcador con Twilio que solo llama dentro de la ventana legal, respeta los topes diarios y semanales por deudor y reproduce el mensaje grabado únicamente cuando la detección de contestadora confirma a una persona.",
+          "Agregué cuatro compuertas de seguridad independientes: un kill switch que falla cerrado, una lista de destinos permitidos, verificación de configuración entre servicios y revisión de integridad del audio.",
+          "Dejé la evidencia en el diseño: bitácora de auditoría solo-anexable, ledger de pagos inmutable y registro de exactamente qué audio escuchó cada persona.",
         ],
         results: [
-          "Desplegado en infraestructura productiva y validado de extremo a extremo con llamadas reales y consentidas sobre datos sintéticos.",
-          "Contract-first — los esquemas zod generan el documento OpenAPI y el cliente Angular, y CI falla si alguno se desincroniza.",
-          "El arranque comercial sigue deliberadamente detenido tras una revisión legal que ingeniería documentó pero no quiso firmar.",
+          "Desplegado en infraestructura productiva y validado de punta a punta con llamadas reales y consentidas sobre datos sintéticos.",
+          "Contract-first: los esquemas zod generan el documento OpenAPI y el cliente Angular, y CI falla si se desincronizan.",
+          "El lanzamiento comercial espera una revisión legal que ingeniería documentó pero no quiso firmar.",
         ],
         metrics: [
           { value: "10 sem", label: "Del primer commit al despliegue" },
@@ -734,23 +786,23 @@ const es: Dict = {
         video:
           "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/diocletians-dream_jeng9n.mp4",
         summary:
-          "Sitio bilingüe prerenderizado para un museo de realidad virtual, con blog en WordPress headless y conversiones de reserva que sí se registran.",
+          "Sitio bilingüe prerenderizado para un museo de realidad virtual, con blog en WordPress headless y conversiones de reserva medidas.",
         role: "Desarrollo full-stack",
         outcome: "Reservas medidas, contenido indexado",
         client: "Museo de realidad virtual en el Palacio de Diocleciano, Split, Croacia.",
         timeline: "En curso · en vivo desde julio de 2026",
         problem:
-          "Las reservas pagadas llegaban sin registrarse nunca como conversiones, así que la inversión publicitaria iba a ciegas. El contenido vivía en WordPress, pero el sitio necesitaba ser rápido, indexable y estar disponible en croata.",
+          "Las reservas pagadas nunca se registraban como conversiones, así que la inversión en anuncios iba a ciegas. El contenido vivía en WordPress, pero el sitio tenía que ser rápido, indexable y estar en croata.",
         approach: [
-          "Construí el sitio como un build estático de Angular prerenderizado: cada ruta se publica como HTML, servida como archivos planos sin runtime de Node.",
-          "Usé WordPress headless como fuente de contenido, normalizando el marcado de Elementor, las URLs de imágenes y los metadatos SEO al renderizar.",
-          "Publiqué el árbol completo en croata —rutas, pares hreflang, sitemap— resolviendo los datos de idioma que la API REST del CMS no exponía.",
-          "Conecté la página de agradecimiento del proveedor de reservas con GA4 y Google Ads para que cada reserva reporte su valor real.",
+          "Construí un sitio Angular prerenderizado. Cada ruta se publica como HTML plano, sin runtime de Node.",
+          "Usé WordPress headless para el contenido, limpiando el marcado de Elementor, las URLs de imágenes y los metadatos SEO al renderizar.",
+          "Publiqué la versión completa en croata con rutas, pares hreflang y sitemap, resolviendo los datos de idioma que la API REST no exponía.",
+          "Conecté la página de agradecimiento del proveedor de reservas con GA4 y Google Ads para que cada reserva reporte su valor.",
         ],
         results: [
-          "Las reservas se registran como conversiones con valor, tras un mes disparando solo pageviews.",
+          "Las reservas ya se registran como conversiones con su valor, después de un mes midiendo solo pageviews.",
           "76 rutas prerenderizadas y en el sitemap, cada idioma bajo una única URL canónica.",
-          "El equipo publica en WordPress; una recompilación entrega ese contenido como HTML estático.",
+          "El equipo publica en WordPress y una recompilación lo entrega como HTML estático.",
         ],
         metrics: [
           { value: "76", label: "Rutas prerenderizadas" },
@@ -770,24 +822,23 @@ const es: Dict = {
         title: "DISSEN, Display Con Sentido",
         liveUrl: "https://www.displayconsentido.com",
         summary:
-          "Sitio bilingüe renderizado en servidor para un estudio mexicano de mobiliario, obra e interiorismo, con galería de proyectos en Cloudinary y un formulario de contacto que llega directo a su correo.",
+          "Sitio bilingüe para un estudio mexicano de mobiliario e interiorismo, con galería de proyectos y un formulario de contacto que llega directo a su correo.",
         role: "Diseño + desarrollo full-stack",
         outcome: "Portafolio en línea, leads por correo",
-        client:
-          "Estudio mexicano de mobiliario a la medida, obra e interiorismo para espacios residenciales y comerciales.",
+        client: "Estudio mexicano de mobiliario a la medida, obra e interiorismo.",
         timeline: "~2 semanas · construcción en solitario",
         problem:
-          "Veinte años de proyectos residenciales y retail no tenían presencia en línea. El estudio necesitaba un sitio que mostrara el trabajo con calidad, se leyera bien en español e inglés y convirtiera visitas en solicitudes de proyecto.",
+          "Veinte años de proyectos residenciales y retail no tenían presencia en línea. El estudio necesitaba un sitio que mostrara el trabajo con calidad, funcionara en español e inglés y convirtiera visitas en solicitudes.",
         approach: [
-          "Construí sobre Angular 20 con SSR: la landing se prerenderiza a HTML y el resto se renderiza en servidor.",
-          "Serví la galería desde Cloudinary: formato y calidad automáticos, srcsets 1x–3x, pestañas Residencial / Retail, carrusel deslizable y lightbox con teclado.",
-          "Entregué el contenido en español e inglés con un servicio de i18n basado en signals que recuerda la elección del visitante.",
-          "Conecté el formulario a una función serverless en Vercel que envía cada solicitud por SMTP, con reply-to al prospecto.",
+          "Construí sobre Angular 20 con SSR. La landing se prerenderiza y el resto se renderiza en el servidor.",
+          "Serví la galería desde Cloudinary con formato y calidad automáticos, srcsets responsivos, pestañas Residencial y Retail, carrusel y lightbox con teclado.",
+          "Agregué contenido en español e inglés con un servicio de i18n basado en signals que recuerda la elección del visitante.",
+          "Conecté el formulario a una función serverless en Vercel que envía cada solicitud por SMTP.",
         ],
         results: [
           "Proyectos residenciales y retail en una sola galería, optimizada para cada pantalla.",
-          "Las solicitudes llegan al correo del estudio con nombre, teléfono y mensaje, listas para responder.",
-          "La animación respeta reduced-motion; la landing se entrega como HTML estático.",
+          "Las solicitudes llegan al correo del estudio con nombre, teléfono y mensaje.",
+          "Respeta reduced-motion y la landing se entrega como HTML estático.",
         ],
         metrics: [
           { value: "2", label: "Idiomas, ES / EN" },
@@ -807,24 +858,23 @@ const es: Dict = {
         title: "Lending Group, Texas",
         video:
           "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/lending-group_qwi2a8.mp4",
-        summary:
-          "Aplicación de generación de leads para una firma de empleo y préstamos con captura y enrutamiento limpios.",
+        summary: "App de captura y enrutamiento de leads para una firma de empleo y préstamos.",
         role: "Desarrollo full-stack",
         outcome: "Pipeline de leads más limpio",
         client: "Firma estadounidense de préstamos y empleo con varias oficinas.",
         timeline: "6 semanas · construcción en solitario",
         problem:
-          "Los leads llegaban por PDFs, llamadas y correo. El enrutamiento era manual, los seguimientos se perdían y el equipo no tenía visibilidad del pipeline.",
+          "Los leads llegaban por PDF, teléfono y correo. El enrutamiento era manual, los seguimientos se perdían y nadie veía el pipeline.",
         approach: [
-          "Diseñé un formulario de captura enfocado, con lógica condicional y validación.",
+          "Diseñé un formulario de captura corto, con lógica condicional y validación.",
           "Construí reglas de enrutamiento por oficina, línea de producto y tipo de caso.",
-          "Lancé un dashboard interno con estado, responsable y SLAs.",
-          "Configuré CI/CD en cada push para mejoras semanales seguras.",
+          "Entregué un dashboard interno con estado, responsable y SLAs.",
+          "Configuré CI/CD en cada push para lanzar mejoras semanales con seguridad.",
         ],
         results: [
-          "Cada lead llega a una sola bandeja con un responsable asignado.",
-          "Abandono en captura reducido al ajustar el formulario.",
-          "Despliegues semanales sin tiempos de caída.",
+          "Cada lead llega a una sola bandeja con un responsable.",
+          "Menos abandono en la captura tras ajustar el formulario.",
+          "Despliegues semanales sin tiempo de caída.",
         ],
         metrics: [
           { value: "1 bandeja", label: "Para todos los leads" },
@@ -845,23 +895,23 @@ const es: Dict = {
         video:
           "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/esencial360_sr8qub.mp4",
         summary:
-          "Plataforma por suscripción con video vía BunnyStream, cobros en Stripe y herramientas de administración.",
+          "Plataforma por suscripción con video en BunnyStream, cobros con Stripe y consola de administración.",
         role: "Construcción de plataforma",
-        outcome: "Acceso premium a contenido",
+        outcome: "Acceso a contenido de pago",
         client: "Marca de bienestar con contenido pagado de yoga y meditación.",
         timeline: "10 semanas · construcción en solitario",
         problem:
-          "La fundadora quería un producto de ingreso recurrente sin ceder control de marca a una plataforma de cursos genérica.",
+          "La fundadora quería ingresos recurrentes sin ceder el control de su marca a una plataforma de cursos genérica.",
         approach: [
-          "Construí una capa de suscripción sobre Stripe con planes mensual y anual.",
-          "Entregué video por BunnyStream con URLs firmadas para proteger el contenido.",
-          "Diseñé una consola de administración para subir, categorizar y programar lanzamientos.",
-          "Cuidé una UX del área de miembros que se siente editorial, no corporativa.",
+          "Construí la suscripción sobre Stripe con planes mensual y anual.",
+          "Entregué el video con BunnyStream y URLs firmadas para proteger el contenido.",
+          "Armé una consola para subir, categorizar y programar lanzamientos.",
+          "Diseñé el área de miembros con el estilo propio de la marca.",
         ],
         results: [
-          "Suscripciones pagadas en vivo con autogestión de cobro y cancelación.",
+          "Suscripciones de pago activas, con cobro y cancelación autogestionados.",
           "La fundadora publica nuevas sesiones sin ayuda de ingeniería.",
-          "Experiencia de marca propia, sin marcas de agua de terceros.",
+          "Los miembros viven la experiencia de la marca, sin marcas de agua de terceros.",
         ],
         metrics: [
           { value: "Stripe", label: "Cobro autogestionado" },
@@ -879,39 +929,93 @@ const es: Dict = {
   },
   process: {
     eyebrow: "Cómo trabajo",
-    title1: "Claridad primero. Arquitectura después.",
-    titleEm: "Producción siempre.",
+    title1: "Cómo suele",
+    titleEm: "ir un proyecto.",
     description:
-      "Mantengo el proyecto disciplinado: definir la versión valiosa, construir el sistema en cortes verticales y dejar código que se pueda operar.",
+      "Acordamos qué construir, lo hago en piezas pequeñas y te entrego algo que puedes operar sin mí.",
     steps: [
-      { n: "01", eyebrow: "Claridad", title: "Definir el brief", body: "Traduzco metas poco claras en flujos de usuario, restricciones, riesgos y una versión que puede entregar valor.", log: ["Llamada inicial — metas, usuarios, restricciones", "Flujos de usuario del recorrido principal", "Alcance recortado a la versión que entrega valor"] },
-      { n: "02", eyebrow: "Estructura", title: "Diseñar el sistema", body: "Defino contratos, modelos de datos, autenticación y fronteras de servicios antes de que la implementación se vuelva costosa.", log: ["Modelo de datos y contratos de API", "Autenticación y roles definidos desde el inicio", "Fronteras de servicio revisadas con el equipo"] },
-      { n: "03", eyebrow: "Ejecución", title: "Construir cortes verticales", body: "Voy de interfaz a API y datos en incrementos delgados y testeables, con fronteras de componente limpias.", log: ["Corte 1: UI → API → BD, desplegado en staging", "Demo semanal en una URL de preview", "Componentes extraídos cuando se repiten patrones"] },
-      { n: "04", eyebrow: "Calidad", title: "Endurecer el release", body: "Agrego validación, manejo de casos límite, documentación y revisiones de calidad antes de producción.", log: ["Validación en cada frontera", "Casos límite y estados vacíos cubiertos", "Documentación para el siguiente ingeniero"] },
-      { n: "05", eyebrow: "Lanzamiento", title: "Lanzar y dar soporte", body: "Despliego, monitoreo y entrego el producto con un camino claro para mantenimiento e iteración.", log: ["Despliegue a producción con monitoreo", "Rastreo de errores y alertas conectados", "Entrega: runbook y roadmap"] },
+      {
+        n: "01",
+        eyebrow: "Alcance",
+        title: "Acordar qué construir",
+        body: "Convierto metas difusas en flujos de usuario, restricciones y una primera versión que valga la pena lanzar.",
+        log: [
+          "Llamada inicial sobre metas, usuarios y restricciones",
+          "Flujos de usuario mapeados",
+          "Alcance recortado a la primera versión",
+        ],
+      },
+      {
+        n: "02",
+        eyebrow: "Plan",
+        title: "Diseñar el sistema",
+        body: "Defino el modelo de datos, la autenticación y los contratos de API antes de que los cambios salgan caros.",
+        log: [
+          "Modelo de datos y contratos de API",
+          "Autenticación y roles definidos desde el inicio",
+          "Fronteras de servicio revisadas",
+        ],
+      },
+      {
+        n: "03",
+        eyebrow: "Construcción",
+        title: "Entregar en cortes pequeños",
+        body: "Voy de la interfaz a la API y la base de datos en pasos pequeños y testeables.",
+        log: [
+          "Corte 1 desplegado en staging",
+          "Demo semanal en una URL de preview",
+          "Componentes extraídos cuando se repiten patrones",
+        ],
+      },
+      {
+        n: "04",
+        eyebrow: "Pruebas",
+        title: "Cubrir los casos límite",
+        body: "Agrego validación, manejo de errores y documentación antes de producción.",
+        log: [
+          "Validación en cada frontera",
+          "Casos límite y estados vacíos cubiertos",
+          "Documentación para el siguiente ingeniero",
+        ],
+      },
+      {
+        n: "05",
+        eyebrow: "Lanzamiento",
+        title: "Desplegar y entregar",
+        body: "Despliego, monitoreo y dejo un camino claro para el mantenimiento.",
+        log: [
+          "Despliegue a producción con monitoreo",
+          "Rastreo de errores y alertas",
+          "Entrega: runbook y roadmap",
+        ],
+      },
     ],
   },
   stack: {
     eyebrow: "Stack",
-    title1: "Las herramientas son amplias.",
-    titleEm: "Las decisiones, enfocadas.",
-    description:
-      "Elijo fundamentos aburridos donde la fiabilidad importa, y reservo el oficio para los lugares que el cliente sí siente.",
+    title1: "Con qué",
+    titleEm: "trabajo.",
+    description: "Uso herramientas probadas por defecto y pruebo otras solo cuando hay una razón.",
     groups: [
       { title: "Frontend", items: ["Angular", "React", "Vue", "TypeScript", "Tailwind", "RxJS"] },
       { title: "Móvil", items: ["React Native", "Ionic", "Expo", "Android Studio"] },
-      { title: "Backend", items: ["Node.js", "Express", "NestJS", ".NET", "Python", "REST APIs", "Auth0"] },
+      {
+        title: "Backend",
+        items: ["Node.js", "Express", "NestJS", ".NET", "Python", "REST APIs", "Auth0"],
+      },
       { title: "Bases de datos", items: ["PostgreSQL", "MongoDB", "MariaDB"] },
-      { title: "Infraestructura", items: ["Docker", "Swagger/OpenAPI", "Stripe", "CI/CD", "Azure"] },
+      {
+        title: "Infraestructura",
+        items: ["Docker", "Swagger/OpenAPI", "Stripe", "CI/CD", "Azure"],
+      },
       { title: "Seguridad", items: ["Kali", "PortSwigger", "Red/Blue Team", "Pentesting"] },
     ],
   },
   testimonials: {
     eyebrow: "Testimonios",
-    title1: "No lo digo yo —",
-    titleEm: "lo dicen ellos.",
-    description:
-      "Notas en video, sin guion, de los clientes con los que he construido. Sin ediciones ni frases preparadas — solo cómo fue trabajar juntos.",
+    title1: "Clientes,",
+    titleEm: "con sus propias palabras.",
+    description: "Videos cortos de clientes con los que he trabajado.",
     play: "Reproducir testimonio",
     prev: "Testimonio anterior",
     next: "Siguiente testimonio",
@@ -926,15 +1030,22 @@ const es: Dict = {
     playVideo: "Reproducir testimonio en video",
     quotes: [
       {
-        quote: "Pablo convirtió una idea poco clara en algo que realmente se lanzó — y siguió lanzando cada semana.",
+        quote:
+          "Pablo convirtió una idea poco clara en algo que realmente se lanzó, y siguió lanzando cada semana.",
         name: "Fundador SaaS",
         role: "Etapa temprana",
         videoSrc: "/testimonials/founder-1.mp4",
         poster: "/testimonials/founder-1.jpg",
       },
-      { quote: "Criterio senior sin el sobrecosto de una agencia. Las decisiones de arquitectura aguantaron seis meses después.", name: "CTO", role: "Startup Series A" },
       {
-        quote: "Dueña todo el stack. No necesitamos una agencia de frontend, un dev backend y un PM por separado.",
+        quote:
+          "Criterio senior sin el sobrecosto de una agencia. Las decisiones de arquitectura aguantaron seis meses después.",
+        name: "CTO",
+        role: "Startup Series A",
+      },
+      {
+        quote:
+          "Domina todo el stack. No necesitamos una agencia de frontend, un dev backend y un PM por separado.",
         name: "Fundadora",
         role: "Servicios PYME",
         videoSrc: "/testimonials/founder-2.mp4",
@@ -944,10 +1055,9 @@ const es: Dict = {
   },
   contact: {
     eyebrow: "Contacto",
-    title1: "¿Tienes un producto que necesita",
-    titleEm: "ejecución senior?",
-    description:
-      "Tomo un número pequeño de proyectos enfocados. Envía el problema, los tiempos y el resultado que necesitas.",
+    title1: "¿Tienes un proyecto?",
+    titleEm: "Hablemos.",
+    description: "Cuéntame qué necesitas construir y para cuándo.",
     fields: {
       name: "Nombre",
       namePh: "Tu nombre",
@@ -956,16 +1066,16 @@ const es: Dict = {
       company: "Empresa",
       companyPh: "Opcional",
       project: "Proyecto",
-      projectPh: "Problema, tiempos, resultado que necesitas.",
+      projectPh: "Qué necesitas y para cuándo.",
     },
     send: "Enviar mensaje",
     sending: "Enviando…",
-    reply: "Leo cada mensaje. Espera respuesta en 1–2 días hábiles.",
+    reply: "Respondo en 1 o 2 días hábiles.",
     errors: {
       required: "Por favor llena nombre, correo y un mensaje corto.",
       generic: "Algo salió mal.",
     },
-    success: "Mensaje enviado — te responderé en 1–2 días hábiles.",
+    success: "Mensaje enviado. Te responderé en 1 o 2 días hábiles.",
   },
   footer: {
     tagline: "Pablo Salcido · Múnich, Alemania · Remoto",
@@ -973,7 +1083,7 @@ const es: Dict = {
   },
   ui: {
     preloader: "Cargando portafolio",
-    intro: "Pablo Salcido — Ingeniero full-stack",
+    intro: "Pablo Salcido · Ingeniero full-stack",
     featured: "Caso destacado",
     index: "Índice",
     cols: { project: "Proyecto", discipline: "Disciplina", stack: "Stack" },
@@ -983,8 +1093,8 @@ const es: Dict = {
     soundOff: "Sonido desactivado",
     localTime: "Múnich",
     backToTop: "Volver arriba",
-    footerCta1: "Construyamos algo que",
-    footerCtaEm: "valga la pena lanzar.",
+    footerCta1: "Trabajemos",
+    footerCtaEm: "juntos.",
     footerSay: "Escríbeme",
     sentence: {
       hi: "Hola Pablo, mi nombre es",
@@ -996,7 +1106,7 @@ const es: Dict = {
       reach: ". Puedes contactarme en",
       email: "tu@empresa.com",
       more: ". Un poco más de contexto:",
-      messagePh: "El problema, los tiempos y el resultado que necesitas.",
+      messagePh: "Qué necesitas y para cuándo.",
       topicsLabel: "Temas",
     },
   },

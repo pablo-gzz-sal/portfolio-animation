@@ -128,7 +128,7 @@ function Featured({ project, onOpen }: { project: Project; onOpen: () => void })
 
         {/* label shown while the card is still framed */}
         <span className="feat-label absolute left-1/2 top-[17%] hidden -translate-x-1/2 font-mono-eyebrow text-foreground/80 lg:block">
-          {t.ui.featured} — ↓
+          {t.ui.featured} ↓
         </span>
 
         <div className="relative bg-card/60 p-6 sm:p-10 lg:absolute lg:inset-x-0 lg:bottom-0 lg:bg-transparent lg:p-[clamp(2.5rem,5vw,5rem)]">

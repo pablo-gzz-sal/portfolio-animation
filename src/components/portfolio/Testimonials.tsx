@@ -17,12 +17,13 @@ type Reel = {
   media: ReturnType<typeof testimonialMedia>;
 };
 
-/** How far each column drifts against the scroll (desktop). The middle reel
- *  runs the other way so the row never reads as a flat strip of cards. */
+/** How far each column drifts against the scroll (desktop). Neighbouring reels
+ *  alternate between shallow and deep so the row never reads as a flat strip. */
 const DRIFT = [
   [40, -40],
   [140, -60],
   [80, -80],
+  [160, -40],
 ];
 
 /**
@@ -116,7 +117,7 @@ export function Testimonials() {
       </div>
 
       <div className="reel-row mt-16 sm:mt-24 lg:shell">
-        <ul className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:px-8 lg:ml-[240px] lg:grid lg:grid-cols-3 lg:gap-8 lg:overflow-visible lg:px-0 lg:pb-[140px] [&::-webkit-scrollbar]:hidden">
+        <ul className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:px-8 lg:grid lg:grid-cols-4 lg:gap-6 xl:gap-8 lg:overflow-visible lg:px-0 lg:pb-[140px] [&::-webkit-scrollbar]:hidden">
           {reels.map((r, i) => (
             <li key={r.n} className="reel-col w-[72%] shrink-0 snap-center sm:w-[44%] lg:w-auto">
               <ReelCard reel={r} index={i} onOpen={() => openReel(i)} label={t.testimonials.play} />

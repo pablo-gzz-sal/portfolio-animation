@@ -15,9 +15,10 @@ export type TestimonialMeta = {
  * transforms so there is nothing to re-encode or host locally.
  */
 export const TESTIMONIALS: TestimonialMeta[] = [
-  { projectId: "display-con-sentido", asset: "v1792080944/dissen_nbcgpv", duration: 23 },
+  { projectId: "joseph", asset: "v1792340114/josephbattisti_obxxqn", duration: 51 },
   { projectId: "diocletians-dream", asset: "v1792080945/diocletiansdream_obkp2b", duration: 69 },
   { projectId: "lending-group", asset: "v1792080945/bclg_atkftl", duration: 53 },
+  { projectId: "display-con-sentido", asset: "v1792080944/dissen_nbcgpv", duration: 23 },
 ];
 
 export const testimonialMedia = (asset: string) => ({

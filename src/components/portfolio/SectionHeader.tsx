@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 export const SECTION_TOTAL = "05";
 
 interface SectionHeaderProps {
-  /** "01" … — omit for unnumbered sections (the rail then shows a dash). */
+  /** "01" … omit for unnumbered sections (the rail then shows only the eyebrow). */
   index?: string;
   eyebrow: string;
   title: ReactNode;
@@ -34,12 +34,10 @@ export function SectionHeader({
     <header className={cn("grid gap-6 lg:grid-cols-[200px_1fr] lg:gap-10", className)}>
       <Reveal className="flex items-baseline gap-3 lg:flex-col lg:gap-2 lg:pt-3">
         <span className="font-num text-lg italic leading-none text-ink-faint">
-          {index ? (
+          {index && (
             <>
               <span className="text-primary-glow">{index}</span> / {SECTION_TOTAL}
             </>
-          ) : (
-            <span className="text-primary-glow">—</span>
           )}
         </span>
         <span className="font-mono-eyebrow text-ink-dim">{eyebrow}</span>

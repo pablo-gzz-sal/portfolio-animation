@@ -78,18 +78,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Pablo Salcido — Senior Full-Stack Engineer" },
+      { title: "Pablo Salcido | Senior Full-Stack Engineer" },
       {
         name: "description",
         content:
-          "Senior full-stack engineer shipping polished frontends, Node.js APIs, and production systems for SaaS founders and growing businesses.",
+          "Full-stack engineer in Munich building web apps, APIs and deployments for SaaS founders and small businesses.",
       },
       { name: "author", content: "Pablo Salcido" },
-      { property: "og:title", content: "Pablo Salcido — Senior Full-Stack Engineer" },
+      { property: "og:title", content: "Pablo Salcido | Senior Full-Stack Engineer" },
       {
         property: "og:description",
-        content:
-          "Polished frontends, Node.js APIs, and production systems for SaaS founders and growing businesses.",
+        content: "Web apps, Node.js APIs and deployments for SaaS founders and small businesses.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

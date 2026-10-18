@@ -171,7 +171,7 @@ function ReelCard({
       onMouseLeave={leave}
       onFocus={enter}
       onBlur={leave}
-      aria-label={`${label} — ${reel.client}`}
+      aria-label={`${label}: ${reel.client}`}
       className="group block w-full text-left focus:outline-none"
     >
       <div

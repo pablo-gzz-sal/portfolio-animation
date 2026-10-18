@@ -47,7 +47,6 @@ export function WhoIWorkWith() {
       <div className="shell">
         <div className="grid gap-6 lg:grid-cols-[200px_1fr] lg:gap-10">
           <Reveal className="flex items-baseline gap-3 lg:flex-col lg:gap-2 lg:pt-4">
-            <span className="font-mono text-xs text-primary-glow">—</span>
             <span className="font-mono-eyebrow text-ink-dim">{t.whoIWorkWith.eyebrow}</span>
           </Reveal>
           <p className="mf-statement font-display text-[clamp(2.4rem,5.6vw,6rem)] leading-[0.98] tracking-[-0.05em] text-foreground">

@@ -259,7 +259,7 @@ export function CaseStudy({
                   <p className="flex items-baseline font-num text-lg italic leading-none text-ink-faint">
                     <span className="text-primary-glow">{String(shown + 1).padStart(2, "0")}</span>
                     &nbsp;/ {total}
-                    <span className="mx-3 text-hair-2">—</span>
+                    <span className="mx-3 text-hair-2">·</span>
                     <span className="font-mono-eyebrow">{p.tag}</span>
                   </p>
                   <DialogPrimitive.Close asChild>

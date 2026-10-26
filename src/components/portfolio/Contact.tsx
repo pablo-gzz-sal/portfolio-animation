@@ -8,15 +8,46 @@ import { sfx } from "@/lib/sound";
 import { cn } from "@/lib/utils";
 import meImg from "@/assets/images/me.jpeg";
 
+const EMAILJS_URL = "https://api.emailjs.com/api/v1.0/email/send";
+
+/** Sends the message straight from the browser; the public key is meant to be public. */
+async function sendWithEmailJS(params: {
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+}) {
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  if (!serviceId || !templateId || !publicKey) {
+    throw new Error("EmailJS is not configured (VITE_EMAILJS_* env vars)");
+  }
+
+  const res = await fetch(EMAILJS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      service_id: serviceId,
+      template_id: templateId,
+      user_id: publicKey,
+      template_params: params,
+    }),
+  });
+  if (!res.ok) {
+    throw new Error(`EmailJS responded ${res.status}: ${await res.text().catch(() => "")}`);
+  }
+}
+
 /**
  * Contact as a sentence you complete (The Digital Panda's footer form):
  * "Hi Pablo, my name is ___ and I'm reaching out from ___. I need help
  * with [chips]. You can reach me at ___. A bit more about it: ___".
  *
  * Every blank is a real, labelled input, so it's still an ordinary form to
- * assistive tech. The payload is unchanged — name / email / company /
- * message — with the chosen topics prefixed onto the message, so the API
- * route and its zod schema stay as they are.
+ * assistive tech. The payload is name / email / company / message, with the
+ * chosen topics prefixed onto the message. It goes straight from the browser
+ * to EmailJS, which emails it to the inbox; there is no backend or database.
  */
 export function Contact() {
   const t = useT();
@@ -42,33 +73,35 @@ export function Contact() {
     const payload = {
       name: name.trim(),
       email: email.trim(),
-      company: company.trim() || undefined,
+      company: company.trim(),
       message,
     };
     if (!payload.name || !payload.email || !details) {
       toast.error(t.contact.errors.required);
       return;
     }
-    setLoading(true);
-    try {
-      const res = await fetch("/api/public/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(body?.error || `Request failed (${res.status})`);
-      }
-      toast.success(t.contact.success);
+    const reset = () => {
       form.reset();
       setName("");
       setCompany("");
       setEmail("");
       setTopics([]);
+    };
+    // Honeypot: real visitors never see or fill this field, bots usually do.
+    // Pretend it worked so they don't retry, but send nothing.
+    if (String(new FormData(form).get("website") || "")) {
+      toast.success(t.contact.success);
+      reset();
+      return;
+    }
+    setLoading(true);
+    try {
+      await sendWithEmailJS(payload);
+      toast.success(t.contact.success);
+      reset();
     } catch (err) {
-      const message = err instanceof Error ? err.message : t.contact.errors.generic;
-      toast.error(message);
+      console.error("[contact] send failed", err);
+      toast.error(t.contact.errors.generic);
     } finally {
       setLoading(false);
     }
@@ -159,6 +192,14 @@ export function Contact() {
               autoComplete="email"
             />
             {s.more}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden
+              className="absolute -left-[9999px] h-0 w-0 opacity-0"
+            />
             <label className="mt-6 block">
               <span className="sr-only">{t.contact.fields.project}</span>
               <textarea

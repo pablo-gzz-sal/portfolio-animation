@@ -27,7 +27,6 @@ type ProjectCopy = {
   results: string[];
   metrics: { value: string; label: string }[];
   stackDetail: { label: string; items: string[] }[];
-  video?: string;
   liveUrl?: string;
 };
 
@@ -63,6 +62,9 @@ type Dict = {
     outcome: string;
     closeCase: string;
     viewLive: string;
+    prevShot: string;
+    nextShot: string;
+    showShot: string;
     sections: {
       client: string;
       role: string;
@@ -223,6 +225,9 @@ const en: Dict = {
     outcome: "Outcome",
     closeCase: "Close case study",
     viewLive: "View live site",
+    prevShot: "Previous screenshot",
+    nextShot: "Next screenshot",
+    showShot: "Show screenshot",
     sections: {
       client: "Client",
       role: "Role",
@@ -237,7 +242,7 @@ const en: Dict = {
         tag: "Architecture + UX",
         id: "joseph",
         title: "Joseph Battisti, NY Salon",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/joseph_uocvsc.mp4",
+        liveUrl: "https://josephbattisti.com",
         summary:
           "Booking platform with Shopify integration and real-time scheduling for a Manhattan salon.",
         role: "Full-stack build",
@@ -273,7 +278,6 @@ const en: Dict = {
         id: "firmexa",
         title: "FIRMEXA, Debt Recovery Platform",
         liveUrl: "https://firmexa.mx",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/firmexa_bapzaq.mp4",
         summary:
           "Automated extrajudicial collections for the Mexican market: call engine, case state machine and audit trail in one system.",
         role: "Founding engineer",
@@ -310,8 +314,6 @@ const en: Dict = {
         id: "diocletians-dream",
         title: "Diocletian's Dream, Split VR Museum",
         liveUrl: "https://diocletiansdream.com",
-        video:
-          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/diocletians-dream_jeng9n.mp4",
         summary:
           "Bilingual prerendered site for a VR heritage museum, with a headless WordPress blog and tracked booking conversions.",
         role: "Full-stack build",
@@ -383,8 +385,6 @@ const en: Dict = {
         tag: "Lead generation",
         id: "lending-group",
         title: "Lending Group, Texas",
-        video:
-          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/lending-group_qwi2a8.mp4",
         summary: "Lead intake and routing app for an employment and lending firm.",
         role: "Full-stack build",
         outcome: "Cleaner lead pipeline",
@@ -419,8 +419,6 @@ const en: Dict = {
         tag: "Content platform",
         id: "esencial360",
         title: "Esencial360, Yoga & Meditation",
-        video:
-          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/esencial360_sr8qub.mp4",
         summary:
           "Subscription platform with BunnyStream video, Stripe billing and an admin console.",
         role: "Platform build",
@@ -696,6 +694,9 @@ const es: Dict = {
     outcome: "Resultado",
     closeCase: "Cerrar caso de estudio",
     viewLive: "Ver sitio en vivo",
+    prevShot: "Captura anterior",
+    nextShot: "Captura siguiente",
+    showShot: "Ver captura",
     sections: {
       client: "Cliente",
       role: "Rol",
@@ -710,7 +711,7 @@ const es: Dict = {
         tag: "Arquitectura + UX",
         id: "joseph",
         title: "Joseph Battisti, Salón NY",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/joseph_uocvsc.mp4",
+        liveUrl: "https://josephbattisti.com",
         summary:
           "Plataforma de reservas con integración a Shopify y agenda en tiempo real para un salón de Manhattan.",
         role: "Desarrollo full-stack",
@@ -746,7 +747,6 @@ const es: Dict = {
         id: "firmexa",
         title: "FIRMEXA, Plataforma de Cobranza",
         liveUrl: "https://firmexa.mx",
-        video: "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/firmexa_bapzaq.mp4",
         summary:
           "Cobranza extrajudicial automatizada para el mercado mexicano: motor de llamadas, máquina de estados y bitácora de auditoría en un solo sistema.",
         role: "Ingeniero fundador",
@@ -783,8 +783,6 @@ const es: Dict = {
         id: "diocletians-dream",
         title: "Diocletian's Dream, Museo VR en Split",
         liveUrl: "https://diocletiansdream.com",
-        video:
-          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/diocletians-dream_jeng9n.mp4",
         summary:
           "Sitio bilingüe prerenderizado para un museo de realidad virtual, con blog en WordPress headless y conversiones de reserva medidas.",
         role: "Desarrollo full-stack",
@@ -856,8 +854,6 @@ const es: Dict = {
         tag: "Generación de leads",
         id: "lending-group",
         title: "Lending Group, Texas",
-        video:
-          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/lending-group_qwi2a8.mp4",
         summary: "App de captura y enrutamiento de leads para una firma de empleo y préstamos.",
         role: "Desarrollo full-stack",
         outcome: "Pipeline de leads más limpio",
@@ -892,8 +888,6 @@ const es: Dict = {
         tag: "Plataforma de contenido",
         id: "esencial360",
         title: "Esencial360, Yoga y Meditación",
-        video:
-          "https://res.cloudinary.com/doinkgfam/video/upload/v1790520401/esencial360_sr8qub.mp4",
         summary:
           "Plataforma por suscripción con video en BunnyStream, cobros con Stripe y consola de administración.",
         role: "Construcción de plataforma",

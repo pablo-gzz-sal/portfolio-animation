@@ -1,9 +1,10 @@
 import { useCallback, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ArrowUpRight, ArrowDown, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, ArrowDown, X } from "lucide-react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { sfx } from "@/lib/sound";
 import { useT } from "@/i18n";
+import { cn } from "@/lib/utils";
 import { CountUp } from "./CountUp";
 import { Reveal } from "./Reveal";
 import type { Project } from "./SelectedWork";
@@ -17,6 +18,9 @@ import type { Project } from "./SelectedWork";
  * fades up around it, then the copy rises in. If no image is on screen the
  * sheet simply fades and rises. Closing flies the hero back to its source
  * when that is still visible, otherwise the sheet fades away.
+ *
+ * The hero media is a gallery of desktop captures of the live site: the cover
+ * first, then the rest behind a thumbnail strip and arrows.
  *
  * "Next project" is an in-place swap: current content lifts out, the sheet
  * scrolls to top, the next project's media unmasks and its copy rises in.
@@ -101,6 +105,9 @@ export function CaseStudy({
   indexRef.current = index;
   const projectsRef = useRef(projects);
   projectsRef.current = projects;
+  // Which screenshot the gallery is on; the close flight only makes sense
+  // from the cover, since that is the still the page behind is showing.
+  const shotRef = useRef(0);
   const flyer = useRef<HTMLImageElement | null>(null);
   const dropFlyer = () => {
     flyer.current?.remove();
@@ -118,6 +125,7 @@ export function CaseStudy({
     openTl.current?.kill();
     dropFlyer();
     closing.current = false;
+    shotRef.current = 0;
     sfx.open();
     const copy = el.querySelectorAll(".case-in");
     const media = el.querySelector<HTMLElement>(".case-media");
@@ -168,7 +176,7 @@ export function CaseStudy({
     const mr = media?.getBoundingClientRect();
     // Fly home only if both ends are visible: the hero in the sheet, and a
     // still of this project on the page behind it (e.g. the featured card).
-    const home = media && mr && onScreen(mr) ? sourceRect(shown) : null;
+    const home = media && mr && onScreen(mr) && shotRef.current === 0 ? sourceRect(shown) : null;
     const tl = gsap.timeline({ onComplete: done });
     if (media && home) {
       const img = makeFlyer(flightSrc(projectsRef.current[shown]), rectOf(media), 16);
@@ -197,6 +205,7 @@ export function CaseStudy({
       const swap = () => {
         onIndexChange(next);
         setShown(next);
+        shotRef.current = 0;
         if (scroller.current) scroller.current.scrollTop = 0;
       };
       if (prefersReducedMotion() || !el) return swap();
@@ -300,23 +309,7 @@ export function CaseStudy({
                   )}
                 </div>
 
-                <div className="case-media relative mt-12 aspect-[16/9] overflow-hidden rounded-2xl border border-hair bg-muted/30 sm:mt-14">
-                  {p.video ? (
-                    <video
-                      src={p.video}
-                      controls
-                      playsInline
-                      poster={p.image}
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
-                  )}
-                </div>
+                <Gallery project={p} onShotChange={(i) => (shotRef.current = i)} />
 
                 {/* metrics */}
                 <dl className="mt-12 grid grid-cols-1 border-y border-hair sm:grid-cols-3">
@@ -420,6 +413,117 @@ export function CaseStudy({
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
+  );
+}
+
+/**
+ * Screenshots of the live site. One large 16:10 frame — the size they were
+ * captured at — with the rest a click away on the thumbnail strip.
+ */
+function Gallery({
+  project,
+  onShotChange,
+}: {
+  project: Project;
+  onShotChange: (i: number) => void;
+}) {
+  const t = useT();
+  const [shot, setShot] = useState(0);
+  const shots = project.shots;
+  const n = shots.length;
+  const go = (i: number) => {
+    const next = (i + n) % n;
+    if (next === shot) return;
+    sfx.click();
+    setShot(next);
+    onShotChange(next);
+  };
+  const arrow =
+    "press absolute top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-hair-2 bg-background/70 text-foreground backdrop-blur-md transition-[opacity,background-color] duration-300 hover:bg-background focus-visible:opacity-100 lg:opacity-0 lg:group-hover/media:opacity-100";
+
+  return (
+    <div
+      className="mt-12 sm:mt-14"
+      onKeyDown={(e) => {
+        if (n < 2) return;
+        if (e.key === "ArrowLeft") go(shot - 1);
+        if (e.key === "ArrowRight") go(shot + 1);
+      }}
+    >
+      <div className="case-media group/media relative aspect-[16/10] overflow-hidden rounded-2xl border border-hair bg-muted/30">
+        {shots.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt={i === shot ? `${project.title} (${i + 1}/${n})` : ""}
+            aria-hidden={i !== shot}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700 ease-out",
+              i === shot ? "opacity-100" : "opacity-0",
+            )}
+          />
+        ))}
+        {n > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => go(shot - 1)}
+              onMouseEnter={sfx.hover}
+              aria-label={t.selectedWork.prevShot}
+              className={cn(arrow, "left-3 sm:left-5")}
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(shot + 1)}
+              onMouseEnter={sfx.hover}
+              aria-label={t.selectedWork.nextShot}
+              className={cn(arrow, "right-3 sm:right-5")}
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
+            <p
+              aria-live="polite"
+              className="absolute bottom-3 right-3 rounded-full border border-hair-2 bg-background/70 px-3 py-1.5 font-num text-sm italic leading-none text-ink-faint backdrop-blur-md sm:bottom-5 sm:right-5"
+            >
+              <span className="text-foreground">{String(shot + 1).padStart(2, "0")}</span>
+              &nbsp;/ {String(n).padStart(2, "0")}
+            </p>
+          </>
+        )}
+      </div>
+
+      {n > 1 && (
+        <div
+          className="case-in mt-3 grid gap-2 sm:mt-4 sm:gap-3"
+          style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}
+        >
+          {shots.map((src, i) => (
+            <button
+              key={src}
+              type="button"
+              onClick={() => go(i)}
+              onMouseEnter={sfx.hover}
+              aria-label={`${t.selectedWork.showShot} ${i + 1}`}
+              aria-current={i === shot}
+              className={cn(
+                "press relative aspect-[16/10] overflow-hidden rounded-md border transition-[opacity,border-color] duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:rounded-lg",
+                i === shot
+                  ? "border-primary-glow opacity-100"
+                  : "border-hair opacity-45 hover:opacity-90",
+              )}
+            >
+              <img
+                src={src}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover object-top"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

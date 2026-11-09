@@ -9,7 +9,9 @@ import { WorkIndex } from "./WorkIndex";
 import { projectMeta } from "./projects";
 
 export type Project = ReturnType<typeof useT>["selectedWork"]["projects"][number] & {
+  /** Cover still: the first screenshot. */
   image: string;
+  shots: string[];
   tile: string;
   stack: string[];
 };
@@ -18,7 +20,8 @@ export function SelectedWork() {
   const t = useT();
   const projects: Project[] = t.selectedWork.projects.map((p) => {
     const meta = projectMeta(p.id);
-    return { ...p, image: meta?.image ?? "", tile: meta?.tile ?? "", stack: meta?.stack ?? [] };
+    const shots = meta?.shots ?? [];
+    return { ...p, image: shots[0] ?? "", shots, tile: meta?.tile ?? "", stack: meta?.stack ?? [] };
   });
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const open = (i: number) => {
@@ -114,7 +117,9 @@ function Featured({ project, onOpen }: { project: Project; onOpen: () => void })
           <img
             src={project.image}
             alt={project.title}
-            className="feat-img absolute inset-0 h-full w-full object-cover object-[center_40%]"
+            // Full bleed on desktop: overscan so the captured site's own nav
+            // bar sits above the fold instead of under this page's header.
+            className="feat-img absolute inset-x-0 top-0 h-full w-full object-cover object-top lg:-top-[8%] lg:h-[108%]"
           />
         </div>
         <div
